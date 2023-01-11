@@ -46,8 +46,6 @@ data %>%
 ```
 
 
-multiple countries can have same ranking within same year;
-not all rankings are assigned
 
 
 ```{r}
