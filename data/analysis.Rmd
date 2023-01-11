@@ -1,0 +1,90 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-01-10"
+---
+
+```{r}
+library(tidyverse)
+library(here)
+library(visdat)
+library(DataExplorer)
+library(skimr)
+
+```
+
+
+
+### Read Data
+
+
+```{r}
+data <- read_csv(here("processed/GTI_2012-2021.csv"))
+```
+
+
+### Explore Data
+
+
+```{r}
+glimpse(data)
+
+```
+
+
+
+```{r}
+head(data)
+```
+
+
+
+```{r}
+data %>%
+  group_by(year, ranking) %>%
+  tally()
+```
+
+
+multiple countries can have same ranking within same year;
+not all rankings are assigned
+
+
+```{r}
+summary(data)
+```
+
+
+```{r}
+data %>%
+  arrange(desc(year)) %>%
+  vis_dat()
+```
+
+
+```{r}
+data %>%
+  get_dupes()
+```
+
+
+
+```{r}
+data %>%
+  skim()
+```
+
+
+```{r}
+create_report(data)
+```
+
+
+
+
+
+
+
+
+
+

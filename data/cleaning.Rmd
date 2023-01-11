@@ -1,0 +1,71 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-01-10"
+---
+
+
+```{r}
+library(tidyverse)
+library(janitor)
+library(here)
+library(readxl)
+library(countrycode)
+
+```
+
+
+
+### Read Data
+
+
+```{r}
+original_data <- read_xlsx(here("original/GTI_2012-2021.xlsx"))
+```
+
+
+```{r}
+glimpse(original_data)
+```
+
+
+
+### Clean Data and Add Continents
+
+
+```{r}
+data <- original_data %>%
+  clean_names(case = "lower_camel") %>%
+  # mutate(across(c(where(is.numeric)),
+  #              factor)) %>%
+  mutate(continent = countrycode(country, "country.name.en", "continent")) %>%
+  mutate(continent = case_when(
+    country == "Kosovo" ~ "Europe",
+    country == "Virgin Islands" ~ "Americas",
+    country == "Virgin Islands (USA)" ~ "Americas",
+    country == "Chechnya" ~ "Europe",
+    country == "Bonaire" ~ "Americas",
+    country == "Maledives" ~ "Asia",
+    TRUE ~ continent
+  )) %>%
+  relocate(continent, .after = country)
+```
+
+
+
+```{r}
+summary(data)
+
+```
+
+
+### Save data
+
+
+```{r}
+write_csv(data, here("processed/GTI_2012-2021.csv"))
+```
+
+
+
+
