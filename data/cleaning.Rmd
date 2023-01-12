@@ -5,12 +5,14 @@ date: "2023-01-10"
 ---
 
 
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 library(janitor)
 library(here)
 library(readxl)
 library(countrycode)
+
+here::i_am("analysis.Rmd")
 
 ```
 
@@ -20,7 +22,7 @@ library(countrycode)
 
 
 ```{r}
-original_data <- read_xlsx(here("original/GTI_2012-2021.xlsx"))
+original_data <- read_xlsx(here("original","GTI_2012-2021.xlsx"))
 ```
 
 

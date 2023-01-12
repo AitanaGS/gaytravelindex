@@ -4,12 +4,16 @@ output: html_document
 date: "2023-01-10"
 ---
 
-```{r}
+
+```{r message=FALSE}
+
 library(tidyverse)
 library(here)
 library(visdat)
 library(DataExplorer)
 library(skimr)
+
+here::i_am("analysis.Rmd")
 
 ```
 
@@ -19,7 +23,7 @@ library(skimr)
 
 
 ```{r}
-data <- read_csv(here("processed/GTI_2012-2021.csv"))
+data <- read_csv(here("processed", "GTI_2012-2021.csv"))
 ```
 
 
@@ -45,6 +49,13 @@ data %>%
   tally()
 ```
 
+
+
+```{r}
+data %>%
+  group_by(year, continent) %>%
+  tally()
+```
 
 
 
