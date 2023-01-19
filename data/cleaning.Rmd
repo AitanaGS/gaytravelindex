@@ -11,6 +11,7 @@ library(janitor)
 library(here)
 library(readxl)
 library(countrycode)
+library(jsonlite)
 
 here::i_am("analysis.Rmd")
 
@@ -68,6 +69,18 @@ summary(data)
 write_csv(data, here("processed/GTI_2012-2021.csv"))
 ```
 
+
+
+
+```{r}
+dataJSON <- toJSON(data)
+```
+
+
+
+```{r}
+write(dataJSON, here("processed/GTI_2012-2021.json"))
+```
 
 
 
