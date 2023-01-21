@@ -18,6 +18,8 @@
     .filter(key => key !== "country" && key != 'continent' && key != 'ranking' && key !='year')
   // ggfs remove 'total'
 
+  console.log(indicators)
+
   let selectedContinent
 
   $: selectedContinentCountries = [... new Set(
@@ -63,7 +65,14 @@
     
   $: selectedData = data.filter(d => d.continent === selectedContinent).filter(d => selectedContinentCountries.includes(d.country) )
 
+  let selectedCountry = ""
 
+  const handleClick = (e, country) => {
+    // console.log(e)
+    // console.log(country)
+    selectedCountry = country
+    console.log(selectedCountry)
+  }
 
 
 </script>
@@ -72,25 +81,38 @@
 
   <label for="continent-select">Choose a continent:</label>
 
-<select name="continents" id="continent-select" bind:value={selectedContinent}>
-    <option value="">--Please choose a continent--</option>
+<select 
+  name="continents" 
+  id="continent-select" 
+  bind:value={selectedContinent}
+  on:change={() => selectedCountry = ''}>
+    <option value="">Overview</option>
     {#each continents as continent}
       <option value={continent}>{continent}</option>
     {/each}
 </select>
-{#if selectedContinent}
-  <p>{selectedContinent}</p>
+
+{#if selectedCountry}
+<button
+  on:click={() => selectedCountry = ""}
+  >Back to {selectedContinent}</button>
 {/if}
 
 <div class="chartWrapper" bind:clientWidth={width}>
   <svg {width} {height}>
-    <ContinentHeatmap {selectedData} {yearScale} {countryScale} {totalScale} {margin}/>
+
+    {#if !selectedCountry}
+    <ContinentHeatmap {selectedData} {yearScale} {countryScale} {totalScale} {margin} {handleClick}/>
+    {/if}
   
+    
+  {#if selectedCountry}
+  <text x=100 y=100>{selectedCountry}</text>
+  {/if}
   </svg>
 </div>
 
 </main>
 
 <style>
-
 </style>

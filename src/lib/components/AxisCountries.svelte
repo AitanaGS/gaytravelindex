@@ -1,5 +1,6 @@
 <script>
     export let countryScale;
+    export let handleClick
 
     $: countries = countryScale.domain()
 
@@ -9,7 +10,10 @@
 <g class="axis countries">
     {#each countries as country}
         <g class="tick">
-            <text 
+            <text
+                class="countryList"
+                on:click={(e) => handleClick(e, country)}
+                on:keypress={(e) => handleClick(e, country)}
                 y={countryScale(country)}
                 text-anchor="end"
                 dominant-baseline="middle"
