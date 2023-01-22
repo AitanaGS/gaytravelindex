@@ -14,6 +14,7 @@
                 x={yearScale.bandwidth() / 2} 
                 y=0
                 text-anchor="middle"
+                dominant-baseline="middle"
                 font-weight={year === 2021 ? "bold" : "normal"}>
                     {year}
                 </text>

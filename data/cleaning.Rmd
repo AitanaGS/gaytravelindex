@@ -32,12 +32,12 @@ glimpse(original_data)
 ```
 
 
-
 ### Clean Data and Add Continents
 
 
 ```{r}
 data <- original_data %>%
+    # pivot_longer(`Antidiscrimination Legislation`:`Conversion Therapy`, "indicator", "value") %>%
   clean_names(case = "lower_camel") %>%
   # mutate(across(c(where(is.numeric)),
   #              factor)) %>%
@@ -72,6 +72,7 @@ data <- original_data %>%
   
 # Bonaire and Saint Kitts & Nevis in 2012, 2013, 2014 only
 ```
+
 
 
 ```{r}
@@ -122,4 +123,7 @@ dataJSON <- toJSON(data)
 ```{r}
 write(dataJSON, here("processed/GTI_2012-2021.json"))
 ```
+
+
+
 

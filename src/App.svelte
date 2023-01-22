@@ -1,12 +1,16 @@
 <script>
   import data from "../data/processed/GTI_2012-2021.json";
   import ContinentHeatmap from "./lib/components/ContinentHeatmap.svelte"
+  import CountryHeatmap from "./lib/components/CountryHeatmap.svelte"
   import { scaleBand, scaleSequential } from "d3-scale"
-  import { extent } from "d3-array"
+  import { extent, max, min } from "d3-array"
   import { interpolateRdBu, interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
+  import { tidy, pivotLonger } from '@tidyjs/tidy'
   // import AxisYears from "./lib/components/AxisYears.svelte"
   // import AxisCountries from "./lib/components/AxisCountries.svelte"
 
+
+  // TODO: check data calculations, when
 
 
   const continents = [... new Set(data.map(d => d.continent))].sort()
@@ -14,11 +18,47 @@
   const years = [... new Set(data.map(d => d.year))].sort()
 
   // get indicators of a 2021 country (in former years there where fewer indicators)
-  let indicators = Object.keys(data.filter(d => d.year == 2021)[0])
-    .filter(key => key !== "country" && key != 'continent' && key != 'ranking' && key !='year')
-  // ggfs remove 'total'
+  // const indicators = Object.keys(data.filter(d => d.year == 2021)[0])
+  //   .filter(key => key !== "country" && key != 'continent' && key != 'ranking' && key !='year' && key !='total')
 
-  console.log(indicators)
+  const indicatorLabels = [
+    "Antidiscrimination Legislation",
+    "Marriage / Civil Partnership",
+    "Adoption Allowed",
+    "Transgender Rights",
+    "Intersex / 3rd Option",
+    "Equal Age of Consent",
+    "'Conversion Therapy'",
+    "LGBT Marketing",
+    "Religious Influence",
+    "HIV Travel Restrictions",
+    "Anti-Gay Laws",
+    "Homosexuality Illegal",
+    "Pride Banned",
+    "Locals Hostile",
+    "Prosecution",
+    "Murders",
+    "Death Sentence"
+  ]
+
+  const camelize = (str) => str.toLowerCase().replaceAll("'", '').replace(/\W+(.)/g, (match, chr) => chr.toUpperCase())
+
+  const indicatorVariables = indicatorLabels.map(label => label === "Intersex / 3rd Option" ? label = "intersex3RdOption"
+                                                      : label ===  "Transgender Rights" ? label = "transGenderRights" 
+                                                      : camelize(label))
+  // console.log(indicatorVariables)
+
+  const indicatorLabelsLookup = new Map()
+
+  indicatorLabels.forEach((label, i) => {
+    indicatorLabelsLookup.set(indicatorVariables[i], label)
+  })
+
+
+
+
+  indicatorLabelsLookup.set("antidiscrimination Legislation", "Antidiscrimination Legislation")
+
 
   let selectedContinent
 
@@ -26,23 +66,22 @@
     data
       .filter(d => d.continent == selectedContinent)
       .filter(d => d.year === 2021)
-      .sort((a, b) => b.ranking - a.ranking ||  b.country.localeCompare(a.country) )
-      //.sort((a, b) => b.ranking - a.ranking)  // data.sort((a, b) => a.city.localeCompare(b.city) || b.price - a.price);
+      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
       .map(d => d.country)
       )]
 
-   //$: console.log(selectedContinentCountries)
+  //  $: console.log(selectedContinentCountries)
 
 
   let width = 700
 
-  $: height = selectedContinentCountries.length * 50 //?
+  $: height = selectedCountry ? indicatorVariables.length * 55 : selectedContinentCountries.length * 50
 
   const margin = {
-    top: 20,
+    top: 75,
     right: 10,
     bottom: 60,
-    left: 200
+    left: 220
   }
 
   $: innerWidth = width - margin.left - margin.right
@@ -51,28 +90,58 @@
   $: yearScale = scaleBand()
     .domain(years)
     .range([0, innerWidth])
-    .padding(0.05)
+    .padding(0.1)
 
 
   $: countryScale = scaleBand()
     .domain(selectedContinentCountries)
-    .range([innerHeight, 0])
-    .padding(0.05)
+    .range([0, innerHeight])
+    .paddingInner(0.1)
+    .paddingOuter(0.2)
+
+    const dataLonger = tidy(data, pivotLonger({
+      cols: indicatorVariables,
+      namesTo: 'indicator',
+      valuesTo: 'value'
+    }))
+
+
+  $: indicatorScale = scaleBand()
+    .domain(indicatorVariables)
+    .range([0, innerHeight])
+    .paddingInner(0.1)
+    .paddingOuter(0.2)
+
+   //$: console.log(indicatorScale.domain())
 
   const totalScale = scaleSequential(interpolateRdYlBu) // interpolateRdYlBu  // schemeRdYlBu
     .domain(extent(data.map(d => d.total)))
 
-    
-  $: selectedData = data.filter(d => d.continent === selectedContinent).filter(d => selectedContinentCountries.includes(d.country) )
+  const indicatorValueScale = scaleSequential(interpolateRdYlBu)
+    .domain(extent(dataLonger.map(d => d.value)))
+    // TODO: check if there is another potential max value (3 instead of 2?)
 
+    
+  $: selectedContinentData = data.filter(d => d.continent === selectedContinent).filter(d => selectedContinentCountries.includes(d.country) )
+    // TODO: check if last filter necessary
+
+
+  // $: console.log(selectedContinentData)
+  
   let selectedCountry = ""
+
+  $: selectedCountryData = dataLonger.filter(d => d.country == selectedCountry).filter(d => d.value !== undefined)
+
+  // $: console.log(selectedCountryData)
 
   const handleClick = (e, country) => {
     // console.log(e)
     // console.log(country)
     selectedCountry = country
-    console.log(selectedCountry)
+    //console.log(selectedCountry)
   }
+
+  // TODO: scroll up
 
 
 </script>
@@ -102,12 +171,13 @@
   <svg {width} {height}>
 
     {#if !selectedCountry}
-    <ContinentHeatmap {selectedData} {yearScale} {countryScale} {totalScale} {margin} {handleClick}/>
+    <ContinentHeatmap {selectedContinent} {selectedContinentData} {yearScale} {countryScale} {totalScale} {width} {margin} {handleClick}/>
     {/if}
   
     
   {#if selectedCountry}
-  <text x=100 y=100>{selectedCountry}</text>
+  <!-- <text x=100 y=100>{selectedCountry}</text> -->
+  <CountryHeatmap {selectedCountry} {selectedCountryData} {yearScale} {indicatorScale} {indicatorValueScale} {indicatorVariables} {indicatorLabelsLookup} {width} {margin} />
   {/if}
   </svg>
 </div>
