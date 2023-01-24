@@ -2,6 +2,7 @@
   import data from "../data/processed/GTI_2012-2021.json";
   import ContinentHeatmap from "./lib/components/ContinentHeatmap.svelte"
   import CountryHeatmap from "./lib/components/CountryHeatmap.svelte"
+  import Tooltip from "./lib/components/Tooltip.svelte"
   import { scaleBand, scaleSequential } from "d3-scale"
   import { extent, max, min } from "d3-array"
   import { interpolateRdBu, interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
@@ -73,12 +74,14 @@
   //  $: console.log(selectedContinentCountries)
 
 
-  let width = 700
+  let width = 650
 
-  $: height = selectedCountry ? indicatorVariables.length * 55 : selectedContinentCountries.length * 50
+  // $: height = selectedCountry ? indicatorVariables.length * 55 : selectedContinentCountries.length * 
+  
+  $: height = selectedCountry ? indicatorVariables.length * 55 : selectedContinentCountries.length * 30
 
   const margin = {
-    top: 75,
+    top: 55,
     right: 10,
     bottom: 60,
     left: 220
@@ -87,17 +90,27 @@
   $: innerWidth = width - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
 
+  // $: yearScale = scaleBand()
+  //   .domain(years)
+  //   .range([0, innerWidth])
+  //   .padding(0.1)
   $: yearScale = scaleBand()
     .domain(years)
     .range([0, innerWidth])
-    .padding(0.1)
+    .padding(0.05)
 
+
+  // $: countryScale = scaleBand()
+  //   .domain(selectedContinentCountries)
+  //   .range([0, innerHeight])
+  //   .paddingInner(0.1)
+  //   .paddingOuter(0.2)
 
   $: countryScale = scaleBand()
     .domain(selectedContinentCountries)
     .range([0, innerHeight])
-    .paddingInner(0.1)
-    .paddingOuter(0.2)
+    .paddingInner(0.05)
+    .paddingOuter(0.3)
 
     const dataLonger = tidy(data, pivotLonger({
       cols: indicatorVariables,
@@ -143,6 +156,15 @@
 
   // TODO: scroll up
 
+  // TODO: Transition Heatmap
+
+  let hoveredCountryYear
+    $: console.log(hoveredCountryYear)
+
+    const handleHover = (e, d) => {
+      hoveredCountryYear = d
+    }
+
 
 </script>
 
@@ -171,7 +193,7 @@
   <svg {width} {height}>
 
     {#if !selectedCountry}
-    <ContinentHeatmap {selectedContinent} {selectedContinentData} {yearScale} {countryScale} {totalScale} {width} {margin} {handleClick}/>
+    <ContinentHeatmap {selectedContinent} {selectedContinentData} {yearScale} {countryScale} {totalScale} {width} {margin} {innerWidth} {handleClick} {handleHover} {hoveredCountryYear}/>
     {/if}
   
     
@@ -180,9 +202,16 @@
   <CountryHeatmap {selectedCountry} {selectedCountryData} {yearScale} {indicatorScale} {indicatorValueScale} {indicatorVariables} {indicatorLabelsLookup} {width} {margin} />
   {/if}
   </svg>
+    {#if hoveredCountryYear && !selectedCountry}
+    <Tooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
+    {/if}
+
 </div>
 
 </main>
 
 <style>
+  .chartWrapper {
+    position: relative;
+  }
 </style>

@@ -84,3 +84,7 @@ button:focus-visible {
 .countryList {
   cursor: pointer;
 }
+
+.tick {
+  font-size: 0.9rem;
+}

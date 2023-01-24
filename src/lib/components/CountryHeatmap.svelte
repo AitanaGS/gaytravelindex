@@ -26,7 +26,7 @@
         <AxisYears {yearScale} />
         <AxisIndicators {indicatorScale} {indicatorVariables} {indicatorLabelsLookup}/>
         {#each selectedCountryData as d}
-          {#each years as year}
+          <!-- {#each years as year} -->
           <g 
             class="indicatorList"
             >
@@ -67,7 +67,7 @@
            </g>
           {/each}
     
-        {/each}
+        <!-- {/each} -->
     </g>
 
   </g>
