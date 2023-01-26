@@ -3,8 +3,6 @@
 
     $: years = yearScale.domain()
 
-    // $: console.log(years)
-
 </script>
 
 <g class="axis years">
@@ -15,7 +13,9 @@
                 y=0
                 text-anchor="middle"
                 dominant-baseline="middle"
-                font-weight={year === 2021 ? "bold" : "normal"}>
+                font-weight={year === 2021 ? "bold" : "normal"}
+                font-size={year === 2021 ? "0.95rem" : "0.9rem"}
+                >
                     {year}
                 </text>
         </g>

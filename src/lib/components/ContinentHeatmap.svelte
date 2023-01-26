@@ -1,37 +1,37 @@
 <script>
     import AxisYears from "./AxisYears.svelte"
     import AxisCountries from "./AxisCountries.svelte"
-    // import Tooltip from "./Tooltip.svelte"
+    import { slide, fade, fly } from "svelte/transition"
 
     export let selectedContinent
     export let selectedContinentData
     export let yearScale
     export let countryScale
     export let totalScale
-    export let width
     export let margin
     export let handleClick
     export let handleHover
     export let hoveredCountryYear
-    // export let innerWidth
+    export let innerWidth
 
     $: years = yearScale.domain()
-
-    // let hoveredCountryYear
-    // $: console.log(hoveredCountryYear)
-    // $: console.log(innerWidth)
 
 
 </script>
 
 <g class="innerChartWrapper">
-    <text x={width/2} y= 30 text-anchor=middle dominant-baseline="middle" font-weight="bold">{selectedContinent}</text>
+    <text class="continentName" x={innerWidth/2 + margin.left} y= 30 text-anchor="middle" dominant-baseline="middle" font-weight="bold" font-size="1rem">{selectedContinent}</text>
     <g class="heatmap continentHeatmap" transform="translate({margin.left}, {margin.top})">
     <AxisYears {yearScale}/>
     <AxisCountries {countryScale} {handleClick} />
-    {#each selectedContinentData as d}
+    {#each Array.from(selectedContinentData.keys()) as country, i (country)}
+    <g 
+        class="country"
+        in:slide={{ duration: 200, delay: 50 + 50 * i}} 
+        >  
+    {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
       <g 
-        class="countryList"
+        class="year"
         on:click={(e) => handleClick(e, d.country)}
         on:keypress={(e) => handleClick(e, d.country)}
         on:mouseover={(e) => handleHover(e, d)}
@@ -47,7 +47,6 @@
       fill={totalScale(d.total)}
       rx=5
       ry=5
-
       />
 
       
@@ -70,8 +69,8 @@
         : "normal"
         }
         font-size={
-                hoveredCountryYear
-                ? hoveredCountryYear === d
+                d.year === 2021 || hoveredCountryYear
+                ? d.year === 2021 || hoveredCountryYear === d
                     ? "0.9rem"
                     : "0.8rem"
                 : "0.8rem"
@@ -79,9 +78,9 @@
       >{d.total}</text> 
        </g>
     {/each}
-
+</g>
+        {/each}
     </g>
-
 
   </g>
 
@@ -91,7 +90,15 @@
         position: relative;
     }
 
-    .countryList {
+    /* .continentName {
+        transition: font-size 2000ms ease font-weight 2000ms ease;
+    } */
+
+    /* .country {
+        transition: fill 800ms ease, font-size 800ms ease font-weight 800ms ease;
+    } */
+
+    .year {
         cursor: pointer;
     }
 
@@ -104,3 +111,4 @@
         transition: font-size 300ms ease, font-weight 300ms ease;
     }
   </style>
+

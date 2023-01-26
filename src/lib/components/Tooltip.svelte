@@ -59,9 +59,6 @@
         transition: top 300ms ease, left 300ms ease;
     }
     .info {
-        /* display: flex;
-        justify-content: space-between;
-        column-gap: 5px; */
         font-size: 0.9rem;
     }
     .total {
@@ -71,7 +68,6 @@
         margin: 0;
     }
     .ranking {
-        /* padding: 4px 5px 4px 5px; */
         margin: 0;
         white-space: nowrap; 
     }

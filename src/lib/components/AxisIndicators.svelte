@@ -3,12 +3,6 @@
     export let indicatorVariables
     export let indicatorLabelsLookup
 
-    // $: indicators = indicatorScale.domain()
-
-    // $: console.log(indicators)
-
-    // console.log(indicatorVariables)
-
 
 </script>
 
