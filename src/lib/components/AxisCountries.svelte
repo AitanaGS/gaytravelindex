@@ -1,6 +1,7 @@
 <script>
     export let countryScale;
     export let handleClick
+    export let selectedContinent
 
     import { slide } from "svelte/transition"
 
@@ -10,7 +11,8 @@
 
 
 <g class="axis countries">
-    {#each countries as country, i (country)}
+    <!-- {#each countries as country, i (country)} -->
+    {#each countries as country, i (`${selectedContinent}${country}`)}
         <g 
             class="tick"
             in:slide={{ duration: 200, delay: 50 + 50 * i}} 

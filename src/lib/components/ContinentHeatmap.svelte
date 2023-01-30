@@ -1,5 +1,5 @@
 <script>
-    import AxisYears from "./AxisYears.svelte"
+    import AxisContinentYears from "./AxisContinentYears.svelte"
     import AxisCountries from "./AxisCountries.svelte"
     import { slide, fade, fly } from "svelte/transition"
 
@@ -16,15 +16,21 @@
 
     $: years = yearScale.domain()
 
+    // const scrollIntoView = (node) => {
+    //     node.scrollIntoView()
+    // }
+
 
 </script>
 
 <g class="innerChartWrapper">
     <text class="continentName" x={innerWidth/2 + margin.left} y= 30 text-anchor="middle" dominant-baseline="middle" font-weight="bold" font-size="1rem">{selectedContinent}</text>
+    <!-- use:scrollIntoView -->
     <g class="heatmap continentHeatmap" transform="translate({margin.left}, {margin.top})">
-    <AxisYears {yearScale}/>
-    <AxisCountries {countryScale} {handleClick} />
-    {#each Array.from(selectedContinentData.keys()) as country, i (country)}
+    <AxisContinentYears {yearScale}/>
+    <AxisCountries {countryScale} {handleClick} {selectedContinent}/>
+    <!-- {#each Array.from(selectedContinentData.keys()) as country, i (country)}  -->
+    {#each Array.from(selectedContinentData.keys()) as country, i (`${selectedContinent}${country}`)} 
     <g 
         class="country"
         in:slide={{ duration: 200, delay: 50 + 50 * i}} 
@@ -69,13 +75,18 @@
         : "normal"
         }
         font-size={
-                d.year === 2021 || hoveredCountryYear
-                ? d.year === 2021 || hoveredCountryYear === d
-                    ? "0.9rem"
-                    : "0.8rem"
+                d === hoveredCountryYear
+                ? "0.9rem"
                 : "0.8rem"
                 }
       >{d.total}</text> 
+                      <!-- font-size={
+                    d.year === 2021 || hoveredCountryYear
+                    ? d.year === 2021 || hoveredCountryYear === d
+                        ? "0.9rem"
+                        : "0.8rem"
+                    : "0.8rem"
+                    } -->
        </g>
     {/each}
 </g>
@@ -108,7 +119,7 @@
     }
 
     text {
-        transition: font-size 300ms ease, font-weight 300ms ease;
+        transition: font-size 100ms ease, font-weight 100ms ease;
     }
   </style>
 

@@ -1,5 +1,5 @@
 <script>
-    import AxisYears from "./AxisYears.svelte"
+    import AxisCountryYears from "./AxisCountryYears.svelte"
     import AxisIndicators from "./AxisIndicators.svelte"
 
     export let selectedCountry
@@ -23,7 +23,7 @@
     class="innerChartWrapper">
     <text x={width/2} y= 30 text-anchor=middle dominant-baseline="middle" font-weight="bold">{selectedCountry}</text>
     <g class="heatmap countryHeatmap" transform="translate({margin.left}, {margin.top})">
-        <AxisYears {yearScale} />
+        <AxisCountryYears {yearScale} />
         <AxisIndicators {indicatorScale} {indicatorVariables} {indicatorLabelsLookup}/>
         {#each selectedCountryData as d}
           <!-- {#each years as year} -->
