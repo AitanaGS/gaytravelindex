@@ -1,31 +1,33 @@
 <script>
-      import AxisIndicatorValues from './AxisIndicatorValues.svelte'
 
     export let indicatorScale;
     export let indicatorVariables
     export let indicatorLabelsLookup
-    export let indicatorValueScale
+    export let margin
 
 
 </script>
 
 
-<g class="axis indicators">
+<g class="axis indicators" transform="translate({margin.left}, {margin.top})">
     {#each indicatorVariables as indicator}
-        <g class="tick" transform="translate(0, 0)">
+        <g class="tick">
             <text
-                class="indicatorList"
                 y={indicatorScale(indicator)}
                 text-anchor="end"
                 dominant-baseline="middle"
                 dy={indicatorScale.bandwidth()/2}
+                dx=-8
             > {indicatorLabelsLookup.get(indicator)}</text>
-            <g
-                transform="translate(20, {indicatorScale(indicator)})">
-                    <AxisIndicatorValues {indicatorValueScale}/>
-
-
-            </g>
+            <!-- dy={indicatorScale.bandwidth()/2} -->
+            <line
+            x1={0}
+            x2={innerWidth}
+            y1={indicatorScale(indicator) + indicatorScale.bandwidth()/2}
+            y2={indicatorScale(indicator) + indicatorScale.bandwidth()/2}
+            stroke="lightgray"
+            stroke-width=1
+        />
         </g>
 
     {/each}
