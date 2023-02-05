@@ -19,6 +19,8 @@
 
     $: yPosition = countryScale(data.country) + margin.top - tooltipHeight
 
+    // TODO: check hsla code in style
+
 
 </script>
 
@@ -42,12 +44,6 @@
 </div>
 
 <style>
-    h3 {
-        margin: 0;
-        font-size: 0.9rem;
-        font-weight: 700;
-        margin-bottom: 3px;
-    }
     .tooltip {
         position: absolute;
         background: white;
@@ -57,6 +53,12 @@
         pointer-events: none;
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease;
+    }
+    h3 {
+        margin: 0;
+        font-size: 0.9rem;
+        font-weight: 700;
+        margin-bottom: 3px;
     }
     .info {
         font-size: 0.9rem;

@@ -14,12 +14,13 @@
     export let data
     export let selectedCountry
     export let width
+    export let years
 
 
 
     // let width = 800
 
-    const years = [... new Set(data.map(d => d.year))].sort()
+    // const years = [... new Set(data.map(d => d.year))].sort()
 
 
     // $: years = yearScale.domain()
@@ -103,13 +104,13 @@
             {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
                 class="year"
-                on:click={(e) => handleClick(e, d.country)}
-                on:keypress={(e) => handleClick(e, d.country)}
                 on:mouseover={(e) => handleHover(e, d)}
                 on:focus={(e) => handleHover(e, d)}
                 on:mouseleave={(e) => handleHover(e, null)}
                 >
                 <!-- tabindex="0" -->
+                <!-- on:click={(e) => handleClick(e, d.country)}
+                on:keypress={(e) => handleClick(e, d.country)} -->
               <rect
               x={yearScale(d.year)}
               y={countryScale(d.country)}

@@ -13,7 +13,7 @@
         <g class="tick" >
             <!-- transform="translate(20, 0)" -->
             <text
-                class="indicatorList"
+                class="indicatorValueList"
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"

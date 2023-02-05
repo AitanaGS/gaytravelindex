@@ -12,6 +12,8 @@
 
   const continents = [... new Set(data.map(d => d.continent))].sort()
 
+  const years = [... new Set(data.map(d => d.year))].sort()
+
   let selectedContinent
   
   let selectedCountry = ""
@@ -47,6 +49,14 @@ $: console.log(selectedContinent)
   // TODO accessibility check
 
   // TODO check if click on continentheatmap only on axis or also 2021 or all heatmap (confusing, because might expect profile from respective year)
+
+  // TODO color scale manuell setzen (mittelpunkt)
+
+  // TODO check data
+
+  // TODO Tooltip component
+
+  // TODO Axis component
 
   let top
 
@@ -99,13 +109,13 @@ $: console.log(selectedContinent)
       <!-- <svg {width} {height}> -->
     
         {#if !selectedCountry && selectedContinent}
-        <ContinentHeatmap {width} {data} {selectedContinent} {selectedCountry} {handleClick} {handleHover} {hoveredCountryYear}/>
+        <ContinentHeatmap {width} {data} {years} {selectedContinent} {selectedCountry} {handleClick} {handleHover} {hoveredCountryYear}/>
         {/if}
       
         
       {#if selectedCountry}
     
-        <IndicatorsChart {width} {data} {selectedCountry}/>
+        <IndicatorsChart {width} {data} {selectedCountry} {years}/>
     
       {/if}
     

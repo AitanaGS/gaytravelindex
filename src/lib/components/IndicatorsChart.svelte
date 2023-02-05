@@ -1,20 +1,20 @@
 <script>
 
+    import AxisIndicators from './AxisIndicators.svelte'
+    import AxisIndicatorValues from './AxisIndicatorValues.svelte'
+    import IndicatorTooltip from './IndicatorTooltip.svelte'
+    import { slide, fly } from "svelte/transition"
+    import { extent } from "d3-array"
     import { tidy, pivotLonger } from '@tidyjs/tidy'
     import { scaleBand, scaleLinear, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
-    import { extent } from "d3-array"
-    import AxisIndicators from './AxisIndicators.svelte'
-    import AxisIndicatorValues from './AxisIndicatorValues.svelte'
-    import { slide, fly } from "svelte/transition"
 
 
     export let data
     export let selectedCountry
     export let width
+    export let years
 
-
-    // let width = 800
 
 
     const indicatorLabels = [
@@ -84,6 +84,7 @@
 const indicatorValueColorScale = scaleSequential(interpolateRdYlBu)
     .domain(extent(dataLonger.map(d => d.value)))
 
+
 $: indicatorValueScale = scaleLinear()
     .domain(extent(dataLonger.map(d => d.value)))
     .range([20, innerWidth - 20])
@@ -93,6 +94,14 @@ $: selectedCountryData = dataLonger.filter(d => d.country == selectedCountry).fi
 
 $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
 
+
+let hoveredIndicator
+
+const handleIndicatorHover = (e, d) => {
+    hoveredIndicator = d
+}
+
+// TODO: check grid
 
 </script>
 
@@ -113,22 +122,25 @@ $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
         <g
         class="chart indicatorsChart" 
         transform="translate({margin.left}, {margin.top})"
-        in:fly={{ x: -100, duration: 400, delay: 0}} >
+         >
             <g
             class="innerChart innerIndicatorsChart">
-                <!-- <AxisIndicators {indicatorScale} {indicatorVariables} {indicatorLabelsLookup}/>
-                <AxisIndicatorValues {indicatorValueScale}/> -->
-                <!-- transform="translate(20, -{(indicatorScale.bandwidth() /2 + 4)})" -->
-                <!-- <g class="innerChart" transform="translate(20, 100)"></g> -->
                     {#each selectedCountryData2021 as d, i (`${d.country}${d.indicator}`)}
-                    <g transform="translate(0, {indicatorScale.bandwidth()/2})">
+                    <g 
+                        transform="translate(0, {indicatorScale.bandwidth()/2})"
+                    >
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
-                        r=10
+                        r={hoveredIndicator === d ? 12 : 10}
                         fill={indicatorValueColorScale(d.value)}
-                        stroke="gray"
-                    />
+                        stroke="darkgray"
+                        class="indicator"
+                        in:fly={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 400, delay: 0}}
+                        on:mouseover={(e) => handleIndicatorHover(e, d)}
+                        on:focus={(e) => handleIndicatorHover(e, d)}
+                        on:mouseleave={(e) => handleIndicatorHover(e, null)}
+                        />
                     {#if d.value !== 0}
                     <line 
                         x1={indicatorValueScale(0)}
@@ -139,16 +151,6 @@ $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
                         stroke-width=2
                     />
                     {/if}
-                    <!-- <text
-                        x={indicatorValueScale(d.value)}
-                        y={indicatorScale(d.indicator)}
-                        dy={-indicatorScale.bandwidth()/2 + 1}
-                        text-anchor="middle"
-                        dominant-baseline="middle"
-                        font-size=14
-                        >
-                        {d.value}
-                    </text> -->
                 </g>
                 {/each}
         
@@ -158,4 +160,20 @@ $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
 
         
     </svg>
+
+    {#if hoveredIndicator}
+    {console.log("here")}
+    <IndicatorTooltip indicator2021Data={hoveredIndicator} data={selectedCountryData} {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
+    {/if}
 </div>
+
+<style>
+    .innerIndicatorsChart {
+        position: relative;
+    }
+
+    .indicator {
+        cursor: pointer;
+        transition: r 100ms ease;
+    }
+</style>
