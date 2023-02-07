@@ -12,6 +12,7 @@ library(here)
 library(readxl)
 library(countrycode)
 library(jsonlite)
+library(sf)
 
 here::i_am("analysis.Rmd")
 
@@ -42,27 +43,54 @@ data <- original_data %>%
   # mutate(across(c(where(is.numeric)),
   #              factor)) %>%
   mutate(country = case_when(
-    country == "Central African Rep." ~ "Central African Republic",
+   country == "Central African Republic" ~ "Central African Rep.",
     country == "China/Hong Kong" ~ "China incl. Hong Kong",
     country == "Dem.Rep. of Congo" ~ "Dem. Rep. of Congo",
     country == "Georgia (Europe)" ~ "Georgia",
     country == "Macedonia" ~ "North Macedonia",
-    country == "USA*" ~ "USA",
-    country == "Virgin Islands (USA)" ~ "Virgin Islands",
-    country == "Rep. of the Congo" ~ "Republic of the Congo",
-    country == "Saint Maarten" ~ "St. Maarten",
-    country == "Bosnia-Hercegovina" ~ "Bosnia-Herzegovina",
+    country == "USA*" ~ "United States of America",
+    country == "Virgin Islands (USA)" ~ "United States Virgin Islands",
+    country == "Virgin Islands" ~ "United States Virgin Islands",
+   country == "Rep. of the Congo" ~ "Republic of the Congo",
+    country == "Saint Maarten" ~ "Sint Maarten",
+    country == "Bosnia-Hercegovina" ~ "Bosnia and Herzegovina",
     country == "Moldovia" ~ "Moldova",
-    country == "Cape Verde" ~ "Cabo Verde",
     country == "Maledives" ~ "Maldives",
+   # country == "Antigua & Barbuda" ~ "Antigua and Barbuda",
+    country == "Bosnia-Herzegovina" ~ "Bosnia and Herzegovina",
+    country == "Cabo Verde" ~ "Cape Verde",
+    #country == "China incl. Hong Kong" ~ "People's Republic of China",
+    country == "Comoros Islands" ~ "Comoros",
+   # country == "Dem. Rep. of Congo" ~ "Democratic Republic of the Congo",
+    country == "Gambia" ~ "The Gambia",
+    country == "Korea South" ~ "South Korea",
+    country == "Curacao" ~ "Curaçao",
+    country == "St. Maarten" ~ "Sint Maarten",
+    country == "USA" ~ "United States of America",
+    #country == "Trinidad & Tobago" ~ "Trinidad and Tobago",
+    country == "Korea North" ~ "North Korea",
+    country == "USA" ~ "United States of America",
+    country == "Bahamas" ~ "The Bahamas",
+    country == "Macao" ~ "Macau",
+    country == "Swaziland" ~ "Eswatini",
+    TRUE ~ country
+  )) %>%
+    mutate(longName = case_when(
+    country == "Central African Rep." ~ "Central African Republic",
+    country == "China incl. Hong Kong" ~ "People's Republic of China",
+    country =="Dem. Rep. of Congo" ~ "Democratic Republic of the Congo",
+    country == "Virgin Islands (USA)" ~ "United States Virgin Islands",
+    country == "Rep. of the Congo" ~ "Republic of the Congo",
+    country == "Antigua & Barbuda" ~ "Antigua and Barbuda",
+    country == "Trinidad & Tobago" ~ "Trinidad and Tobago",
     TRUE ~ country
   )) %>%
   filter(country != "Bonaire" & country != "Saint Kitts & Nevis") %>%
   mutate(continent = countrycode(country, "country.name.en", "continent")) %>%
   mutate(continent = case_when(
     country == "Kosovo" ~ "Europe",
-    country == "Virgin Islands" ~ "Americas",
-    #country == "Virgin Islands (USA)" ~ "Americas",
+    #country == "United States Virgin Islands" ~ "Americas",
+    country == "Virgin Islands (USA)" ~ "Americas",
     country == "Chechnya" ~ "Europe",
    # country == "Bonaire" ~ "Americas",
     country == "Maledives" ~ "Asia",
@@ -104,6 +132,16 @@ summary(data)
 ```
 
 
+### seperate dataset for 2021
+
+
+```{r}
+data2021 <- toJSON(as_tibble(data %>% filter(year == 2021)))
+```
+
+
+
+
 ### Save data
 
 
@@ -123,6 +161,50 @@ dataJSON <- toJSON(data)
 ```{r}
 write(dataJSON, here("processed/GTI_2012-2021.json"))
 ```
+
+
+```{r}
+write(data2021, here("processed/GTI_2012-2021_data2021.json"))
+```
+
+
+
+
+
+
+
+### Geographical Data
+
+check names and adjust or add variable above in data
+
+
+```{r}
+# geo <- st_read(here("original", 
+#                     "ne_110m_admin_0_countries",
+#                     "ne_110m_admin_0_countries.shp")) %>%
+#   clean_names() %>%
+#   select(c("name", "name_long", "name_en", "geometry")) %>%
+#   arrange(name)
+```
+
+
+```{r}
+# geo_data <- data %>%
+#   left_join(geo, by = c("country" = "name_en")) %>%
+#   relocate(name:name_long, .after = country)
+```
+
+
+```{r}
+# geo_data %>%
+#   filter(is.na(name)) %>%
+#   distinct(country)
+
+# Guadeloupe (France), Reunion (France), Martinique (France), Indonesia/Aceh (Indonesia), Chechnya (Russia), Gibraltar
+```
+
+
+
 
 
 

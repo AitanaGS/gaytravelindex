@@ -1,7 +1,7 @@
 <script>
   import data from "../data/processed/GTI_2012-2021.json";
+  import Map from "./lib/components/Map.svelte"
   import ContinentHeatmap from "./lib/components/ContinentHeatmap.svelte"
-  // import Tooltip from "./lib/components/Tooltip.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
   import { scaleBand, scaleSequential } from "d3-scale"
   import { extent, max, min, group } from "d3-array"
@@ -29,18 +29,20 @@
       hoveredCountryYear = d
   }
 
+  const totalScale = scaleSequential(interpolateRdYlBu)
+    .domain(extent(data.map(d => d.total)))
+
 
   // const scrollIntoView = (node) => {
   //       node.scrollIntoView()
   //   }
 
 
-$: console.log(selectedContinent)
   // TODO: scroll up, check with map
 
   // TODO: bandwidth of different continents
 
-  // TODO: tabindex in continentheatmap
+  // TODO: tabindex in continentheatmap, indicatorchart, indicatortooltip, etc.
 
   // TODO: transition button visibility, check https://github.com/sveltejs/svelte/issues/6336
 
@@ -58,20 +60,49 @@ $: console.log(selectedContinent)
 
   // TODO Axis component
 
+  // TODO check if first values for width and innerHeight necessary
+
+  // TODO responsive Map
+
+  
   let top
 
   function scrollToTop() {
 		top.scrollIntoView();
 	}
 
-  let width = 800
+  let width = 1200
+
+
+  let innerHeight = 500
+  
+  // let outerHeight
+
+  // $: mapHeight = 0.5 * height
+
+  // $: console.log(height, mapHeight)
+
+  // $: console.log(innerHeight)
+
+  $: mapHeight = 0.7 * innerHeight
+
+  // $: console.log(innerHeight, mapHeight)
 
 
 </script>
 
+<svelte:window bind:innerHeight/>
+
 <main>
 
-  <div class="wrapper" bind:clientWidth={width} style="--width: {width}px;">
+  <div 
+    class="wrapper" 
+    bind:clientWidth={width} 
+    style="--width: {width}px;">
+
+    <div class="mapWrapper">
+      <Map {width} {mapHeight} {totalScale}/>
+    </div>
 
     <label for="continent-select" bind:this={top}>Choose a continent:</label>
 
@@ -109,7 +140,7 @@ $: console.log(selectedContinent)
       <!-- <svg {width} {height}> -->
     
         {#if !selectedCountry && selectedContinent}
-        <ContinentHeatmap {width} {data} {years} {selectedContinent} {selectedCountry} {handleClick} {handleHover} {hoveredCountryYear}/>
+        <ContinentHeatmap {totalScale} {width} {data} {years} {selectedContinent} {selectedCountry} {handleClick} {handleHover} {hoveredCountryYear}/>
         {/if}
       
         

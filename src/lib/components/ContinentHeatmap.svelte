@@ -15,6 +15,7 @@
     export let selectedCountry
     export let width
     export let years
+    export let totalScale
 
 
 
@@ -27,7 +28,7 @@
 
     $: height = max([450,  selectedContinentCountries.length * 30])
 
-      $: selectedContinentCountries = [... new Set(
+    $: selectedContinentCountries = [... new Set(
         data
       // .filter(d => d.continent == selectedContinent)
       .filter(d => {
@@ -62,8 +63,8 @@
     .paddingInner(0.05)
     .paddingOuter(0.3)
 
-    const totalScale = scaleSequential(interpolateRdYlBu)
-    .domain(extent(data.map(d => d.total)))
+    // const totalScale = scaleSequential(interpolateRdYlBu)
+    // .domain(extent(data.map(d => d.total)))
 
 
     $: selectedContinentData = group(
@@ -75,7 +76,7 @@
         if(a.year !== 2021) return 1;
         else if(b.year !== 2021) return -1;
         else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
-      }), d => d.country) 
+      }), d => d.country)
 
 
 
@@ -113,7 +114,7 @@
                 on:keypress={(e) => handleClick(e, d.country)} -->
               <rect
               x={yearScale(d.year)}
-              y={countryScale(d.country)}
+              y={countryScale(d.country)} 
               width={yearScale.bandwidth()}
               height={countryScale.bandwidth()}
               fill={totalScale(d.total)}
@@ -148,6 +149,7 @@
                     : "0.8rem"
                     }
               >{d.total}</text> 
+                 
               <!-- font-size={
                 d === hoveredCountryYear
                 ? "0.9rem"
