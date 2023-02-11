@@ -4,9 +4,9 @@
     import AxisIndicatorValues from './AxisIndicatorValues.svelte'
     import IndicatorTooltip from './IndicatorTooltip.svelte'
     import { slide, fly } from "svelte/transition"
-    import { extent } from "d3-array"
+    import { extent, min, max } from "d3-array"
     import { tidy, pivotLonger } from '@tidyjs/tidy'
-    import { scaleBand, scaleLinear, scaleSequential } from "d3-scale"
+    import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
 
 
@@ -81,8 +81,12 @@
     .paddingInner(0.1)
     .paddingOuter(0.2)
 
-const indicatorValueColorScale = scaleSequential(interpolateRdYlBu)
-    .domain(extent(dataLonger.map(d => d.value)))
+// const indicatorValueColorScale = scaleSequential(interpolateRdYlBu)
+//     .domain(extent(dataLonger.map(d => d.value)))
+
+const indicatorValueColorScale = scaleDiverging(interpolateRdYlBu)
+    .domain([min(dataLonger, d => d.value), 0, max(dataLonger, d => d.value)])
+
 
 
 $: indicatorValueScale = scaleLinear()

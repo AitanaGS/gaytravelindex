@@ -1,7 +1,7 @@
 <script>
     import AxisYears from "./AxisYears.svelte"
     import AxisCountries from "./AxisCountries.svelte"
-    import Tooltip from "./Tooltip.svelte"
+    import HeatmapTooltip from "./HeatmapTooltip.svelte"
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
     import { scaleBand, scaleSequential } from "d3-scale"
@@ -175,8 +175,8 @@
     
     </svg>
 
-        {#if hoveredCountryYear && !selectedCountry}
-    <Tooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
+    {#if hoveredCountryYear && !selectedCountry}
+    <HeatmapTooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
     {/if}
 </div>
 

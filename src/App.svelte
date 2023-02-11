@@ -3,7 +3,7 @@
   import Map from "./lib/components/Map.svelte"
   import ContinentHeatmap from "./lib/components/ContinentHeatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
-  import { scaleBand, scaleSequential } from "d3-scale"
+  import { scaleBand, scaleSequential, scaleDiverging } from "d3-scale"
   import { extent, max, min, group } from "d3-array"
   import { interpolateRdBu, interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
   // import { tidy, pivotLonger, pivotWider } from '@tidyjs/tidy'
@@ -29,8 +29,11 @@
       hoveredCountryYear = d
   }
 
-  const totalScale = scaleSequential(interpolateRdYlBu)
-    .domain(extent(data.map(d => d.total)))
+  // const totalScale = scaleSequential(interpolateRdYlBu)
+  //   .domain(extent(data.map(d => d.total)))
+
+  const totalScale = scaleDiverging(interpolateRdYlBu)
+    .domain([min(data, d => d.total), 0, max(data, d => d.total)])
 
 
   // const scrollIntoView = (node) => {
@@ -64,6 +67,7 @@
 
   // TODO responsive Map
 
+  // TODO scalediverging oder scalesequential (s.o. totalscale, und indicatorvaluecolorscale in indicatorschart), 0 as yellow or lightblue (see spartacus data)
   
   let top
 

@@ -1,5 +1,5 @@
 <script>
-  import { dataset_dev } from "svelte/internal";
+    import CountryTooltip from "./CountryTooltip.svelte";
     import { fly, fade } from "svelte/transition"
 
     export let data
@@ -20,13 +20,22 @@
 
     $: yPosition = countryScale(data.country) + margin.top - tooltipHeight
 
-    // TODO: check hsla code in style
-
 
 </script>
 
+    <CountryTooltip 
+    {data}
+    country={data.country}
+    colorScale={totalScale}
+    lastYearOnly=FALSE
+    {xPosition}
+    {yPosition}
+    bind:tooltipWidth={tooltipWidth}
+    bind:tooltipHeight={tooltipHeight}
+/>
 
-<div
+
+<!-- <div
     in:fly={{ y: 20, duration: 200, delay: 100 }}
     class="tooltip"
     style="
@@ -74,4 +83,4 @@
         margin: 0;
         white-space: nowrap; 
     }
-</style>
+</style> -->
