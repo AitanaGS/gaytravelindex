@@ -3,16 +3,20 @@
     
     export let mapData
     export let totalScale
+    export let width
 
     let tooltipWidth
     let tooltipHeight
 
-
-    $: xPosition = mapData.eventType === "focus"
+    $: xPosition = mapData.event.type === "focus"
         ? mapData.centroid[0] - tooltipWidth / 2
-        : mapData.event.pageX - tooltipWidth / 2
+        : mapData.event.pageX + tooltipWidth / 2 > width
+            ? mapData.event.pageX - tooltipWidth
+            : mapData.event.pageX < tooltipWidth / 2
+                ? mapData.event.pageX
+                : mapData.event.pageX - tooltipWidth / 2
 
-    $: yPosition = mapData.eventType === "focus"
+    $: yPosition = mapData.event.type === "focus"
         ? mapData.centroid[1] - tooltipHeight < 0
             ? mapData.centroid[1] 
             : mapData.centroid[1] - tooltipHeight 
@@ -20,9 +24,7 @@
             ? mapData.event.pageY 
             : mapData.event.pageY - tooltipHeight 
 
-
     // TODO css variables for background and color
-    // TODO country tooltip component? nur data und x/yposition different
     // TODO accessibility tooltip
 
 </script>
