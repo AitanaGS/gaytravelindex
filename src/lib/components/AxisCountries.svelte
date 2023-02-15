@@ -1,8 +1,9 @@
 <script>
     import { slide } from "svelte/transition"
+    import { createEventDispatcher } from "svelte"
 
     export let countryScale;
-    export let handleClick
+    // export let handleClick
     export let selectedContinent
     export let margin
 
@@ -11,10 +12,18 @@
 
     let hoveredCountry
     
-    const axisHandleHover = (e, country) => {
+    const axisHandleHover = (country) => {
         hoveredCountry = country
     }
 
+    const dispatch = createEventDispatcher()
+
+    function dispatchCountryClick(country, continent) {
+        dispatch("countryClick", {
+            country,
+            continent
+        })
+    }
 
 </script>
 
@@ -27,11 +36,11 @@
             in:slide={{ duration: 300, delay: 50 + 30 * i}} 
             >
             <rect 
-                on:click={(e) => handleClick(e, country)}
-                on:keypress={(e) => handleClick(e, country)}
-                on:mouseover={(e) => axisHandleHover(e, country)}
-                on:focus={(e) => axisHandleHover(e, country)}
-                on:mouseleave={(e) => axisHandleHover(e, null)}
+                on:click={() => dispatchCountryClick(country, selectedContinent)}
+                on:keypress={() => dispatchCountryClick(country, selectedContinent)}
+                on:mouseover={() => axisHandleHover(country)}
+                on:focus={() => axisHandleHover(country)}
+                on:mouseleave={() => axisHandleHover(null)}
                 y={countryScale(country)} 
                 x={-country.length * 10} 
                 width={country.length * 10} 

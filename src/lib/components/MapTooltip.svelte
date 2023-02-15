@@ -6,23 +6,32 @@
     export let width
 
     let tooltipWidth
-    let tooltipHeight
+    let tooltipHeight = 100
+
+    $: xMouseValue = mapData.event.pageX
 
     $: xPosition = mapData.event.type === "focus"
         ? mapData.centroid[0] - tooltipWidth / 2
-        : mapData.event.pageX + tooltipWidth / 2 > width
-            ? mapData.event.pageX - tooltipWidth
-            : mapData.event.pageX < tooltipWidth / 2
-                ? mapData.event.pageX
-                : mapData.event.pageX - tooltipWidth / 2
+        : xMouseValue + tooltipWidth / 2 > width
+            ? xMouseValue - tooltipWidth
+            : xMouseValue < tooltipWidth / 2
+                ? xMouseValue
+                : xMouseValue - tooltipWidth / 2
+
+
+    let yNudge = 5
+
+    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1] : mapData.event.pageY
 
     $: yPosition = mapData.event.type === "focus"
-        ? mapData.centroid[1] - tooltipHeight < 0
-            ? mapData.centroid[1] 
-            : mapData.centroid[1] - tooltipHeight 
-        : mapData.event.pageY - tooltipHeight < 0
-            ? mapData.event.pageY 
-            : mapData.event.pageY - tooltipHeight 
+        ? yValue - tooltipHeight < 0
+            ? yValue
+            : yValue - tooltipHeight 
+        : yValue - tooltipHeight - yNudge < 0
+            ? yValue + yNudge
+            : yValue - tooltipHeight - yNudge
+
+    $: flyDirection = yPosition < yValue ? 1 : -1
 
     // TODO css variables for background and color
     // TODO accessibility tooltip
@@ -37,8 +46,8 @@
     lastYearOnly=TRUE
     {xPosition}
     {yPosition}
+    {flyDirection}
     bind:tooltipWidth={tooltipWidth}
-    bind:tooltipHeight={tooltipHeight}
 />
 
 </div>

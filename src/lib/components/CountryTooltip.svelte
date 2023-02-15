@@ -7,26 +7,33 @@
     export let lastYearOnly
     export let xPosition
     export let yPosition
+    export let flyDirection
     export let tooltipWidth
-    export let tooltipHeight
 
 
     // TODO css variables for background and color
     // TODO: check hsla code in style
-
-
+    
 </script>
 
+<!-- in:fly={{ y: yPosition < indicatorScale(indicator2021Data.indicator) ? 20 : -20,
+    duration: 200, 
+    delay: 100 }} -->
+
+
 <div
-bind:clientWidth={tooltipWidth}
-bind:clientHeight={tooltipHeight}
-    in:fly={{ y: 10, duration: 200, delay: 100 }}
+    bind:clientWidth={tooltipWidth}
+    in:fly={{ y: 20 * flyDirection,
+        duration: 200, 
+        delay: 100 }}
     class="tooltip countryTooltip"
     style="
         top: {yPosition}px;
         left: {xPosition}px;
     "
 >
+<!-- bind:clientHeight={tooltipHeight} -->
+<!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
     <h3>{country} {lastYearOnly ? "2021" : data.year}</h3>
     <div class="info">
         <span 
@@ -41,7 +48,6 @@ bind:clientHeight={tooltipHeight}
     </div>
 
 </div>
-
 
 <style>
     .tooltip {

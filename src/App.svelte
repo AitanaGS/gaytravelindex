@@ -1,7 +1,7 @@
 <script>
   import data from "../data/processed/GTI_2012-2021.json";
   import Map from "./lib/components/Map.svelte"
-  import ContinentHeatmap from "./lib/components/ContinentHeatmap.svelte"
+  import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
   import { scaleBand, scaleSequential, scaleDiverging } from "d3-scale"
   import { extent, max, min, group } from "d3-array"
@@ -18,19 +18,12 @@
   
   let selectedCountry = ""
 
-  const handleClick = (e, country) => {
-    selectedCountry = country
+  const handleCountryClick = (event) => {
+    selectedCountry = event.detail.country
+    selectedContinent = event.detail.continent
     scrollToTop()
   }
 
-  let hoveredCountryYear
-
-  const handleHover = (e, d) => {
-      hoveredCountryYear = d
-  }
-
-  // const totalScale = scaleSequential(interpolateRdYlBu)
-  //   .domain(extent(data.map(d => d.total)))
 
   const totalScale = scaleDiverging(interpolateRdYlBu)
     .domain([min(data, d => d.total), 0, max(data, d => d.total)])
@@ -67,8 +60,11 @@
 
   // TODO responsive Map
 
-  // TODO scalediverging oder scalesequential (s.o. totalscale, und indicatorvaluecolorscale in indicatorschart), 0 as yellow or lightblue (see spartacus data)
-  
+  // TODO data2021 u.ä. vorher in r oder in js
+
+  // TODO siehe button onclick
+
+
   let top
 
   function scrollToTop() {
@@ -78,7 +74,7 @@
   let width = 1200
 
 
-  let innerHeight = 500
+  // let innerHeight = 500
   
   // let outerHeight
 
@@ -88,14 +84,17 @@
 
   // $: console.log(innerHeight)
 
-  $: mapHeight = 0.7 * innerHeight
+  // $: mapHeight = 0.7 * innerHeight
+
+  // $: mapHeight = width <= 800 ? 400 : 400
+  $: mapHeight = 400
 
   // $: console.log(innerHeight, mapHeight)
 
 
 </script>
 
-<svelte:window bind:innerHeight/>
+<!-- <svelte:window bind:innerHeight/> -->
 
 <main>
 
@@ -105,7 +104,7 @@
     style="--width: {width}px;">
 
     <div class="mapWrapper">
-      <Map {width} {mapHeight} {totalScale}/>
+      <Map on:countryClick={handleCountryClick} {width} {mapHeight} {totalScale}/>
     </div>
 
     <label for="continent-select" bind:this={top}>Choose a continent:</label>
@@ -125,7 +124,7 @@
       class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
       on:click={() => {
         selectedCountry = ""
-        hoveredCountryYear = null
+        // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
         scrollToTop()
       }}
       >Back to {selectedContinent}</button>
@@ -144,9 +143,8 @@
       <!-- <svg {width} {height}> -->
     
         {#if !selectedCountry && selectedContinent}
-        <ContinentHeatmap {totalScale} {width} {data} {years} {selectedContinent} {selectedCountry} {handleClick} {handleHover} {hoveredCountryYear}/>
+        <Heatmap on:countryClick={handleCountryClick} {totalScale} {width} {data} {years} {selectedContinent} {selectedCountry} />
         {/if}
-      
         
       {#if selectedCountry}
     

@@ -4,7 +4,6 @@
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
 
-
     export let indicator2021Data
     export let data
     export let indicatorScale
@@ -23,19 +22,22 @@
     let tooltipHeight = 200
 
     $: halfBandwidth = indicatorValueScale(1) - indicatorValueScale(0.5)
-    $: totalBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
 
+    $: xValue = indicatorValueScale(indicator2021Data.value)
 
-    $: xPosition = indicatorValueScale(indicator2021Data.value) + margin.left + tooltipWidth /2 - halfBandwidth > innerWidth + margin.left
-        ? indicatorValueScale(indicator2021Data.value) + margin.left - tooltipWidth
-        : indicatorValueScale(indicator2021Data.value) + margin.left - tooltipWidth / 2
+    $: xPosition = xValue + margin.left + tooltipWidth /2 - halfBandwidth > innerWidth + margin.left
+        ? xValue + margin.left - tooltipWidth
+        : xValue + margin.left - tooltipWidth / 2 < margin.left + tooltipWidth / 2
+            ? xValue + margin.left
+            : xValue + margin.left - tooltipWidth / 2
 
+    $: yValue = indicatorScale(indicator2021Data.indicator)
 
-    $: yPosition = indicatorScale(indicator2021Data.indicator) - tooltipHeight < 0
-        ? indicatorScale(indicator2021Data.indicator) + tooltipHeight / 2 //- margin.top //+ tooltipHeight 
-        : indicatorScale(indicator2021Data.indicator) + margin.top - tooltipHeight
+    $: yPosition = yValue - tooltipHeight < 0
+        ? yValue + tooltipHeight / 2 
+        : yValue + margin.top - tooltipHeight
 
-    // $: yPosition = indicatorScale(indicator2021Data.indicator) + margin.top - tooltipHeight
+    $: flyDirection = yPosition < yValue ? 1 : -1
 
     const svgMargin = {
         top: 10,
@@ -63,13 +65,13 @@
         .range([svgInnerHeight, 0])
 
 // TODO: check hsla code in style
-// TODO: check xPosition
-// TODO: check responsiveness tooltip width and height
+// TODO: check responsiveness tooltip width
+
 
 </script>
 
 <div
-    in:fly={{ y: yPosition < indicatorScale(indicator2021Data.indicator) ? 20 : -20,
+    in:fly={{ y: flyDirection * 20,
             duration: 200, 
             delay: 100 }}
     class="tooltip"
@@ -80,7 +82,6 @@
         --width: {tooltipWidth}px;
     "
     bind:clientWidth={tooltipWidth}
-    bind:clientHeight={tooltipHeight}
     >
     <h3>{indicatorLabelsLookup.get(indicator2021Data.indicator)}</h3>
     <div>

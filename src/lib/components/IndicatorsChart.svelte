@@ -138,7 +138,7 @@ const handleIndicatorHover = (e, d) => {
                         cy={indicatorScale(d.indicator)}
                         r={hoveredIndicator === d ? 12 : 10}
                         fill={indicatorValueColorScale(d.value)}
-                        stroke="darkgray"
+                        stroke="dimgray"
                         class="indicator"
                         in:fly={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 400, delay: 0}}
                         on:mouseover={(e) => handleIndicatorHover(e, d)}
@@ -166,7 +166,6 @@ const handleIndicatorHover = (e, d) => {
     </svg>
 
     {#if hoveredIndicator}
-    {console.log("here")}
     <IndicatorTooltip indicator2021Data={hoveredIndicator} data={selectedCountryData} {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
     {/if}
 </div>

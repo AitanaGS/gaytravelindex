@@ -2,15 +2,13 @@
     import AxisYears from "./AxisYears.svelte"
     import AxisCountries from "./AxisCountries.svelte"
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
+
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
     import { scaleBand, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
 
     export let selectedContinent
-    export let handleClick
-    export let handleHover
-    export let hoveredCountryYear
     export let data
     export let selectedCountry
     export let width
@@ -21,7 +19,6 @@
 
     // let width = 800
 
-    // const years = [... new Set(data.map(d => d.year))].sort()
 
 
     // $: years = yearScale.domain()
@@ -80,6 +77,17 @@
 
 
 
+      
+      let hoveredCountryYear
+
+
+      const handleHeatmapHover = (d) => {
+
+          hoveredCountryYear = d
+          
+      }
+
+
 
     // const scrollIntoView = (node) => {
     //     node.scrollIntoView()
@@ -87,12 +95,12 @@
 
 </script>
 
-<div>
+<div class="continentHeatmap">
     <svg {width} {height}>
         <text class="continentName" x={innerWidth/2 + margin.left} y= 30 text-anchor="middle" dominant-baseline="middle" font-weight="bold" font-size="1rem">{selectedContinent}</text>
         <!-- use:scrollIntoView -->
         <AxisYears {yearScale} {margin}/>
-        <AxisCountries {countryScale} {handleClick} {selectedContinent} {margin}/>
+        <AxisCountries on:countryClick {countryScale} {selectedContinent} {margin}/>
     
         <g class="chart continentHeatMap" transform="translate({margin.left}, {margin.top})">
             <g class="innerChart innerContinentHeatmap">
@@ -105,14 +113,19 @@
             {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
                 class="year"
-                on:mouseover={(e) => handleHover(e, d)}
-                on:focus={(e) => handleHover(e, d)}
-                on:mouseleave={(e) => handleHover(e, null)}
+                id={`${country}.${d.year}`}
                 >
+                <!-- <g 
+                class="year"
+                on:mouseover={() => handleHeatmapHover(d)}
+                on:focus={() => handleHeatmapHover(d)}
+                on:mouseleave={() => handleHeatmapHover(null)}
+                > -->
                 <!-- tabindex="0" -->
                 <!-- on:click={(e) => handleClick(e, d.country)}
                 on:keypress={(e) => handleClick(e, d.country)} -->
               <rect
+              class="totalRect"
               x={yearScale(d.year)}
               y={countryScale(d.country)} 
               width={yearScale.bandwidth()}
@@ -120,11 +133,13 @@
               fill={totalScale(d.total)}
               rx=5
               ry=5
+              on:mouseover={() => handleHeatmapHover(d)}
+              on:focus={() => handleHeatmapHover(d)}
+              on:mouseleave={() => handleHeatmapHover(null)}
               />
-        
               
               <text
-              class="total"
+              class="totalText"
               fill={
                 d.total < 8 && d.total > -15 ? "black" : "white"
               }
@@ -185,6 +200,9 @@
     .innerContinentHeatmap {
         position: relative;
     }
+    /* .continentHeatmap {
+      position: relative;
+    } */
 
     /* .continentName {
         transition: font-size 2000ms ease font-weight 2000ms ease;
@@ -198,10 +216,15 @@
         cursor: pointer;
     }
 
-    .total {
+    .totalText {
         /* font-size: 0.8rem; */
         opacity: 0.7;
+        pointer-events: none;
     }
+
+    /* .totalRect {
+      pointer-events: none;
+    } */
 
     text {
         transition: font-size 100ms ease, font-weight 100ms ease;

@@ -1,6 +1,5 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
-    import { fly, fade } from "svelte/transition"
 
     export let data
     export let yearScale
@@ -11,14 +10,29 @@
 
     let tooltipWidth
 
-    let tooltipHeight
+    let tooltipHeight = 100
+
+    $: xValue = yearScale(data.year)
+
+    $: halfXBandWidth = yearScale.bandwidth() / 2 
+
+    $: xPosition = xValue + margin.left + halfXBandWidth + tooltipWidth /2 > innerWidth + margin.left
+        ? xValue + margin.left + halfXBandWidth - tooltipWidth + halfXBandWidth
+        : xValue + margin.left + halfXBandWidth - tooltipWidth / 2 < margin.left + tooltipWidth / 2
+        ? xValue + margin.left
+        : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
 
 
-    $: xPosition = yearScale(data.year) + margin.left + yearScale.bandwidth() / 2 + tooltipWidth /2 > innerWidth + margin.left
-        ? yearScale(data.year) + margin.left + yearScale.bandwidth() / 2 - tooltipWidth + yearScale.bandwidth() / 2
-        : yearScale(data.year) + margin.left + yearScale.bandwidth() / 2 - tooltipWidth / 2 
+    let yNudge = 10
 
-    $: yPosition = countryScale(data.country) + margin.top - tooltipHeight
+    let yValue = countryScale(data.country)
+
+    $: yPosition = yValue - tooltipHeight / 2 + yNudge < margin.top
+        ? yValue + tooltipHeight - yNudge //- 5//- 10
+        : yValue + margin.top - tooltipHeight + yNudge
+
+    $: flyDirection = yPosition < yValue ? 1 : -1
+
 
 
 </script>
@@ -30,57 +44,6 @@
     lastYearOnly=FALSE
     {xPosition}
     {yPosition}
+    {flyDirection}
     bind:tooltipWidth={tooltipWidth}
-    bind:tooltipHeight={tooltipHeight}
 />
-
-
-<!-- <div
-    in:fly={{ y: 20, duration: 200, delay: 100 }}
-    class="tooltip"
-    style="
-        top: {yPosition}px;
-        left: {xPosition}px;
-        "
-    bind:clientWidth={tooltipWidth}
-    bind:clientHeight={tooltipHeight}
->
-
-    <h3>{data.country} {data.year}</h3>
-    <div class="info">
-        <span class="total" style="background: {totalScale(data.total)}; color: {data.total < 8 && data.total > -15 ? "black" : "white"};">score: {data.total}</span>
-        <p class="ranking" >global ranking: {data.ranking}</p>
-    </div>
-</div>
-
-<style>
-    .tooltip {
-        position: absolute;
-        background: white;
-        box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px;
-        padding: 8px 6px;
-        border-radius: 4px;
-        pointer-events: none;
-        white-space: nowrap;
-        transition: top 300ms ease, left 300ms ease;
-    }
-    h3 {
-        margin: 0;
-        font-size: 0.9rem;
-        font-weight: 700;
-        margin-bottom: 3px;
-    }
-    .info {
-        font-size: 0.9rem;
-    }
-    .total {
-        padding: 4px 5px 4px 5px;
-        border-radius: 5px;
-        white-space: nowrap;
-        margin: 0;
-    }
-    .ranking {
-        margin: 0;
-        white-space: nowrap; 
-    }
-</style> -->
