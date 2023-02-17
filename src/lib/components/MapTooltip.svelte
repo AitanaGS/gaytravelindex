@@ -19,6 +19,7 @@
                 : xMouseValue - tooltipWidth / 2
 
 
+
     let yNudge = 5
 
     $: yValue = mapData.event.type === "focus" ? mapData.centroid[1] : mapData.event.pageY
@@ -30,6 +31,7 @@
         : yValue - tooltipHeight - yNudge < 0
             ? yValue + yNudge
             : yValue - tooltipHeight - yNudge
+
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 

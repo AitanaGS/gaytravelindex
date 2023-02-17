@@ -39,7 +39,7 @@
 
 
     const margin = {
-        top: 60,
+        top: 60, // 60
         right: 10,
         bottom: 60,
         left: 210 // 220
@@ -99,6 +99,7 @@
     <svg {width} {height}>
         <text class="continentName" x={innerWidth/2 + margin.left} y= 30 text-anchor="middle" dominant-baseline="middle" font-weight="bold" font-size="1rem">{selectedContinent}</text>
         <!-- use:scrollIntoView -->
+        <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
         <AxisCountries on:countryClick {countryScale} {selectedContinent} {margin}/>
     
@@ -190,7 +191,11 @@
     
     </svg>
 
-    {#if hoveredCountryYear && !selectedCountry}
+    <!-- {#if hoveredCountryYear && !selectedCountry}
+    <HeatmapTooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
+    {/if} -->
+
+    {#if hoveredCountryYear}
     <HeatmapTooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
     {/if}
 </div>

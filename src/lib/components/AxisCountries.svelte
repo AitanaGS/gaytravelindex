@@ -74,6 +74,10 @@
         pointer-events: none;
     }
 
+    /* .countryList {
+  cursor: pointer;
+} */
+
 
 
 </style>

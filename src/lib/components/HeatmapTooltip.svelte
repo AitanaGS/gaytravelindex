@@ -23,13 +23,13 @@
         : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
 
 
-    let yNudge = 10
+    // let yNudge = 10
 
     let yValue = countryScale(data.country)
 
-    $: yPosition = yValue - tooltipHeight / 2 + yNudge < margin.top
-        ? yValue + tooltipHeight - yNudge //- 5//- 10
-        : yValue + margin.top - tooltipHeight + yNudge
+    $: yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
+        ? yValue + tooltipHeight - 12
+        : yValue + margin.top - tooltipHeight + 9
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 

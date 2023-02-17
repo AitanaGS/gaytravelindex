@@ -23,7 +23,7 @@
     }
 
     const legendHeight = 20
-    const legendWidth = 120
+    const legendWidth = 100
 
 
 </script>

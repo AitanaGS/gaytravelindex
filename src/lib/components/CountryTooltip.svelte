@@ -59,6 +59,7 @@
         pointer-events: none;
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease; 
+        text-align: center;
     }
 
     h3 {
@@ -70,6 +71,8 @@
 
     .info {
         font-size: 0.9rem;
+        /* margin: 0 auto; */
+  /* text-align: center; */
     }
 
 

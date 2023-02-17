@@ -62,10 +62,10 @@
 
 
   const margin = {
-    top: 60,
+    top: 60, // 80
     right: 10,
     bottom: 60,
-    left: 210 // 220
+    left: 210
   }
 
   const dataLonger = tidy(data, pivotLonger({
@@ -111,7 +111,9 @@ const handleIndicatorHover = (e, d) => {
 
 <div>
     <svg {width} {height}>
+        {#if selectedCountry}
         <text
+            class="countryName"
             x={innerWidth / 2 + margin.left}
             y=30
             text-anchor=middle
@@ -121,6 +123,19 @@ const handleIndicatorHover = (e, d) => {
             <!-- y=10 -->
                 {selectedCountry} 2021
         </text>
+        {/if}
+        <!-- {#if !selectedCountry}
+            <text
+            class="countryName"
+            x={innerWidth / 2 + margin.left}
+            y=50
+            text-anchor=middle
+            dominant-baseline="middle"
+            font-weight="bold"
+            font-size="1rem">
+                Country Information
+        </text>
+        {/if} -->
         <AxisIndicators {indicatorScale} {indicatorVariables} {indicatorLabelsLookup} {margin}/>
         <AxisIndicatorValues {indicatorValueScale} {margin}/>
         <g
@@ -173,6 +188,10 @@ const handleIndicatorHover = (e, d) => {
 <style>
     .innerIndicatorsChart {
         position: relative;
+    }
+
+    .countryName {
+        transition: all 100ms ease;
     }
 
     .indicator {

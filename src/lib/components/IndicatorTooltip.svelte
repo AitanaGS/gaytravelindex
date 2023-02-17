@@ -127,6 +127,7 @@
         pointer-events: none;
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease;
+        text-align: center;
     }
 
     h3 {

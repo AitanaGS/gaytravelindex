@@ -21,8 +21,8 @@
   const handleCountryClick = (event) => {
     selectedCountry = event.detail.country
     selectedContinent = event.detail.continent
-    scrollToTop()
-  }
+    scrollToTop() // here scrolling
+  } 
 
 
   const totalScale = scaleDiverging(interpolateRdYlBu)
@@ -64,14 +64,30 @@
 
   // TODO siehe button onclick
 
+  // TODO smooth scroll
+
 
   let top
 
+  // here scrolling
   function scrollToTop() {
 		top.scrollIntoView();
 	}
 
-  let width = 1200
+  // let width = 1200
+
+  let width
+
+  $: width = 1200
+
+  let chartGap = 10
+
+  $: continentWidth = (width - chartGap) / 2
+
+  $: countryWidth = (width - chartGap) / 2
+
+  $: mapWidth = width * 0.75
+
 
 
   // let innerHeight = 500
@@ -101,58 +117,114 @@
   <div 
     class="wrapper" 
     bind:clientWidth={width} 
-    style="--width: {width}px;">
+    style="--width: {width}px;"
+    >
+    <div class="topWrapper">
+      <div class="intro">
 
-    <div class="mapWrapper">
-      <Map on:countryClick={handleCountryClick} {width} {mapHeight} {totalScale}/>
+        <h1>Gay Travel Index 2021</h1>
+
+        <p class="introText">
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
+          sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor 
+          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+        </p>
+      </div>
+  
+      <div class="mapWrapper">
+        <Map on:countryClick={handleCountryClick} width={mapWidth} {mapHeight} {totalScale}/>
+      </div>
+
     </div>
 
-    <label for="continent-select" bind:this={top}>Choose a continent:</label>
+    <div class="selectContinentCountryWrapper" bind:this={top}>
+      <div class="selectContinentWrapper">
 
-    <select 
-      name="continents" 
-      id="continent-select" 
-      bind:value={selectedContinent}
-      on:change={() => selectedCountry = ''}>
-        <option value="Overview">Overview</option>
-        {#each continents as continent}
-          <option value={continent}>{continent}</option>
-        {/each}
-    </select>
-    
-    <button
-      class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
-      on:click={() => {
-        selectedCountry = ""
-        // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
-        scrollToTop()
-      }}
-      >Back to {selectedContinent}</button>
-        <!--
-            style="visibility: {selectedCountry ? "visible" : "hidden"}"
-            style="visibility: {selectedCountry ? "visible" : "hidden"}"
-            in:slide={{ duration: 400}}
-    out:slide={{ duration: 300}} 
-    class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
-    style="opacity: {selectedCountry ? "1" : "0"}"
-    
-         -->
-    
-    <div class="chartWrapper"> 
+        <label for="continent-select">Choose a continent</label>
+
+        <select 
+          name="continents" 
+          id="continent-select" 
+          bind:value={selectedContinent}
+          on:change={() => selectedCountry = ''}>
+            <option value="Overview">Overview</option>
+            {#each continents as continent}
+              <option value={continent}>{continent}</option>
+            {/each}
+        </select>
+      </div>
+      <div class="selectCountryWrapper">
+
+        <p>and click on a country for more information.</p>
+        <button
+          class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
+          on:click={() => {
+            selectedCountry = ""
+            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+            // scrollToTop() // here scrolling
+          }}
+          >Clear Country</button>
+      </div>
+        
+        <!-- <button
+          class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
+          on:click={() => {
+            selectedCountry = ""
+            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+            // scrollToTop() // here scrolling
+          }}
+          >Back to {selectedContinent}</button> -->
+
+            <!--
+                style="visibility: {selectedCountry ? "visible" : "hidden"}"
+                style="visibility: {selectedCountry ? "visible" : "hidden"}"
+                in:slide={{ duration: 400}}
+        out:slide={{ duration: 300}} 
+        class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
+        style="opacity: {selectedCountry ? "1" : "0"}"
+        
+             -->
+    </div>
+
+    <div class="chartWrapper" style="--gap: {chartGap}px;">
+        
+        <div class="continentChartWrapper"> 
+          <!-- bind:clientWidth={width} -->
+          <!-- <svg {width} {height}> -->
+        
+            <!-- {#if !selectedCountry && selectedContinent}
+            <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
+            {/if}
+             -->
+             <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
+             
+        
+
+
+      </div>
+        
+
+    <div class="countryChartWrapper"> 
       <!-- bind:clientWidth={width} -->
       <!-- <svg {width} {height}> -->
     
-        {#if !selectedCountry && selectedContinent}
-        <Heatmap on:countryClick={handleCountryClick} {totalScale} {width} {data} {years} {selectedContinent} {selectedCountry} />
-        {/if}
-        
-      {#if selectedCountry}
+      <!-- {#if selectedCountry}
     
-        <IndicatorsChart {width} {data} {selectedCountry} {years}/>
+        <IndicatorsChart width={countryWidth} {data} {selectedCountry} {years}/>
     
-      {/if}
+      {/if} -->
+
+    
+      <IndicatorsChart width={countryWidth} {data} {selectedCountry} {years}/>
     
     </div>
+
+
+    </div>
+
 
   </div>
 
@@ -160,11 +232,69 @@
 </main>
 
 <style>
+
+  /* main {
+    margin: 10 10 10 40;
+  } */
   .wrapper {
     width: var(--width);
+    position: relative;
+  }
+
+  .topWrapper {
+    display: flex;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+  font-size: 1.7rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.introText {
+  font-size: 1rem;
+  line-height: 1.5;
+
+}
+
+  .selectContinentCountryWrapper {
+    /* position: absolute;
+    left: 100; */
+    /* position: absolute; */
+    /* left: 210px; */
+    /* margin-bottom: 20px; */
+    display: flex;
+    /* flex-direction: column;
+    align-items: flex-start;  */
+    justify-content: flex-start;
+     align-items: baseline;
+    /* justify-content: baseline; */
+    gap: 10px;
+  }
+
+  .selectContinentWrapper {
+    display: flex;
+    gap: 10px;
+  }
+
+  .selectCountryWrapper {
+    display: flex;
+    gap: 20px;
   }
 
   .chartWrapper {
+    display: flex;
+    gap: var(--gap);
+
+  }
+
+  .continentChartWrapper {
+    position: relative;
+    /* margin-top: 20px; */
+  }
+
+  .countryChartWrapper {
     position: relative;
   }
 
@@ -182,7 +312,8 @@
 
     visibility: visible;
     opacity: 1;
-    transition: visibility 0s linear 0s, opacity 300ms;
+    /* transition: visibility 0s linear 0s, opacity 300ms; */
+    /* transition: all 2000ms ease; */
 
       /* visibility cannot be transitioned, because its 0/1
       https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
@@ -198,13 +329,34 @@
 
     visibility: hidden;
     opacity: 0;
-    transition: visibility 0s linear 300ms, opacity 300ms;
+    /* transition: visibility 0s linear 300ms, opacity 300ms; */
+    /* transition: all 2000ms ease; */
 
     /* 
       visibility cannot be transitioned, because its 0/1
       https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
     */
  } 
+
+ .countryButton {
+  border-radius: 5px;
+  border: 1px solid transparent;
+  /* padding: 0.6em 1.2em; */
+  padding: 0px 20px;
+  font-size: 0.9rem;
+  font-weight: 400;
+  font-family: inherit;
+  /* background-color: #1a1a1a; */
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
 
 
   /* https://stackoverflow.com/questions/30855985/pure-css-animation-visibility-with-delay */
