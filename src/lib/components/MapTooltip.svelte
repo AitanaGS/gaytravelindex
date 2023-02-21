@@ -8,21 +8,21 @@
     let tooltipWidth
     let tooltipHeight = 100
 
-    $: xMouseValue = mapData.event.pageX
+    $: xValue = mapData.event.type === "focus" ? mapData.centroid[0]  : mapData.event.clientX - mapData.parentBoundingRect.left//+ mapData.parentBoundingRect.left 
 
     $: xPosition = mapData.event.type === "focus"
-        ? mapData.centroid[0] - tooltipWidth / 2
-        : xMouseValue + tooltipWidth / 2 > width
-            ? xMouseValue - tooltipWidth
-            : xMouseValue < tooltipWidth / 2
-                ? xMouseValue
-                : xMouseValue - tooltipWidth / 2
+        ? xValue - tooltipWidth / 2
+        : xValue + tooltipWidth / 2 > width
+            ? xValue - tooltipWidth
+            : xValue < tooltipWidth / 2
+                ? xValue
+                : xValue - tooltipWidth / 2
 
 
 
     let yNudge = 5
 
-    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1] : mapData.event.pageY
+    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1]  : mapData.event.clientY - mapData.parentBoundingRect.top
 
     $: yPosition = mapData.event.type === "focus"
         ? yValue - tooltipHeight < 0

@@ -3,6 +3,7 @@
     import AxisIndicators from './AxisIndicators.svelte'
     import AxisIndicatorValues from './AxisIndicatorValues.svelte'
     import IndicatorTooltip from './IndicatorTooltip.svelte'
+    import { clickedCountry } from '../stores/clickedCountry'
     import { slide, fly } from "svelte/transition"
     import { extent, min, max } from "d3-array"
     import { tidy, pivotLonger } from '@tidyjs/tidy'
@@ -11,10 +12,16 @@
 
 
     export let data
-    export let selectedCountry
+    // export let selectedCountry
     export let width
     export let years
 
+
+    let selectedCountry = ""
+
+    clickedCountry.subscribe(country => {
+    selectedCountry = country
+  })
 
 
     const indicatorLabels = [
@@ -155,7 +162,7 @@ const handleIndicatorHover = (e, d) => {
                         fill={indicatorValueColorScale(d.value)}
                         stroke="dimgray"
                         class="indicator"
-                        in:fly={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 400, delay: 0}}
+                        in:fly={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                         on:mouseover={(e) => handleIndicatorHover(e, d)}
                         on:focus={(e) => handleIndicatorHover(e, d)}
                         on:mouseleave={(e) => handleIndicatorHover(e, null)}

@@ -3,6 +3,8 @@
     import geoWorld from "../../../data/processed/ne_110m_admin_0_countries_topo.json"
     import MapTooltip from "./MapTooltip.svelte";
     import MapLegend from "./MapLegend.svelte";
+    import { clickedCountry } from "../stores/clickedCountry";
+    import { clickedContinent } from "../stores/clickedContinent";
 
     import * as topojson from "topojson-client"
     import {
@@ -15,7 +17,7 @@
     import { createEventDispatcher } from "svelte"
 
 
-    export let width
+    export let mapWidth
     export let mapHeight
     export let totalScale
 
@@ -45,7 +47,7 @@
 
 
     $: projection = geoEqualEarth()
-        .fitSize([width, mapHeight], geoCountries)
+        .fitSize([mapWidth, mapHeight], geoCountries)
         .rotate([-10, 0])
 
     $: pathGenerator = geoPath().projection(projection)
@@ -58,7 +60,7 @@
 
     $: zoomX = zoom()
         .scaleExtent([1, 10])
-        .translateExtent([[0, 0], [width, mapHeight]])
+        .translateExtent([[0, 0], [mapWidth, mapHeight]])
         .on("zoom", handleZoom)
     
     function handleZoom(e) {
@@ -73,13 +75,23 @@
 
     let hoveredMapCountryData
 
+    let parentMap
+
+    let parentBoundingRect
+
+    $:if (parentMap) {
+        parentBoundingRect = parentMap.getBoundingClientRect()
+    }
 
     function handleMapHover (event, mapCountry, centroid) {
+
         if (mapCountry) {
             hoveredMapCountryData = {
             data: mapCountry,
             centroid,
-            event
+            event,
+            parentBoundingRect,
+            // svg,
             }
         } else {
             hoveredMapCountryData = null
@@ -88,21 +100,46 @@
 
     const dispatch = createEventDispatcher()
 
-    function dispatchCountryClick(e, country, continent) {
+    // function dispatchCountryClick(e, country, continent) {
+    //     // handleMapHover(e, null, null)
+    //     // dispatch("countryClick", {
+    //     //     country,
+    //     //     continent
+    //     // })
+    //     // dispatch("countryClick", {
+    //     // })
+    //     dispatch("countryClick")
+    // }
+
+    function handleCountryClick(e, country, continent) {
+        // console.log(country)
+        // hoveredMapCountryData = null
         handleMapHover(e, null, null)
-        dispatch("countryClick", {
-            country,
-            continent
-        })
+        clickedCountry.set(country)
+        clickedContinent.set(continent)
+        dispatch("countryClick")
     }
+
+
+// let selectedCountry = ""
+
+// clickedCountry.subscribe(country => {
+//   selectedCountry = country
+// })
+
+
+
 
     // TODO wann onmount? z.b. zum ergänzen von geocountries properties (s.o.)
 
 </script>
 
-<div>
-    <svg {width} height={mapHeight} bind:this={selectInitZoom}>
-        <g class="map" bind:this={selectHandleZoom}>
+<div bind:this={parentMap} class="map">
+    <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} >
+        <!-- bind:this={selectInitZoom} 
+        width={mapWidth} height={mapHeight} -->
+        <g bind:this={selectHandleZoom} >
+         <!-- bind:this={selectHandleZoom} -->
         <!-- <path class="earth" d={pathGenerator(geoSphere)} fill="#FCFFFD" stroke="none"/> -->
         {#each geoCountries.features as country}
             {#if country.properties.NAME_EN !== "Antarctica"}
@@ -118,13 +155,13 @@
                 on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:mouseleave={(e) => handleMapHover(e, null, null)}
                 on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
-                on:click={(e) => dispatchCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
-                on:keypress={(e) => dispatchCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+                on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+                on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
             />
             {/if}
         {/each}
         <path class="borders" d={pathGenerator(geoBorders)} fill="none" stroke="white"/>
-        <MapLegend colorScale={totalScale} {hoveredMapCountryData} {width} height={mapHeight}/>
+        <MapLegend colorScale={totalScale} {hoveredMapCountryData} {mapWidth} height={mapHeight}/>
     </g>
     </svg>
 
@@ -132,7 +169,7 @@
     <MapTooltip 
         mapData={hoveredMapCountryData} 
         {totalScale}
-        {width}
+        width = {mapWidth}
         />
     {/if}
 </div>

@@ -29,7 +29,7 @@
         data
       // .filter(d => d.continent == selectedContinent)
       .filter(d => {
-        if (selectedContinent === "Overview") return true
+        if (selectedContinent === "All") return true
         else return d.continent === selectedContinent
       })
       .filter(d => d.year === 2021)
@@ -66,7 +66,7 @@
 
     $: selectedContinentData = group(
     data.filter(d => {
-      if (selectedContinent === "Overview") return true
+      if (selectedContinent === "All") return true
       else return d.continent === selectedContinent
     })
       .sort((a, b) => {

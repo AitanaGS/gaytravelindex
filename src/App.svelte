@@ -3,38 +3,34 @@
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
+  import { clickedCountry } from "./lib/stores/clickedCountry"
+  import { clickedContinent } from "./lib/stores/clickedContinent";
+
   import { scaleBand, scaleSequential, scaleDiverging } from "d3-scale"
   import { extent, max, min, group } from "d3-array"
   import { interpolateRdBu, interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
   // import { tidy, pivotLonger, pivotWider } from '@tidyjs/tidy'
   import { fly, slide, fade } from "svelte/transition"
 
-
   const continents = [... new Set(data.map(d => d.continent))].sort()
 
   const years = [... new Set(data.map(d => d.year))].sort()
 
-  let selectedContinent
-  
+  let selectedContinent = ""
+
   let selectedCountry = ""
 
-  const handleCountryClick = (event) => {
-    selectedCountry = event.detail.country
-    selectedContinent = event.detail.continent
-    scrollToTop() // here scrolling
-  } 
+  clickedCountry.subscribe(country => {
+    selectedCountry = country
+  })
+
+  clickedContinent.subscribe(continent => {
+    selectedContinent = continent
+  })
 
 
   const totalScale = scaleDiverging(interpolateRdYlBu)
     .domain([min(data, d => d.total), 0, max(data, d => d.total)])
-
-
-  // const scrollIntoView = (node) => {
-  //       node.scrollIntoView()
-  //   }
-
-
-  // TODO: scroll up, check with map
 
   // TODO: bandwidth of different continents
 
@@ -66,15 +62,20 @@
 
   // TODO smooth scroll
 
+  // TODO country click as store
 
-  let top
+  // TODO map tooltip exit transition
 
-  // here scrolling
-  function scrollToTop() {
-		top.scrollIntoView();
+  // TODO map tooltip position
+
+  // TODO map multiple clicks (also on heatmap?)
+
+
+  let chartSelection
+
+  function scrollToChartSelection() {
+		chartSelection.scrollIntoView();
 	}
-
-  // let width = 1200
 
   let width
 
@@ -90,15 +91,12 @@
 
 
 
+
   // let innerHeight = 500
   
   // let outerHeight
 
   // $: mapHeight = 0.5 * height
-
-  // $: console.log(height, mapHeight)
-
-  // $: console.log(innerHeight)
 
   // $: mapHeight = 0.7 * innerHeight
 
@@ -135,26 +133,38 @@
       </div>
   
       <div class="mapWrapper">
-        <Map on:countryClick={handleCountryClick} width={mapWidth} {mapHeight} {totalScale}/>
+        <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToChartSelection}/>
+        <!-- on:countryClick={handleCountryClick}  -->
       </div>
 
     </div>
 
-    <div class="selectContinentCountryWrapper" bind:this={top}>
+    <div class="selectContinentCountryWrapper" bind:this={chartSelection}>
       <div class="selectContinentWrapper">
 
         <label for="continent-select">Choose a continent</label>
 
-        <select 
+        <!-- <select 
           name="continents" 
           id="continent-select" 
-          bind:value={selectedContinent}
+          bind:value={$clickedContinent}
           on:change={() => selectedCountry = ''}>
             <option value="Overview">Overview</option>
             {#each continents as continent}
               <option value={continent}>{continent}</option>
             {/each}
-        </select>
+        </select> -->
+        <!-- bind:value={selectedContinent} -->
+        <select 
+        name="continents" 
+        id="continent-select" 
+        bind:value={$clickedContinent}
+        on:change={() => clickedCountry.set("")}>
+          <option value="All">All</option>
+          {#each continents as continent}
+            <option value={continent}>{continent}</option>
+          {/each}
+      </select>
       </div>
       <div class="selectCountryWrapper">
 
@@ -162,7 +172,8 @@
         <button
           class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
           on:click={() => {
-            selectedCountry = ""
+            // selectedCountry = ""
+            clickedCountry.set("")
             // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
             // scrollToTop() // here scrolling
           }}
@@ -199,9 +210,9 @@
             <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
             {/if}
              -->
-             <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
+             <Heatmap {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} on:countryClick={scrollToChartSelection}  />
              
-        
+             <!-- on:countryClick={handleCountryClick}  -->
 
 
       </div>
@@ -218,8 +229,8 @@
       {/if} -->
 
     
-      <IndicatorsChart width={countryWidth} {data} {selectedCountry} {years}/>
-    
+      <IndicatorsChart width={countryWidth} {data} {years}/>
+      <!-- {selectedCountry} -->
     </div>
 
 
@@ -236,6 +247,10 @@
   /* main {
     margin: 10 10 10 40;
   } */
+  main {
+    padding: 40px;
+  }
+
   .wrapper {
     width: var(--width);
     position: relative;

@@ -1,5 +1,5 @@
 <script>
-    import { fly } from "svelte/transition"
+    import { fly, fade, slide } from "svelte/transition"
 
     export let data
     export let country
@@ -9,7 +9,6 @@
     export let yPosition
     export let flyDirection
     export let tooltipWidth
-
 
     // TODO css variables for background and color
     // TODO: check hsla code in style
@@ -60,6 +59,7 @@
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease; 
         text-align: center;
+        margin: 0 auto; /*new*/
     }
 
     h3 {

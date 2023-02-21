@@ -16,7 +16,7 @@
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-weight={year === 2021 ? "bold" : "normal"}
-                font-size={year === 2021 ? "0.95rem" : "0.9rem"}
+                font-size={year === 2021 ? "0.9rem" : "0.8rem"}
                 >
                     {year}
                 </text>

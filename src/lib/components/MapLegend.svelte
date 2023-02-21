@@ -4,13 +4,13 @@
 
     export let colorScale
     export let hoveredMapCountryData
-    export let width
+    export let mapWidth
     export let height
 
 
-    $: yPosition = width <= 800 ? height - 60 : height * 0.5
+    $: yPosition = mapWidth <= 800 ? height - 60 : height * 0.5
 
-    $: xPosition = width <= 800 ? 0 : 100
+    $: xPosition = mapWidth <= 800 ? 0 : 100
 
     let totalScorePercentScale = scaleLinear()
         .domain([colorScale.domain()[0], colorScale.domain()[2]])

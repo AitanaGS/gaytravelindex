@@ -1,6 +1,8 @@
 <script>
     import { slide } from "svelte/transition"
     import { createEventDispatcher } from "svelte"
+    import { clickedCountry } from "../stores/clickedCountry";
+    import { clickedContinent } from "../stores/clickedContinent";
 
     export let countryScale;
     // export let handleClick
@@ -16,14 +18,31 @@
         hoveredCountry = country
     }
 
+    // let selectedCountry = ""
+
     const dispatch = createEventDispatcher()
 
-    function dispatchCountryClick(country, continent) {
-        dispatch("countryClick", {
-            country,
-            continent
-        })
+    // function dispatchCountryClick(country, continent) {
+    //     selectedCountry = country
+    //     dispatch("countryClick", {
+    //         country,
+    //         continent
+    //     })
+    // }
+
+    let selectedCountry
+
+    clickedCountry.subscribe(country => {
+        selectedCountry = country
+    })
+
+    function handleCountryClick(country, continent) {
+        selectedCountry = country
+        clickedCountry.set(country)
+        clickedContinent.set(continent)
+        dispatch("countryClick")
     }
+
 
 </script>
 
@@ -36,8 +55,8 @@
             in:slide={{ duration: 300, delay: 50 + 30 * i}} 
             >
             <rect 
-                on:click={() => dispatchCountryClick(country, selectedContinent)}
-                on:keypress={() => dispatchCountryClick(country, selectedContinent)}
+                on:click={() => handleCountryClick(country, selectedContinent)}
+                on:keypress={() => handleCountryClick(country, selectedContinent)}
                 on:mouseover={() => axisHandleHover(country)}
                 on:focus={() => axisHandleHover(country)}
                 on:mouseleave={() => axisHandleHover(null)}
@@ -54,7 +73,7 @@
                     text-anchor="end"
                     dominant-baseline="middle"
                     dy={countryScale.bandwidth()/2}
-                    font-weight={hoveredCountry === country ? "bold" : "normal"}
+                    font-weight={hoveredCountry === country ||  selectedCountry == country ? "bold" : "normal"}
                     font-size="0.9rem"
                     class="countryName"
                 >{country}</text>
@@ -72,6 +91,7 @@
 
     .countryName {
         pointer-events: none;
+        transition: all 200ms ease;
     }
 
     /* .countryList {

@@ -16,21 +16,26 @@
 
 
     $: indicatorData = data.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
-
+    
+    
     let tooltipWidth = 300
 
     let tooltipHeight = 200
-
-    $: halfBandwidth = indicatorValueScale(1) - indicatorValueScale(0.5)
-
+    
     $: xValue = indicatorValueScale(indicator2021Data.value)
+    $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
 
-    $: xPosition = xValue + margin.left + tooltipWidth /2 - halfBandwidth > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth
-        : xValue + margin.left - tooltipWidth / 2 < margin.left + tooltipWidth / 2
-            ? xValue + margin.left
-            : xValue + margin.left - tooltipWidth / 2
-
+    $: xPosition = indicator2021Data.value === -5
+        ? margin.left + xValue
+        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+        ? margin.left + xValue - xBandwidth
+        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+        ? margin.left + xValue - tooltipWidth / 2
+        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+        ? margin.left + xValue - tooltipWidth + xBandwidth
+        : margin.left + xValue - tooltipWidth
+    
+    
     $: yValue = indicatorScale(indicator2021Data.indicator)
 
     $: yPosition = yValue - tooltipHeight < 0
@@ -38,6 +43,31 @@
         : yValue + margin.top - tooltipHeight
 
     $: flyDirection = yPosition < yValue ? 1 : -1
+
+    
+    // let tooltipWidth = 300
+
+    // let tooltipHeight = 200
+
+    // $: halfBandwidth = indicatorValueScale(1) - indicatorValueScale(0.5)
+
+    // $: xValue = indicatorValueScale(indicator2021Data.value)
+
+    // $: xPosition = xValue + margin.left + tooltipWidth /2 - halfBandwidth > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth
+    //     : xValue + margin.left - tooltipWidth / 2 < margin.left + tooltipWidth / 2
+    //         ? xValue + margin.left
+    //         : xValue + margin.left - tooltipWidth / 2
+
+    // $: yValue = indicatorScale(indicator2021Data.indicator)
+
+    // $: yPosition = yValue - tooltipHeight < 0
+    //     ? yValue + tooltipHeight / 2 
+    //     : yValue + margin.top - tooltipHeight
+
+    // $: flyDirection = yPosition < yValue ? 1 : -1
+
+
 
     const svgMargin = {
         top: 10,
@@ -66,6 +96,7 @@
 
 // TODO: check hsla code in style
 // TODO: check responsiveness tooltip width
+// TODO: Accessibility of tooltip data (focus)
 
 
 </script>
