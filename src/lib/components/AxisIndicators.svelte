@@ -1,4 +1,5 @@
 <script>
+    import { chartFontSize } from "../stores/responsiveFontSize";
 
     export let indicatorScale;
     export let indicatorVariables
@@ -18,6 +19,7 @@
                 dominant-baseline="middle"
                 dy={indicatorScale.bandwidth()/2}
                 dx=-8
+                font-size={$chartFontSize * 0.9}
             > {indicatorLabelsLookup.get(indicator)}</text>
             <!-- dy={indicatorScale.bandwidth()/2} -->
             <line

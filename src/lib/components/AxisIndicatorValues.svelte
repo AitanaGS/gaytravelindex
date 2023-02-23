@@ -1,4 +1,6 @@
 <script>
+    import { chartFontSize } from "../stores/responsiveFontSize";
+
     export let indicatorValueScale
     export let margin
 
@@ -17,6 +19,7 @@
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"
+                font-size={$chartFontSize * 0.9}
             > {value}</text>
             <line
                 x1={indicatorValueScale(value)}

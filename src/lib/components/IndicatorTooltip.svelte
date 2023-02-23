@@ -3,6 +3,7 @@
     import TooltipAxisYears from "./TooltipAxisYears.svelte";
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
+    import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2021Data
     export let data
@@ -18,9 +19,9 @@
     $: indicatorData = data.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
     
     
-    let tooltipWidth = 300
+    let tooltipWidth = 270
 
-    let tooltipHeight = 200
+    let tooltipHeight = 150
     
     $: xValue = indicatorValueScale(indicator2021Data.value)
     $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
@@ -39,7 +40,7 @@
     $: yValue = indicatorScale(indicator2021Data.indicator)
 
     $: yPosition = yValue - tooltipHeight < 0
-        ? yValue + tooltipHeight / 2 
+        ? yValue + tooltipHeight / 2 + indicatorScale.bandwidth() / 2
         : yValue + margin.top - tooltipHeight
 
     $: flyDirection = yPosition < yValue ? 1 : -1
@@ -97,6 +98,7 @@
 // TODO: check hsla code in style
 // TODO: check responsiveness tooltip width
 // TODO: Accessibility of tooltip data (focus)
+// TODO: check xposition calculation
 
 
 </script>
@@ -111,6 +113,7 @@
         left: {xPosition}px;
         --height: {tooltipHeight}px;
         --width: {tooltipWidth}px;
+        --fontSize: {$tooltipFontSize}px;
     "
     bind:clientWidth={tooltipWidth}
     >
@@ -163,7 +166,7 @@
 
     h3 {
         margin: 0;
-        font-size: 0.9rem;
+        font-size: calc(var(--fontSize) * 0.8);
         font-weight: 700;
         margin-bottom: 3px;
     }

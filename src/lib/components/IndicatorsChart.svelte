@@ -9,6 +9,7 @@
     import { tidy, pivotLonger } from '@tidyjs/tidy'
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
+    import { chartFontSize } from '../stores/responsiveFontSize'
 
 
     export let data
@@ -116,7 +117,7 @@ const handleIndicatorHover = (e, d) => {
 
 </script>
 
-<div>
+<div class="wrapper">
     <svg {width} {height}>
         {#if selectedCountry}
         <text
@@ -166,6 +167,7 @@ const handleIndicatorHover = (e, d) => {
                         on:mouseover={(e) => handleIndicatorHover(e, d)}
                         on:focus={(e) => handleIndicatorHover(e, d)}
                         on:mouseleave={(e) => handleIndicatorHover(e, null)}
+                        on:keydown={(e) => {e.key === "Escape" ? handleIndicatorHover(e, null) : null}}
                         />
                     {#if d.value !== 0}
                     <line 
@@ -193,9 +195,13 @@ const handleIndicatorHover = (e, d) => {
 </div>
 
 <style>
-    .innerIndicatorsChart {
+    .wrapper {
         position: relative;
     }
+
+    /* .innerIndicatorsChart {
+        position: relative;
+    } */
 
     .countryName {
         transition: all 100ms ease;

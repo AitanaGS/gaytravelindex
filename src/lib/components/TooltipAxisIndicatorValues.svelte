@@ -1,4 +1,6 @@
 <script>
+    import { tooltipFontSize } from "../stores/responsiveFontSize";
+
     export let tooltipIndicatorValueScale
     export let svgMargin
     export let svgInnerWidth
@@ -17,8 +19,9 @@
                 y={tooltipIndicatorValueScale(value)}
                 text-anchor="end"
                 dominant-baseline="middle"
-                font-size="0.5rem"
+                font-size={$tooltipFontSize * 0.55}
             >
+            <!-- font-size="0.55rem" -->
             {value}
 
             </text>

@@ -3,11 +3,14 @@
     import { createEventDispatcher } from "svelte"
     import { clickedCountry } from "../stores/clickedCountry";
     import { clickedContinent } from "../stores/clickedContinent";
+    // import { chartFontSizeScale } from "../utils/fontSizeScales"
+    import { chartFontSize } from "../stores/responsiveFontSize";
 
     export let countryScale;
     // export let handleClick
     export let selectedContinent
     export let margin
+    // export let currentWindowWidth
 
     $: countries = countryScale.domain()
 
@@ -43,6 +46,8 @@
         dispatch("countryClick")
     }
 
+    // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
+
 
 </script>
 
@@ -52,7 +57,7 @@
     {#each countries as country, i (`${selectedContinent}${country}`)}
         <g 
             class="tick country"
-            in:slide={{ duration: 300, delay: 50 + 30 * i}} 
+            in:slide={{ duration: 300, delay: 50 + 50 * i}} 
             >
             <rect 
                 on:click={() => handleCountryClick(country, selectedContinent)}
@@ -74,9 +79,10 @@
                     dominant-baseline="middle"
                     dy={countryScale.bandwidth()/2}
                     font-weight={hoveredCountry === country ||  selectedCountry == country ? "bold" : "normal"}
-                    font-size="0.9rem"
+                    font-size={0.9 * $chartFontSize}
                     class="countryName"
                 >{country}</text>
+                <!-- font-size="0.9rem" -->
         </g>
 
     {/each}

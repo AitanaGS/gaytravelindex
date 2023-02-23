@@ -1,8 +1,14 @@
 <script>
+    // import { chartFontSizeScale } from "../utils/fontSizeScales"
+    import { chartFontSize } from "../stores/responsiveFontSize";
+
     export let yearScale
     export let margin
+    // export let currentWindowWidth
 
     $: years = yearScale.domain()
+
+    // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
 
 </script>
 
@@ -16,10 +22,11 @@
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-weight={year === 2021 ? "bold" : "normal"}
-                font-size={year === 2021 ? "0.9rem" : "0.8rem"}
+                font-size={year === 2021 ? 0.9 * $chartFontSize : 0.8 * $chartFontSize}
                 >
                     {year}
                 </text>
+                <!-- font-size={year === 2021 ? "0.9rem" : "0.8rem"} -->
         </g>
 
     {/each}

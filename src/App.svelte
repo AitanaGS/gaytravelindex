@@ -5,12 +5,32 @@
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
   import { clickedCountry } from "./lib/stores/clickedCountry"
   import { clickedContinent } from "./lib/stores/clickedContinent";
+  import { bodyFontSize } from "./lib/stores/responsiveFontSize";
+  import { windowWidth } from "./lib/stores/responsiveFontSize";
+  // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
+  // import { windowWidth } from "./lib/stores/windowWidth";
 
-  import { scaleBand, scaleSequential, scaleDiverging } from "d3-scale"
-  import { extent, max, min, group } from "d3-array"
-  import { interpolateRdBu, interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
-  // import { tidy, pivotLonger, pivotWider } from '@tidyjs/tidy'
-  import { fly, slide, fade } from "svelte/transition"
+  import { onMount } from "svelte"
+  import { scaleDiverging } from "d3-scale"
+  import { max, min, group } from "d3-array"
+  import { interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
+
+
+
+  onMount(() => {
+
+    const setCurrentWindowWidth = () => windowWidth.set(window.innerWidth)
+
+    window.addEventListener('resize', setCurrentWindowWidth)
+
+    return () => {
+      window.removeEventListener("resize", setCurrentWindowWidth)
+    }
+
+  })
+
+
+
 
   const continents = [... new Set(data.map(d => d.continent))].sort()
 
@@ -70,6 +90,8 @@
 
   // TODO map multiple clicks (also on heatmap?)
 
+  // TODO check if multiple fontSizes necessary
+
 
   let chartSelection
 
@@ -110,7 +132,7 @@
 
 <!-- <svelte:window bind:innerHeight/> -->
 
-<main>
+<main style="--bodyFontSize: {$bodyFontSize}px;">
 
   <div 
     class="wrapper" 
@@ -210,6 +232,12 @@
             <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
             {/if}
              -->
+             <p>
+              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
+              sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+              sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+             </p>
              <Heatmap {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} on:countryClick={scrollToChartSelection}  />
              
              <!-- on:countryClick={handleCountryClick}  -->
@@ -228,7 +256,12 @@
     
       {/if} -->
 
-    
+      <p>
+        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
+        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+      </p>
       <IndicatorsChart width={countryWidth} {data} {years}/>
       <!-- {selectedCountry} -->
     </div>
@@ -244,11 +277,13 @@
 
 <style>
 
-  /* main {
-    margin: 10 10 10 40;
-  } */
   main {
     padding: 40px;
+  }
+
+  p {
+    font-size: var(--bodyFontSize);
+    line-height: 1.5;
   }
 
   .wrapper {
@@ -267,11 +302,11 @@
   margin: 0;
 }
 
-.introText {
+/* .introText {
   font-size: 1rem;
   line-height: 1.5;
 
-}
+} */
 
   .selectContinentCountryWrapper {
     /* position: absolute;
@@ -286,6 +321,11 @@
      align-items: baseline;
     /* justify-content: baseline; */
     gap: 10px;
+    font-size: var(--bodyFontSize);
+  }
+
+  select {
+    font-size: var(--bodyFontSize);
   }
 
   .selectContinentWrapper {
@@ -304,14 +344,13 @@
 
   }
 
-  .continentChartWrapper {
+  /* .continentChartWrapper {
     position: relative;
-    /* margin-top: 20px; */
   }
 
   .countryChartWrapper {
     position: relative;
-  }
+  } */
 
 /* .continentButton { */
     /* transition: visibility 100ms ease ; */
@@ -364,6 +403,7 @@
   /* background-color: #1a1a1a; */
   cursor: pointer;
   transition: border-color 0.25s;
+  font-size: var(--bodyFontSize);
 }
 button:hover {
   border-color: #646cff;

@@ -1,6 +1,7 @@
 <script>
     import { scaleLinear } from "d3-scale"
     import { fade } from "svelte/transition"
+    import { chartFontSize } from "../stores/responsiveFontSize";
 
     export let colorScale
     export let hoveredMapCountryData
@@ -39,17 +40,18 @@
     <text 
         x={legendWidth / 2} 
         fill="darkgray" 
-        font-size="0.9rem" 
+        font-size={$chartFontSize * 0.9}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
+    <!-- font-size="0.9rem"  -->
         Gay Travel Index
     </text>
     <text 
         x={legendWidth / 2} 
         y="20" 
         fill="darkgray" 
-        font-size="0.8rem" 
+        font-size={$chartFontSize * 0.8}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -66,7 +68,7 @@
         x=0 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size="0.8rem" 
+        font-size={$chartFontSize * 0.8}
         dominant-baseline="hanging" 
         text-anchor="end"
     >
@@ -76,7 +78,7 @@
         x={legendWidth / 2} 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size="0.8rem" 
+        font-size={$chartFontSize * 0.8}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -86,7 +88,7 @@
         x={legendWidth} 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size="0.8rem" 
+        font-size={$chartFontSize * 0.8}
         dominant-baseline="hanging" 
         text-anchor="start"
     >

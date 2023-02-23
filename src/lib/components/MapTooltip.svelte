@@ -29,9 +29,8 @@
             ? yValue
             : yValue - tooltipHeight 
         : yValue - tooltipHeight - yNudge < 0
-            ? yValue + yNudge
-            : yValue - tooltipHeight - yNudge
-
+            ? yValue //+ yNudge
+            : yValue - tooltipHeight //- yNudge
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 

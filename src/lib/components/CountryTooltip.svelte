@@ -1,4 +1,6 @@
 <script>
+    import { tooltipFontSize } from "../stores/responsiveFontSize";
+
     import { fly, fade, slide } from "svelte/transition"
 
     export let data
@@ -29,6 +31,7 @@
     style="
         top: {yPosition}px;
         left: {xPosition}px;
+        --fontSize: {$tooltipFontSize}px;
     "
 >
 <!-- bind:clientHeight={tooltipHeight} -->
@@ -64,13 +67,13 @@
 
     h3 {
         margin: 0;
-        font-size: 0.9rem;
+        font-size: calc(var(--fontSize) * 0.9);
         font-weight: 700;
         margin-bottom: 3px;
     }
 
     .info {
-        font-size: 0.9rem;
+        font-size: calc(var(--fontSize) * 0.9);;
         /* margin: 0 auto; */
   /* text-align: center; */
     }

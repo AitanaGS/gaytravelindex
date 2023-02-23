@@ -2,6 +2,8 @@
     import AxisYears from "./AxisYears.svelte"
     import AxisCountries from "./AxisCountries.svelte"
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
+    // import { chartFontSizeScale } from "../utils/fontSizeScales"
+    import { chartFontSize } from "../stores/responsiveFontSize"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
@@ -14,6 +16,14 @@
     export let width
     export let years
     export let totalScale
+    // export let currentWindowWidth
+
+
+    // let chartFontSize
+
+    // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
+
+    // $: console.log("chart", $chartFontSize)
 
 
 
@@ -95,9 +105,20 @@
 
 </script>
 
-<div class="continentHeatmap">
+<div class="continentHeatmap wrapper">
     <svg {width} {height}>
-        <text class="continentName" x={innerWidth/2 + margin.left} y= 30 text-anchor="middle" dominant-baseline="middle" font-weight="bold" font-size="1rem">{selectedContinent}</text>
+        <text 
+          class="continentName" 
+          x={innerWidth/2 + margin.left} 
+          y= 30 
+          text-anchor="middle" 
+          dominant-baseline="middle" 
+          font-weight="bold" 
+          font-size={$chartFontSize}
+          >
+          {selectedContinent}
+        </text>
+        <!-- font-size="1rem" -->
         <!-- use:scrollIntoView -->
         <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
@@ -109,7 +130,7 @@
             {#each Array.from(selectedContinentData.keys()) as country, i (`${selectedContinent}${country}`)} 
             <g 
                 class="country"
-                in:slide={{ duration: 300, delay: 50 + 30 * i}} 
+                in:slide={{ duration: 300, delay: 50 + 50 * i}} 
                 >  
             {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
@@ -137,6 +158,7 @@
               on:mouseover={() => handleHeatmapHover(d)}
               on:focus={() => handleHeatmapHover(d)}
               on:mouseleave={() => handleHeatmapHover(null)}
+              on:keydown={(e) => {e.key === "Escape" ? handleHeatmapHover(null) : null}}
               />
               
               <text
@@ -159,12 +181,20 @@
                 }
                 font-size={
                     d.year === 2021 && d === hoveredCountryYear
-                    ? "1rem"
+                    ? $chartFontSize
                     : d.year === 2021 || d === hoveredCountryYear
-                    ? "0.9rem"
-                    : "0.8rem"
+                    ? $chartFontSize * 0.9//`${chartFontSize * 0.9}px`
+                    : $chartFontSize * 0.8
                     }
               >{d.total}</text> 
+<!-- 
+              font-size={
+                d.year === 2021 && d === hoveredCountryYear
+                ? "1rem"
+                : d.year === 2021 || d === hoveredCountryYear
+                ? "0.9rem"
+                : "0.8rem"
+                } -->
                  
               <!-- font-size={
                 d === hoveredCountryYear
@@ -202,9 +232,13 @@
 
 
   <style>
-    .innerContinentHeatmap {
-        position: relative;
+    .wrapper {
+      position: relative;
     }
+
+    /* .innerContinentHeatmap {
+        position: relative;
+    } */
     /* .continentHeatmap {
       position: relative;
     } */
