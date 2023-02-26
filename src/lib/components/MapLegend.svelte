@@ -40,7 +40,7 @@
     <text 
         x={legendWidth / 2} 
         fill="darkgray" 
-        font-size={$chartFontSize * 0.9}
+        font-size={`${0.9 * $chartFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -51,7 +51,7 @@
         x={legendWidth / 2} 
         y="20" 
         fill="darkgray" 
-        font-size={$chartFontSize * 0.8}
+        font-size={`${0.8 * $chartFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -68,7 +68,7 @@
         x=0 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size={$chartFontSize * 0.8}
+        font-size={`${0.8 * $chartFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="end"
     >
@@ -78,7 +78,7 @@
         x={legendWidth / 2} 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size={$chartFontSize * 0.8}
+        font-size={`${0.8 * $chartFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -88,7 +88,7 @@
         x={legendWidth} 
         y={40 + legendHeight + 5} 
         fill="darkgray" 
-        font-size={$chartFontSize * 0.8}
+        font-size={`${0.8 * $chartFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="start"
     >

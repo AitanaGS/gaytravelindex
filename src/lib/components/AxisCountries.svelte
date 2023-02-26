@@ -79,7 +79,7 @@
                     dominant-baseline="middle"
                     dy={countryScale.bandwidth()/2}
                     font-weight={hoveredCountry === country ||  selectedCountry == country ? "bold" : "normal"}
-                    font-size={0.9 * $chartFontSize}
+                    font-size={`${0.9 * $chartFontSize}rem`}
                     class="countryName"
                 >{country}</text>
                 <!-- font-size="0.9rem" -->

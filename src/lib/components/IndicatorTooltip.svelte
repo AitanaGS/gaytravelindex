@@ -113,7 +113,7 @@
         left: {xPosition}px;
         --height: {tooltipHeight}px;
         --width: {tooltipWidth}px;
-        --fontSize: {$tooltipFontSize}px;
+        --fontSize: {`${$tooltipFontSize}rem`};
     "
     bind:clientWidth={tooltipWidth}
     >

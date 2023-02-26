@@ -22,7 +22,7 @@
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-weight={year === 2021 ? "bold" : "normal"}
-                font-size={year === 2021 ? 0.9 * $chartFontSize : 0.8 * $chartFontSize}
+                font-size={year === 2021 ? `${0.9 * $chartFontSize}rem` : `${0.8 * $chartFontSize}rem`}
                 >
                     {year}
                 </text>

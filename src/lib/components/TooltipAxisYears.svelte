@@ -22,7 +22,7 @@
                 y=10
                 text-anchor=middle
                 dominant-baseline="hanging"
-                font-size={$tooltipFontSize * 0.55}
+                font-size={`${0.55 * $tooltipFontSize}rem`}
 
                 >
                     {year}

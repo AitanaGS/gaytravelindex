@@ -19,7 +19,7 @@
                 y={tooltipIndicatorValueScale(value)}
                 text-anchor="end"
                 dominant-baseline="middle"
-                font-size={$tooltipFontSize * 0.55}
+                font-size={`${0.55 * $tooltipFontSize}rem`}
             >
             <!-- font-size="0.55rem" -->
             {value}

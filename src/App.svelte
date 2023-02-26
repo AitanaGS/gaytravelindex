@@ -5,31 +5,95 @@
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
   import { clickedCountry } from "./lib/stores/clickedCountry"
   import { clickedContinent } from "./lib/stores/clickedContinent";
-  import { bodyFontSize } from "./lib/stores/responsiveFontSize";
-  import { windowWidth } from "./lib/stores/responsiveFontSize";
+  // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
+  // import { windowWidth } from "./lib/stores/responsiveFontSize";
+  import { width, height} from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
 
-  import { onMount } from "svelte"
+  import { onMount, afterUpdate } from "svelte"
   import { scaleDiverging } from "d3-scale"
   import { max, min, group } from "d3-array"
   import { interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
 
 
-
-  onMount(() => {
-
-    const setCurrentWindowWidth = () => windowWidth.set(window.innerWidth)
-
-    window.addEventListener('resize', setCurrentWindowWidth)
-
-    return () => {
-      window.removeEventListener("resize", setCurrentWindowWidth)
-    }
-
-  })
+  window.onbeforeunload = function () {
+    window.scrollTo(0, 0);
+  }
 
 
+
+  // onMount(() => {
+
+  //   // const setCurrentWindowWidth = () => width.set(window.innerWidth)
+  //   // const setCurrentWindowWidth = () => width.set(window.innerWidth)
+
+  //   // const setCurrentWindowWidth = () => $width
+
+  //   const getDevice = () => {
+  //     isMobile.set($width)
+  //   }
+
+  //   window.addEventListener('resize', setCurrentWindowWidth)
+
+  //   return () => {
+  //     window.removeEventListener("resize", setCurrentWindowWidth)
+  //   }
+
+  // })
+
+  // let top
+
+  // afterUpdate(() => {
+  //   // top.scrollIntoView()
+  //   window.scrollTo(0, 0)
+
+  // })
+
+
+// $:if (width) {
+
+//   continentWidth = ($width - chartGap) / 2
+
+//   countryWidth = ($width - chartGap) / 2
+
+//   mapWidth = $width * 0.75
+
+// }
+
+  // onMount(() => {
+  //   continentWidth = ($width - chartGap) / 2
+
+  //   countryWidth = ($width - chartGap) / 2
+
+  //   mapWidth = $width * 0.75
+
+  // })
+
+
+  // $: console.log($width, $bodyFontSize)
+
+
+  
+  let chartGap = 10
+
+// let continentWidth
+// let countryWidth
+// let mapWidth
+
+
+   $: continentWidth = ($width - chartGap) / 2
+
+   $: countryWidth = ($width - chartGap) / 2
+
+   $: mapWidth = $width * 0.75
+
+  // $: console.log("width", $width)
+  // $: console.log("fontsize", $bodyFontSize)
+  // $: console.log("destop", $isDesktop)
+  // $: console.log("tablet", $isTablet)
+  // $: console.log("mobile", $isMobile)
 
 
   const continents = [... new Set(data.map(d => d.continent))].sort()
@@ -64,17 +128,11 @@
 
   // TODO check if click on continentheatmap only on axis or also 2021 or all heatmap (confusing, because might expect profile from respective year)
 
-  // TODO color scale manuell setzen (mittelpunkt)
-
   // TODO check data
-
-  // TODO Tooltip component
 
   // TODO Axis component
 
   // TODO check if first values for width and innerHeight necessary
-
-  // TODO responsive Map
 
   // TODO data2021 u.ä. vorher in r oder in js
 
@@ -82,16 +140,21 @@
 
   // TODO smooth scroll
 
-  // TODO country click as store
-
   // TODO map tooltip exit transition
-
-  // TODO map tooltip position
 
   // TODO map multiple clicks (also on heatmap?)
 
   // TODO check if multiple fontSizes necessary
 
+  // TODO check if initial width 0 error ok and mapwidth if condition
+
+  // TODO maptooltip after scrolling and reload
+
+  // TODO check body font size, at least 16, maybe more, doesnt have to be responsive, devices handle this, but check for buttons (select already defined, see below)
+
+  // TODO check tooltip position after resizing window
+
+  // TODO check wo h1 in App.svelte
 
   let chartSelection
 
@@ -99,18 +162,18 @@
 		chartSelection.scrollIntoView();
 	}
 
-  let width
+  // let width
 
-  $: width = 1200
+  // $: width = 1200
 
-  let chartGap = 10
+  // $width = window.innerWidth
 
-  $: continentWidth = (width - chartGap) / 2
 
-  $: countryWidth = (width - chartGap) / 2
+  // $: continentWidth = ($width - chartGap) / 2
 
-  $: mapWidth = width * 0.75
+  // $: countryWidth = ($width - chartGap) / 2
 
+  // $: mapWidth = $width * 0.75
 
 
 
@@ -131,19 +194,21 @@
 </script>
 
 <!-- <svelte:window bind:innerHeight/> -->
-
-<main style="--bodyFontSize: {$bodyFontSize}px;">
-
+<!-- <main style="--bodyFontSize: {$bodyFontSize}px;"     
+> -->
+<main>
+  <h1>Gay Travel Index 2021</h1>
   <div 
     class="wrapper" 
-    bind:clientWidth={width} 
-    style="--width: {width}px;"
+    bind:clientWidth={$width}
+    bind:clientHeight={$height}
     >
+    <!-- style="--width: {$width}px;" -->
+    <!-- bind:clientHeight={$height} bind:clientWidth={$width} -->
+    
     <div class="topWrapper">
       <div class="intro">
-
-        <h1>Gay Travel Index 2021</h1>
-
+        <!-- <h1>Gay Travel Index 2021</h1> -->
         <p class="introText">
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
           sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
@@ -155,8 +220,10 @@
       </div>
   
       <div class="mapWrapper">
+        {#if mapWidth > 0}
         <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToChartSelection}/>
         <!-- on:countryClick={handleCountryClick}  -->
+        {/if}
       </div>
 
     </div>
@@ -282,12 +349,11 @@
   }
 
   p {
-    font-size: var(--bodyFontSize);
     line-height: 1.5;
   }
 
   .wrapper {
-    width: var(--width);
+    /* width: var(--width); */
     position: relative;
   }
 
@@ -297,9 +363,11 @@
   }
 
   h1 {
-  font-size: 1.7rem;
-  line-height: 1.5;
+  /* font-size: 2rem; */
+  line-height: 1.3;
   margin: 0;
+  font-size: clamp(1.5rem, 2vw + 1.5rem, 2rem);
+  min-height: 0vh;
 }
 
 /* .introText {
@@ -321,12 +389,12 @@
      align-items: baseline;
     /* justify-content: baseline; */
     gap: 10px;
-    font-size: var(--bodyFontSize);
+    /* font-size: var(--bodyFontSize); */
   }
 
-  select {
+  /* select {
     font-size: var(--bodyFontSize);
-  }
+  } */
 
   .selectContinentWrapper {
     display: flex;
@@ -336,6 +404,10 @@
   .selectCountryWrapper {
     display: flex;
     gap: 20px;
+  }
+
+  select {
+    font-size: 1rem;
   }
 
   .chartWrapper {
@@ -403,7 +475,7 @@
   /* background-color: #1a1a1a; */
   cursor: pointer;
   transition: border-color 0.25s;
-  font-size: var(--bodyFontSize);
+  /* font-size: var(--bodyFontSize); */
 }
 button:hover {
   border-color: #646cff;

@@ -31,7 +31,7 @@
     style="
         top: {yPosition}px;
         left: {xPosition}px;
-        --fontSize: {$tooltipFontSize}px;
+        --fontSize: {$tooltipFontSize}rem;
     "
 >
 <!-- bind:clientHeight={tooltipHeight} -->

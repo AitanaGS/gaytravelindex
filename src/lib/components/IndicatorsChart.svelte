@@ -63,7 +63,7 @@
   indicatorLabelsLookup.set("antidiscrimination Legislation", "Antidiscrimination Legislation")
 
 
-  $: height = indicatorVariables.length * 50
+  $: height = indicatorVariables.length * 40 // 50
 
   $: innerWidth = width - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
@@ -127,7 +127,7 @@ const handleIndicatorHover = (e, d) => {
             text-anchor=middle
             dominant-baseline="middle"
             font-weight="bold"
-            font-size="1rem">
+            font-size={`${$chartFontSize}rem`}>
             <!-- y=10 -->
                 {selectedCountry} 2021
         </text>
@@ -145,7 +145,7 @@ const handleIndicatorHover = (e, d) => {
         </text>
         {/if} -->
         <AxisIndicators {indicatorScale} {indicatorVariables} {indicatorLabelsLookup} {margin}/>
-        <AxisIndicatorValues {indicatorValueScale} {margin}/>
+        <AxisIndicatorValues {indicatorValueScale} {margin} {innerHeight}/>
         <g
         class="chart indicatorsChart" 
         transform="translate({margin.left}, {margin.top})"

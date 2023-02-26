@@ -18,8 +18,8 @@
                 text-anchor="end"
                 dominant-baseline="middle"
                 dy={indicatorScale.bandwidth()/2}
-                dx=-8
-                font-size={$chartFontSize * 0.9}
+                dx=-5
+                font-size={`${0.9 * $chartFontSize}rem`}
             > {indicatorLabelsLookup.get(indicator)}</text>
             <!-- dy={indicatorScale.bandwidth()/2} -->
             <line

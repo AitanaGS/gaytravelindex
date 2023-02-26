@@ -114,7 +114,7 @@
           text-anchor="middle" 
           dominant-baseline="middle" 
           font-weight="bold" 
-          font-size={$chartFontSize}
+          font-size={`${$chartFontSize}rem`}
           >
           {selectedContinent}
         </text>
@@ -181,10 +181,10 @@
                 }
                 font-size={
                     d.year === 2021 && d === hoveredCountryYear
-                    ? $chartFontSize
+                    ? `${0.9 * $chartFontSize}rem`
                     : d.year === 2021 || d === hoveredCountryYear
-                    ? $chartFontSize * 0.9//`${chartFontSize * 0.9}px`
-                    : $chartFontSize * 0.8
+                    ? `${0.9 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
+                    : `${0.8 * $chartFontSize}rem`
                     }
               >{d.total}</text> 
 <!-- 

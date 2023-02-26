@@ -3,6 +3,7 @@
 
     export let indicatorValueScale
     export let margin
+    export let innerHeight
 
     let indicatorValues = indicatorValueScale.ticks()
 
@@ -19,7 +20,7 @@
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"
-                font-size={$chartFontSize * 0.9}
+                font-size={`${0.9 * $chartFontSize}rem`}
             > {value}</text>
             <line
                 x1={indicatorValueScale(value)}

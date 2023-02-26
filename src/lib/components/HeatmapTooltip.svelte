@@ -16,9 +16,15 @@
 
     $: halfXBandWidth = yearScale.bandwidth() / 2 
 
+    // $: xPosition = xValue + margin.left + halfXBandWidth + tooltipWidth /2 > innerWidth + margin.left
+    //     ? xValue + margin.left + halfXBandWidth - tooltipWidth + halfXBandWidth
+    //     : xValue + margin.left + halfXBandWidth - tooltipWidth / 2 < margin.left + tooltipWidth / 2
+    //     ? xValue + margin.left
+    //     : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
+
     $: xPosition = xValue + margin.left + halfXBandWidth + tooltipWidth /2 > innerWidth + margin.left
         ? xValue + margin.left + halfXBandWidth - tooltipWidth + halfXBandWidth
-        : xValue + margin.left + halfXBandWidth - tooltipWidth / 2 < margin.left + tooltipWidth / 2
+        : xValue + margin.left + halfXBandWidth - tooltipWidth / 2 < margin.left //+ tooltipWidth / 2
         ? xValue + margin.left
         : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
 
