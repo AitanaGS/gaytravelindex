@@ -10,11 +10,12 @@
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
+    import { isDesktop, isMobile, isTablet, chartWidth } from '../stores/dimensions'
 
 
     export let data
     // export let selectedCountry
-    export let width
+    // export let width
     export let years
 
 
@@ -65,7 +66,7 @@
 
   $: height = indicatorVariables.length * 40 // 50
 
-  $: innerWidth = width - margin.left - margin.right
+  $: innerWidth = $chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
 
 
@@ -73,7 +74,7 @@
     top: 60, // 80
     right: 10,
     bottom: 60,
-    left: 210
+    left: 230//210
   }
 
   const dataLonger = tidy(data, pivotLonger({
@@ -118,7 +119,7 @@ const handleIndicatorHover = (e, d) => {
 </script>
 
 <div class="wrapper">
-    <svg {width} {height}>
+    <svg width={$chartWidth} {height}>
         {#if selectedCountry}
         <text
             class="countryName"
@@ -159,7 +160,13 @@ const handleIndicatorHover = (e, d) => {
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
-                        r={hoveredIndicator === d ? 12 : 10}
+                        r={$isMobile
+                            ? hoveredIndicator === d 
+                                ? 8 
+                                : 6
+                            : hoveredIndicator === d 
+                                ? 10
+                                : 8 }
                         fill={indicatorValueColorScale(d.value)}
                         stroke="dimgray"
                         class="indicator"
@@ -169,6 +176,7 @@ const handleIndicatorHover = (e, d) => {
                         on:mouseleave={(e) => handleIndicatorHover(e, null)}
                         on:keydown={(e) => {e.key === "Escape" ? handleIndicatorHover(e, null) : null}}
                         />
+                        <!-- r={hoveredIndicator === d ? 12 : 10} -->
                     {#if d.value !== 0}
                     <line 
                         x1={indicatorValueScale(0)}

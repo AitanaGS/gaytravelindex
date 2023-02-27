@@ -1,17 +1,17 @@
-import { derived, writable } from 'svelte/store';
-import { width, height } from './dimensions';
+// import { derived, writable } from 'svelte/store';
+// import { width, height } from './dimensions';
 
-export const isMobile = derived(width, ($width) => {
-  return $width < 520;
-});
+// export const isMobile = derived(width, ($width) => {
+//   return $width < 520;
+// });
 
-export const isTablet = derived(width, ($width) => {
-  return $width >= 520 && $width <= 1024;
-});
+// export const isTablet = derived(width, ($width) => {
+//   return $width >= 520 && $width <= 1024;
+// });
 
-export const isDesktop = derived(width, ($width) => {
-  return $width > 1024;
-});
+// export const isDesktop = derived(width, ($width) => {
+//   return $width > 1024;
+// });
 
 // export const isSmall = derived(width, ($width) => {
 //   return $width < 720;

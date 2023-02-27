@@ -7,8 +7,8 @@
   import { clickedContinent } from "./lib/stores/clickedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
-  import { width, height} from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
-  import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
+  import { width, height, chartWidth, chartGap, desktopBreakpoint } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
 
@@ -76,18 +76,43 @@
 
 
   
-  let chartGap = 10
+  // let chartGap = 10
+
 
 // let continentWidth
 // let countryWidth
 // let mapWidth
 
 
-   $: continentWidth = ($width - chartGap) / 2
+  //  $: continentWidth = ($width - $chartGap) / 2
 
-   $: countryWidth = ($width - chartGap) / 2
+  //  $: countryWidth = ($width - $chartGap) / 2
 
-   $: mapWidth = $width * 0.75
+   // aspect ratio
+   $: mapWidth = 800  //800
+   $: mapHeight = 400 //400
+
+  //  $: chartGap = $isDesktop
+  //   ? 30
+  //   : $isTablet
+  //     ? 20
+  //     : 10
+
+  //  $: continentWidth = $isDesktop
+  //     ? ($width - chartGap) / 2
+  //     : $width * 0.8
+
+  //   $: countryWidth = $isDesktop
+  //     ? ($width - chartGap) / 2
+  //     : $width * 0.8
+
+  // $continentWidth = $isDesktop
+  //     ? ($width - chartGap) / 2
+  //     : $width * 0.8
+
+  // $countryWidth = $isDesktop
+  //     ? ($width - chartGap) / 2
+  //     : $width * 0.8
 
   // $: console.log("width", $width)
   // $: console.log("fontsize", $bodyFontSize)
@@ -115,6 +140,19 @@
 
   const totalScale = scaleDiverging(interpolateRdYlBu)
     .domain([min(data, d => d.total), 0, max(data, d => d.total)])
+
+
+  let countryView
+
+  function scrollToCountryView() {
+    countryView.scrollIntoView();
+  }
+
+  let continentView
+
+  function scrollToContinentView() {
+    continentView.scrollIntoView()
+  }
 
   // TODO: bandwidth of different continents
 
@@ -156,11 +194,11 @@
 
   // TODO check wo h1 in App.svelte
 
-  let chartSelection
+  // let chartSelection
 
-  function scrollToChartSelection() {
-		chartSelection.scrollIntoView();
-	}
+  // function scrollToChartSelection() {
+	// 	chartSelection.scrollIntoView();
+	// }
 
   // let width
 
@@ -186,7 +224,6 @@
   // $: mapHeight = 0.7 * innerHeight
 
   // $: mapHeight = width <= 800 ? 400 : 400
-  $: mapHeight = 400
 
   // $: console.log(innerHeight, mapHeight)
 
@@ -196,12 +233,13 @@
 <!-- <svelte:window bind:innerHeight/> -->
 <!-- <main style="--bodyFontSize: {$bodyFontSize}px;"     
 > -->
-<main>
+<main
+bind:clientWidth={$width}
+bind:clientHeight={$height}
+>
   <h1>Gay Travel Index 2021</h1>
   <div 
     class="wrapper" 
-    bind:clientWidth={$width}
-    bind:clientHeight={$height}
     >
     <!-- style="--width: {$width}px;" -->
     <!-- bind:clientHeight={$height} bind:clientWidth={$width} -->
@@ -221,16 +259,18 @@
   
       <div class="mapWrapper">
         {#if mapWidth > 0}
-        <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToChartSelection}/>
+        <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToCountryView}/>
         <!-- on:countryClick={handleCountryClick}  -->
         {/if}
       </div>
 
     </div>
 
-    <div class="selectContinentCountryWrapper" bind:this={chartSelection}>
-      <div class="selectContinentWrapper">
+    <!-- <div class="selectContinentCountryWrapper" > -->
+      <!-- bind:this={chartSelection} -->
+      <div class="selectContinentWrapper" bind:this={continentView}>
 
+        <p class="selectContinent">
         <label for="continent-select">Choose a continent</label>
 
         <!-- <select 
@@ -253,12 +293,13 @@
           {#each continents as continent}
             <option value={continent}>{continent}</option>
           {/each}
-      </select>
+      </select> and click on a country for more information.
+    </p>
       </div>
-      <div class="selectCountryWrapper">
+      <!-- <div class="selectCountryWrapper"> -->
 
-        <p>and click on a country for more information.</p>
-        <button
+        <!-- <p>and click on a country for more information.</p> -->
+        <!-- <button
           class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
           on:click={() => {
             // selectedCountry = ""
@@ -266,8 +307,8 @@
             // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
             // scrollToTop() // here scrolling
           }}
-          >Clear Country</button>
-      </div>
+          >Clear Country</button> -->
+      <!-- </div> -->
         
         <!-- <button
           class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
@@ -287,9 +328,9 @@
         style="opacity: {selectedCountry ? "1" : "0"}"
         
              -->
-    </div>
+    <!-- </div> -->
 
-    <div class="chartWrapper" style="--gap: {chartGap}px;">
+    <div class="chartWrapper" style="--gap: {$chartGap}px;">
         
         <div class="continentChartWrapper"> 
           <!-- bind:clientWidth={width} -->
@@ -305,15 +346,15 @@
               sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
               Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
              </p>
-             <Heatmap {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} on:countryClick={scrollToChartSelection}  />
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {data} {years} {selectedContinent} {selectedCountry} />
              
-             <!-- on:countryClick={handleCountryClick}  -->
+             <!-- on:countryClick={handleCountryClick}   width={$continentWidth} -->
 
 
       </div>
         
 
-    <div class="countryChartWrapper"> 
+    <div class="countryChartWrapper" bind:this={countryView}> 
       <!-- bind:clientWidth={width} -->
       <!-- <svg {width} {height}> -->
     
@@ -323,14 +364,26 @@
     
       {/if} -->
 
-      <p>
-        Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
-        sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-        sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-        Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-      </p>
-      <IndicatorsChart width={countryWidth} {data} {years}/>
-      <!-- {selectedCountry} -->
+      <div class="countryInfo">
+        <p>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
+          sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
+          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
+          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+        </p>
+        <button
+        class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
+        on:click={() => {
+          // selectedCountry = ""
+          clickedCountry.set("")
+          scrollToContinentView()
+          // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+          // scrollToTop() // here scrolling
+        }}
+        >Clear Country</button>
+      </div>
+      <IndicatorsChart {data} {years}/>
+      <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
 
 
@@ -348,9 +401,9 @@
     padding: 40px;
   }
 
-  p {
+  /* p {
     line-height: 1.5;
-  }
+  } */
 
   .wrapper {
     /* width: var(--width); */
@@ -360,13 +413,22 @@
   .topWrapper {
     display: flex;
     margin-bottom: 20px;
+    /* flex-direction: column; */
+  }
+
+  .intro {
+    flex: 1;
+  }
+
+  .mapWrapper {
+    flex: 2;
   }
 
   h1 {
   /* font-size: 2rem; */
   line-height: 1.3;
   margin: 0;
-  font-size: clamp(1.5rem, 2vw + 1.5rem, 2rem);
+  font-size: clamp(1.5rem, 2vw + 1.5rem, 2.2rem);
   min-height: 0vh;
 }
 
@@ -376,21 +438,28 @@
 
 } */
 
-  .selectContinentCountryWrapper {
+  /* .selectContinentCountryWrapper { */
     /* position: absolute;
     left: 100; */
     /* position: absolute; */
     /* left: 210px; */
     /* margin-bottom: 20px; */
-    display: flex;
+    /* display: flex; */
     /* flex-direction: column;
     align-items: flex-start;  */
-    justify-content: flex-start;
-     align-items: baseline;
+    /* justify-content: flex-start;
+     align-items: baseline; */
     /* justify-content: baseline; */
-    gap: 10px;
+    /* gap: 10px; */
     /* font-size: var(--bodyFontSize); */
-  }
+  /* } */
+
+  /* @media (max-width: 1100px){
+    .selectContinentCountryWrapper {
+      flex-direction: column;
+      gap: 0px;
+    }
+  } */
 
   /* select {
     font-size: var(--bodyFontSize);
@@ -399,12 +468,21 @@
   .selectContinentWrapper {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
+    /* flex: 1; */
   }
 
-  .selectCountryWrapper {
-    display: flex;
-    gap: 20px;
-  }
+  /* .selectCountryWrapper { */
+    /* display: flex; */
+    /* gap: 20px; */
+    /* flex: 1; */
+  /* } */
+
+  /* @media (max-width: 1100px){
+    .selectCountryWrapper {
+      gap: 2px;
+    }
+  } */
 
   select {
     font-size: 1rem;
@@ -413,16 +491,24 @@
   .chartWrapper {
     display: flex;
     gap: var(--gap);
+    flex-wrap: wrap;
 
   }
 
-  /* .continentChartWrapper {
-    position: relative;
+  /* @media (max-width: 1100px){
+    .chartWrapper {
+      flex-direction: column;
+    }
+  } */
+
+
+  .continentChartWrapper {
+    flex: 1;
   }
 
   .countryChartWrapper {
-    position: relative;
-  } */
+    flex: 1;
+  }
 
 /* .continentButton { */
     /* transition: visibility 100ms ease ; */
@@ -484,6 +570,60 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
+@media (max-width: 1100px){
+    .topWrapper {
+      flex-direction: column;
+    }
+
+    .mapWrapper {
+      margin-top: 10px;
+    }
+
+    .intro {
+      display: flex;
+      justify-content: center;
+    }
+
+    /* .selectContinentCountryWrapper {
+      flex-direction: column;
+      gap: 0px;
+    } */
+
+    /* .selectCountryWrapper {
+      gap: 2px;
+    } */
+
+    .chartWrapper {
+      flex-direction: column;
+      /* align-items: center; */
+    }
+
+    p {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 10px 0;
+      /* padding-top: 10px; */
+    }
+
+    .selectContinentWrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      /* display: flex;
+      justify-content: center; */
+      padding: 20px 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .countryInfo {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+  }
 
 
   /* https://stackoverflow.com/questions/30855985/pure-css-animation-visibility-with-delay */

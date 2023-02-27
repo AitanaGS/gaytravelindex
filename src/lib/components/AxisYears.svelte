@@ -1,6 +1,7 @@
 <script>
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize";
+    import { isDesktop, isTablet, isMobile } from "../stores/dimensions";
 
     export let yearScale
     export let margin
@@ -9,6 +10,9 @@
     $: years = yearScale.domain()
 
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
+    // $: console.log("Mobile", $isMobile)
+    // $: console.log("Tablet", $isTablet)
+    // $: console.log("Desktop", $isDesktop)
 
 </script>
 
@@ -22,10 +26,23 @@
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-weight={year === 2021 ? "bold" : "normal"}
-                font-size={year === 2021 ? `${0.9 * $chartFontSize}rem` : `${0.8 * $chartFontSize}rem`}
-                >
+                font-size={ $isDesktop
+                    ? year === 2021 
+                            ? `${0.8 * $chartFontSize}rem`
+                            : `${0.7 * $chartFontSize}rem`
+                    : $isTablet
+                            ? year === 2021 
+                                ? `${0.8 * $chartFontSize}rem`
+                                : `${0.7 * $chartFontSize}rem`
+                    : (year % 2 === 0 && year !== 2020) || year === 2021
+                        ? year === 2021 
+                            ? `${0.8 * $chartFontSize}rem`
+                            : `${0.7 * $chartFontSize}rem`
+                        : `${0 * $chartFontSize}rem`
+                }>
                     {year}
                 </text>
+                <!-- font-size={year === 2021 ? `${0.8 * $chartFontSize}rem` : `${0.7 * $chartFontSize}rem`} -->
                 <!-- font-size={year === 2021 ? "0.9rem" : "0.8rem"} -->
         </g>
 

@@ -4,6 +4,7 @@
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
+    import { chartWidth } from "../stores/dimensions"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
@@ -13,7 +14,7 @@
     export let selectedContinent
     export let data
     export let selectedCountry
-    export let width
+    // export let width
     export let years
     export let totalScale
     // export let currentWindowWidth
@@ -52,10 +53,10 @@
         top: 60, // 60
         right: 10,
         bottom: 60,
-        left: 210 // 220
+        left: 195 //200//210 // 220
   }
 
-  $: innerWidth = width - margin.left - margin.right
+  $: innerWidth = $chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
 
   $: yearScale = scaleBand()
@@ -106,7 +107,7 @@
 </script>
 
 <div class="continentHeatmap wrapper">
-    <svg {width} {height}>
+    <svg width={$chartWidth} {height}>
         <text 
           class="continentName" 
           x={innerWidth/2 + margin.left} 
@@ -181,10 +182,10 @@
                 }
                 font-size={
                     d.year === 2021 && d === hoveredCountryYear
-                    ? `${0.9 * $chartFontSize}rem`
+                    ? `${0.85 * $chartFontSize}rem`
                     : d.year === 2021 || d === hoveredCountryYear
-                    ? `${0.9 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
-                    : `${0.8 * $chartFontSize}rem`
+                    ? `${0.85 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
+                    : `${0.75 * $chartFontSize}rem`
                     }
               >{d.total}</text> 
 <!-- 

@@ -1,5 +1,5 @@
 // import { windowWidth } from './windowWidth';
-import { width } from './dimensions';
+import { width, chartWidth } from './dimensions';
 
 import { derived } from 'svelte/store';
 import { scaleLinear } from 'd3-scale';
@@ -14,19 +14,19 @@ import { scaleLinear } from 'd3-scale';
 // );
 
 const chartFontSizeScale = scaleLinear()
-  .domain([600, 1000])
-  .range([2, 1]) //.range([26, 16])
+  .domain([300, 1000])
+  .range([0.9, 1]) //.range([26, 16])
   .clamp(true);
 
 // export const chartFontSize = writable(chartFontSizeScale(currentwidth));
 
-export const chartFontSize = derived(width, ($width) =>
-  chartFontSizeScale($width)
+export const chartFontSize = derived(chartWidth, ($chartWidth) =>
+  chartFontSizeScale($chartWidth)
 );
 
 const tooltipFontSizeScale = scaleLinear()
-  .domain([600, 1000])
-  .range([2, 1]) //.range([26, 16])
+  .domain([300, 2000])
+  .range([1.4, 1]) //.range([26, 16])
   .clamp(true);
 
 export const tooltipFontSize = derived(width, ($width) =>

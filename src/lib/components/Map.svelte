@@ -135,7 +135,9 @@
 </script>
 
 <div bind:this={parentMap} class="map">
-    <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} >
+    <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
+    <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} >
+        <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
         <!-- bind:this={selectInitZoom} 
         width={mapWidth} height={mapHeight} -->
         <g bind:this={selectHandleZoom} >

@@ -20,7 +20,7 @@
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"
-                font-size={`${0.9 * $chartFontSize}rem`}
+                font-size={`${0.8 * $chartFontSize}rem`}
             > {value}</text>
             <line
                 x1={indicatorValueScale(value)}
