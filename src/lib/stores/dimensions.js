@@ -38,14 +38,14 @@ export const isDesktop = derived(
 export const chartGap = derived(
   [isMobile, isTablet, isDesktop],
   ([$isMobile, $isTablet, $isDesktop]) => {
-    return $isDesktop ? 20 : $isTablet ? 10 : 0;
+    return $isDesktop ? 30 : $isTablet ? 10 : 0;
   }
 );
 
 export const chartWidth = derived(
   [isDesktop, width, chartGap],
   ([$isDesktop, $width, $chartGap]) => {
-    return $isDesktop ? (($width - $chartGap) / 2) * 0.9 : $width * 0.85;
+    return $isDesktop ? (($width - $chartGap) / 2) * 0.8 : $width * 0.8; // 0.9 0.85
   }
 );
 

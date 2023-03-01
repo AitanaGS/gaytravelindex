@@ -31,19 +31,35 @@
     //     : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
 
 
-    let xPosition
+    $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+        ? xValue + margin.left - tooltipWidth + xBandwidth
+        : xValue + margin.left - tooltipWidth / 2
 
-    $: if ($isMobile || $isTablet) {
-        xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth + xBandwidth
-        : xValue + margin.left - tooltipWidth / 2
-    } else {
-        xPosition = xValue + margin.left + tooltipWidth / 2 > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth + xBandwidth
-        : xValue + margin.left - tooltipWidth / 2 < margin.left
-        ? xValue + margin.left
-        : xValue + margin.left - tooltipWidth / 2
-    }
+    // let xPosition
+
+    // $: if ($isMobile || $isTablet) {
+    //     xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2
+    // } else {
+    //     xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2
+    // }
+
+    // let xPosition
+
+    // $: if ($isMobile || $isTablet) {
+    //     xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2
+    // } else {
+    //     xPosition = xValue + margin.left + tooltipWidth / 2 > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2 < margin.left
+    //     ? xValue + margin.left
+    //     : xValue + margin.left - tooltipWidth / 2
+    // }
 
     // $: if ($isMobile) {
     //     xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
