@@ -1,9 +1,11 @@
 <script>
-    import { fly, fade } from "svelte/transition"
     import TooltipAxisYears from "./TooltipAxisYears.svelte";
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
+    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
-    import { tooltipFontSize } from "../stores/responsiveFontSize";
+    import { fly, fade } from "svelte/transition"
+    // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2021Data
     export let data
@@ -26,15 +28,42 @@
     $: xValue = indicatorValueScale(indicator2021Data.value)
     $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
 
-    $: xPosition = indicator2021Data.value === -5
-        ? margin.left + xValue
-        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-        ? margin.left + xValue - xBandwidth
-        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-        ? margin.left + xValue - tooltipWidth / 2
-        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-        ? margin.left + xValue - tooltipWidth + xBandwidth
-        : margin.left + xValue - tooltipWidth
+    let xPosition
+
+    $: if ($isMobile || $isTablet) {
+
+        xPosition = indicator2021Data.value === -5
+            ? margin.left + xValue - xBandwidth * 4 //5
+            : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+            ? margin.left + xValue - xBandwidth * 6 //7
+            : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+            ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
+            : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+            ? margin.left + xValue - tooltipWidth + xBandwidth
+            : margin.left + xValue - tooltipWidth
+
+    } else {
+
+        xPosition = indicator2021Data.value === -5
+            ? margin.left + xValue
+            : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+            ? margin.left + xValue - xBandwidth
+            : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+            ? margin.left + xValue - tooltipWidth / 2
+            : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+            ? margin.left + xValue - tooltipWidth + xBandwidth
+            : margin.left + xValue - tooltipWidth
+    }
+
+    // $: xPosition = indicator2021Data.value === -5
+    //     ? margin.left + xValue
+    //     : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+    //     ? margin.left + xValue - xBandwidth
+    //     : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+    //     ? margin.left + xValue - tooltipWidth / 2
+    //     : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+    //     ? margin.left + xValue - tooltipWidth + xBandwidth
+    //     : margin.left + xValue - tooltipWidth
     
     
     $: yValue = indicatorScale(indicator2021Data.indicator)
@@ -71,9 +100,9 @@
 
 
     const svgMargin = {
-        top: 10,
+        top: 5, //10,
         right: 10,
-        bottom: 20,
+        bottom: 20, //20,
         left: 20
     }
 
@@ -95,6 +124,13 @@
         .domain(indicatorValueScale.domain())
         .range([svgInnerHeight, 0])
 
+    const tooltipFontSizeScale = scaleLinear()
+        .domain([100, 300])
+        .range([1.1, 0.95]) //.range([26, 16])
+        .clamp(true);
+
+    $: tooltipFontSize = tooltipFontSizeScale(tooltipWidth)
+
 // TODO: check hsla code in style
 // TODO: check responsiveness tooltip width
 // TODO: Accessibility of tooltip data (focus)
@@ -113,7 +149,7 @@
         left: {xPosition}px;
         --height: {tooltipHeight}px;
         --width: {tooltipWidth}px;
-        --fontSize: {`${$tooltipFontSize}rem`};
+        --fontSize: {`${tooltipFontSize}rem`};
     "
     bind:clientWidth={tooltipWidth}
     >
@@ -121,8 +157,8 @@
     <div>
         {#if tooltipWidth}
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
-            <TooltipAxisIndicatorValues {tooltipIndicatorValueScale} {svgMargin} {svgInnerWidth} />
-            <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {years}/>
+            <TooltipAxisIndicatorValues {tooltipIndicatorValueScale} {svgMargin} {svgInnerWidth} {tooltipFontSize}/>
+            <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {years} {tooltipFontSize}/>
             <g
                 class="chart tooltipChart"
                 transform="translate({svgMargin.left}, {svgMargin.top})"
@@ -156,7 +192,7 @@
         width: var(--width);
         background: white;
         box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px;
-        padding: 8px 6px;
+        padding: 6px 6px;
         border-radius: 4px;
         pointer-events: none;
         white-space: nowrap;

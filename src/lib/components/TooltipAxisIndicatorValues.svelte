@@ -1,9 +1,10 @@
 <script>
-    import { tooltipFontSize } from "../stores/responsiveFontSize";
+    // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let tooltipIndicatorValueScale
     export let svgMargin
     export let svgInnerWidth
+    export let tooltipFontSize
 
     let indicatorValues = tooltipIndicatorValueScale.ticks()
 </script>
@@ -19,7 +20,7 @@
                 y={tooltipIndicatorValueScale(value)}
                 text-anchor="end"
                 dominant-baseline="middle"
-                font-size={`${0.55 * $tooltipFontSize}rem`}
+                font-size={`${0.55 * tooltipFontSize}rem`}
             >
             <!-- font-size="0.55rem" -->
             {value}

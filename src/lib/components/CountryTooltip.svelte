@@ -1,7 +1,9 @@
 <script>
-    import { tooltipFontSize } from "../stores/responsiveFontSize";
+    // import { tooltipFontSize } from "../stores/responsiveFontSize";
+    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
 
     import { fly, fade, slide } from "svelte/transition"
+    import { scaleLinear } from 'd3-scale';
 
     export let data
     export let country
@@ -11,6 +13,19 @@
     export let yPosition
     export let flyDirection
     export let tooltipWidth
+
+    // let tooltipWidth = 200
+
+
+    const tooltipFontSizeScale = scaleLinear()
+        .domain([100, 200])
+        .range([1.1, 0.95]) //.range([26, 16])
+        .clamp(true);
+
+    $: tooltipFontSize = tooltipFontSizeScale(tooltipWidth)
+
+    // $: console.log(tooltipWidth)
+
 
     // TODO css variables for background and color
     // TODO: check hsla code in style
@@ -23,7 +38,7 @@
 
 
 <div
-    bind:clientWidth={tooltipWidth}
+    bind:clientWidth={tooltipWidth} 
     in:fly={{ y: 20 * flyDirection,
         duration: 200, 
         delay: 100 }}
@@ -31,12 +46,23 @@
     style="
         top: {yPosition}px;
         left: {xPosition}px;
-        --fontSize: {$tooltipFontSize}rem;
+        --fontSize: {tooltipFontSize}rem;
+        --width: {tooltipWidth}px;
     "
 >
+<!-- bind:clientWidth={tooltipWidth} -->
+<!-- --fontSize: {$tooltipFontSize}rem; -->
 <!-- bind:clientHeight={tooltipHeight} -->
 <!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
-    <h3>{country} {lastYearOnly ? "2021" : data.year}</h3>
+    {#if $isDesktop}
+        <h3>{country} {lastYearOnly === true ? "2021" : data.year}</h3>
+    {/if}
+    {#if $isMobile || $isTablet}
+        <h3 class="tooltipHeading">
+            <span>{country}</span>
+            <span>{lastYearOnly === true ? "2021" : data.year}</span>
+        </h3>
+    {/if}
     <div class="info">
         <span 
             class="total"
@@ -62,11 +88,17 @@
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease; 
         text-align: center;
-        margin: 0 auto; /*new*/
+        /* margin: 0 auto; */
+        width: var(--width);
+    }
+
+    .tooltipHeading {
+        display: flex;
+        flex-direction: column;
     }
 
     h3 {
-        margin: 0;
+        margin: 0px;
         font-size: calc(var(--fontSize) * 0.9);
         font-weight: 700;
         margin-bottom: 3px;
@@ -83,12 +115,13 @@
         padding: 4px 5px 4px 5px;
         border-radius: 5px;
         white-space: nowrap;
-        margin: 0;
+        margin: 0px;
     }
 
     .ranking {
         margin: 0;
         white-space: nowrap;
     }
+
 
 </style>

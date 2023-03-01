@@ -52,7 +52,7 @@
     const margin = {
         top: 60, // 60
         right: 10,
-        bottom: 60,
+        bottom: 5,
         left: 195 //200//210 // 220
   }
 
@@ -182,7 +182,7 @@
                 }
                 font-size={
                     d.year === 2021 && d === hoveredCountryYear
-                    ? `${0.85 * $chartFontSize}rem`
+                    ? `${0.95 * $chartFontSize}rem`
                     : d.year === 2021 || d === hoveredCountryYear
                     ? `${0.85 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
                     : `${0.75 * $chartFontSize}rem`

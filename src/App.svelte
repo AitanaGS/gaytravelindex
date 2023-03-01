@@ -18,9 +18,17 @@
   import { interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
 
 
-  window.onbeforeunload = function () {
-    window.scrollTo(0, 0);
-  }
+  // window.onbeforeunload = function () {
+  //   window.scrollTo(0, 0)
+  // }
+
+  if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+} else {
+    window.onbeforeunload = function () {
+        window.scrollTo(0, 0);
+    }
+}
 
 
 
@@ -193,6 +201,9 @@
   // TODO check tooltip position after resizing window
 
   // TODO check wo h1 in App.svelte
+
+  // TODO disabled button
+  // https://uxplanet.org/disabled-buttons-in-user-interface-4dafda3e6fe7
 
   // let chartSelection
 
@@ -486,6 +497,7 @@ bind:clientHeight={$height}
 
   select {
     font-size: 1rem;
+    color: dimgray;
   }
 
   .chartWrapper {
@@ -554,7 +566,7 @@ bind:clientHeight={$height}
   border-radius: 5px;
   border: 1px solid transparent;
   /* padding: 0.6em 1.2em; */
-  padding: 0px 20px;
+  padding: 10px 20px;
   font-size: 0.9rem;
   font-weight: 400;
   font-family: inherit;
@@ -571,18 +583,18 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (max-width: 1100px){
+@media (max-width: 1150px){
     .topWrapper {
       flex-direction: column;
     }
 
     .mapWrapper {
-      margin-top: 10px;
+      margin-top: 20px;
     }
 
     .intro {
       display: flex;
-      justify-content: center;
+      /* justify-content: center; */
     }
 
     /* .selectContinentCountryWrapper {
@@ -601,28 +613,28 @@ button:focus-visible {
 
     p {
       max-width: 600px;
-      margin: 0 auto;
-      padding: 10px 0;
+      /* margin: 0; */
+      /* padding: 10px 0; */
       /* padding-top: 10px; */
     }
 
     .selectContinentWrapper {
-      max-width: 600px;
-      margin: 0 auto;
+      /* max-width: 600px; */
+      /* margin: 0; */
       /* display: flex;
       justify-content: center; */
-      padding: 20px 0;
+      /* padding: 20px 0; */
     }
 
     h1 {
-      text-align: center;
+      /* text-align: center; */
       margin-bottom: 10px;
     }
 
-    .countryInfo {
+    /* .countryInfo {
       max-width: 600px;
       margin: 0 auto;
-    }
+    } */
   }
 
 

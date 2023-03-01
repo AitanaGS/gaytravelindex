@@ -1,5 +1,6 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
+    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
     
     export let mapData
     export let totalScale
@@ -21,16 +22,38 @@
 
 
     let yNudge = 5
+    let yMobileNudge = 15
 
     $: yValue = mapData.event.type === "focus" ? mapData.centroid[1]  : mapData.event.clientY - mapData.parentBoundingRect.top
 
-    $: yPosition = mapData.event.type === "focus"
+    let yPosition
+
+    $: if ($isMobile || $isTablet) {
+        yPosition = mapData.event.type === "focus"
+        ? yValue - tooltipHeight < 0
+            ? yValue
+            : yValue - tooltipHeight - yMobileNudge
+        : yValue - tooltipHeight - yNudge < 0
+            ? yValue + yNudge
+            : yValue - tooltipHeight - yMobileNudge //- yNudge
+
+    } else {
+        yPosition = mapData.event.type === "focus"
         ? yValue - tooltipHeight < 0
             ? yValue
             : yValue - tooltipHeight 
         : yValue - tooltipHeight - yNudge < 0
-            ? yValue //+ yNudge
+            ? yValue + yNudge
             : yValue - tooltipHeight //- yNudge
+    }
+
+    // $: yPosition = mapData.event.type === "focus"
+    //     ? yValue - tooltipHeight < 0
+    //         ? yValue
+    //         : yValue - tooltipHeight 
+    //     : yValue - tooltipHeight - yNudge < 0
+    //         ? yValue + yNudge
+    //         : yValue - tooltipHeight //- yNudge
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 
@@ -44,7 +67,7 @@
     data={mapData.data} 
     country={mapData.data.shortName} 
     colorScale={totalScale}
-    lastYearOnly=TRUE
+    lastYearOnly={true}
     {xPosition}
     {yPosition}
     {flyDirection}

@@ -72,8 +72,8 @@
 
   const margin = {
     top: 60, // 80
-    right: 10,
-    bottom: 60,
+    right: 5,
+    bottom: 5,
     left: 230//210
   }
 

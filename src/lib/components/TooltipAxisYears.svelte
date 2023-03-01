@@ -1,10 +1,11 @@
 <script>
-    import { tooltipFontSize } from "../stores/responsiveFontSize";
+    // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let tooltipYearScale
     export let svgMargin
     export let years
     export let svgInnerHeight
+    export let tooltipFontSize
 </script>
 
 
@@ -22,7 +23,7 @@
                 y=10
                 text-anchor=middle
                 dominant-baseline="hanging"
-                font-size={`${0.55 * $tooltipFontSize}rem`}
+                font-size={`${0.55 * tooltipFontSize}rem`}
 
                 >
                     {year}
