@@ -10,7 +10,7 @@
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
-    import { isDesktop, isMobile, isTablet, chartWidth } from '../stores/dimensions'
+    import { isDesktop, isMobile, isTablet, isSmallMobile, chartWidth } from '../stores/dimensions'
 
 
     export let data
@@ -160,13 +160,17 @@ const handleIndicatorHover = (e, d) => {
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
-                        r={$isMobile
+                        r={$isSmallMobile
                             ? hoveredIndicator === d 
-                                ? 8 
-                                : 6
-                            : hoveredIndicator === d 
-                                ? 10
-                                : 8 }
+                                ? 6 
+                                : 4
+                            : $isMobile
+                                ? hoveredIndicator === d 
+                                    ? 8 
+                                    : 6
+                                : hoveredIndicator === d 
+                                    ? 10
+                                    : 8 }
                         fill={indicatorValueColorScale(d.value)}
                         stroke="dimgray"
                         class="indicator"

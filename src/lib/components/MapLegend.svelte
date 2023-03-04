@@ -69,7 +69,7 @@
     <!-- font-size="0.9rem"  -->
         Gay Travel Index
     </text>
-    <text 
+    <!-- <text 
         x={legendWidth / 2} 
         y="20" 
         fill="darkgray" 
@@ -77,18 +77,19 @@
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
-        Total Score 2021
-    </text>
+        2021
+    </text> -->
     <rect 
         id="legendBar" 
         x={0}
-        y="40"
+        y="20"
         width={legendWidth}
         height={legendHeight} 
     />
+    <!-- y="40" -->
     <text 
         x=0 
-        y={40 + legendHeight + 5} 
+        y={20 + legendHeight + 5} 
         fill="darkgray" 
         font-size={`${0.8 * mapFontSize}rem`}
         dominant-baseline="hanging" 
@@ -98,7 +99,7 @@
     </text>
     <text 
         x={legendWidth / 2} 
-        y={40 + legendHeight + 5} 
+        y={20 + legendHeight + 5} 
         fill="darkgray" 
         font-size={`${0.8 * mapFontSize}rem`}
         dominant-baseline="hanging" 
@@ -108,7 +109,7 @@
     </text>
     <text 
         x={legendWidth} 
-        y={40 + legendHeight + 5} 
+        y={20 + legendHeight + 5} 
         fill="darkgray" 
         font-size={`${0.8 * mapFontSize}rem`}
         dominant-baseline="hanging" 
@@ -122,7 +123,7 @@
         in:fade={{ duration: 250 }}
         x1={legendWidth * totalScorePercent} 
         x2={legendWidth * totalScorePercent} 
-        y1={40} y2={40 + legendHeight} 
+        y1={20} y2={20 + legendHeight} 
         stroke="#303030"
         stroke-width=2/>
     {/if}

@@ -7,7 +7,7 @@
   import { clickedContinent } from "./lib/stores/clickedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
-  import { width, height, chartWidth, chartGap, desktopBreakpoint } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  import { width, height, chartWidth, desktopBreakpoint, isDesktop } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
   // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
@@ -154,12 +154,14 @@
 
   function scrollToCountryView() {
     countryView.scrollIntoView();
+    countryView.focus()
   }
 
   let continentView
 
   function scrollToContinentView() {
     continentView.scrollIntoView()
+    continentView.focus()
   }
 
   // TODO: bandwidth of different continents
@@ -205,6 +207,10 @@
   // TODO disabled button
   // https://uxplanet.org/disabled-buttons-in-user-interface-4dafda3e6fe7
 
+  // TODO font color as scale dependent from background color
+
+  // TODO flavicon
+
   // let chartSelection
 
   // function scrollToChartSelection() {
@@ -238,12 +244,10 @@
 
   // $: console.log(innerHeight, mapHeight)
 
+  $: console.log($isDesktop, $width, $chartWidth)
 
 </script>
 
-<!-- <svelte:window bind:innerHeight/> -->
-<!-- <main style="--bodyFontSize: {$bodyFontSize}px;"     
-> -->
 <main
 bind:clientWidth={$width}
 bind:clientHeight={$height}
@@ -252,136 +256,72 @@ bind:clientHeight={$height}
   <div 
     class="wrapper" 
     >
-    <!-- style="--width: {$width}px;" -->
-    <!-- bind:clientHeight={$height} bind:clientWidth={$width} -->
     
     <div class="topWrapper">
       <div class="intro">
         <!-- <h1>Gay Travel Index 2021</h1> -->
-        <p class="introText">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
-          sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. 
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor 
-          invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
-        </p>
+        <div>
+          <p>
+            In many countries, lesbian, gay, bisexual, and transgender people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
+          </p>
+        </div>
       </div>
   
       <div class="mapWrapper">
         {#if mapWidth > 0}
         <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToCountryView}/>
-        <!-- on:countryClick={handleCountryClick}  -->
         {/if}
+        <p class="dataInfo">
+          Data: <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
+        </p>
       </div>
 
     </div>
 
-    <!-- <div class="selectContinentCountryWrapper" > -->
-      <!-- bind:this={chartSelection} -->
-      <div class="selectContinentWrapper" bind:this={continentView}>
-
-        <p class="selectContinent">
-        <label for="continent-select">Choose a continent</label>
-
-        <!-- <select 
-          name="continents" 
-          id="continent-select" 
-          bind:value={$clickedContinent}
-          on:change={() => selectedCountry = ''}>
-            <option value="Overview">Overview</option>
-            {#each continents as continent}
-              <option value={continent}>{continent}</option>
-            {/each}
-        </select> -->
-        <!-- bind:value={selectedContinent} -->
-        <select 
-        name="continents" 
-        id="continent-select" 
-        bind:value={$clickedContinent}
-        on:change={() => clickedCountry.set("")}>
-          <option value="All">All</option>
-          {#each continents as continent}
-            <option value={continent}>{continent}</option>
-          {/each}
-      </select> and click on a country for more information.
-    </p>
-      </div>
-      <!-- <div class="selectCountryWrapper"> -->
-
-        <!-- <p>and click on a country for more information.</p> -->
-        <!-- <button
-          class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
-          on:click={() => {
-            // selectedCountry = ""
-            clickedCountry.set("")
-            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
-            // scrollToTop() // here scrolling
-          }}
-          >Clear Country</button> -->
-      <!-- </div> -->
+    <div class="chartWrapper" >
+      <!-- style="--gap: {$chartGap}px;" -->
         
-        <!-- <button
-          class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
-          on:click={() => {
-            selectedCountry = ""
-            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
-            // scrollToTop() // here scrolling
-          }}
-          >Back to {selectedContinent}</button> -->
-
-            <!--
-                style="visibility: {selectedCountry ? "visible" : "hidden"}"
-                style="visibility: {selectedCountry ? "visible" : "hidden"}"
-                in:slide={{ duration: 400}}
-        out:slide={{ duration: 300}} 
-        class="continentButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
-        style="opacity: {selectedCountry ? "1" : "0"}"
-        
-             -->
-    <!-- </div> -->
-
-    <div class="chartWrapper" style="--gap: {$chartGap}px;">
-        
-        <div class="continentChartWrapper"> 
-          <!-- bind:clientWidth={width} -->
-          <!-- <svg {width} {height}> -->
-        
-            <!-- {#if !selectedCountry && selectedContinent}
-            <Heatmap on:countryClick={handleCountryClick} {totalScale} width={continentWidth} {data} {years} {selectedContinent} {selectedCountry} />
-            {/if}
-             -->
+        <div class="continentChartWrapper" bind:this={continentView} tabindex="0" role="region" aria-label="Ranking"> 
              <p>
-              Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
-              sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-              sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-              Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+              The table below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
+             <div class="selectContinentWrapper">
+
+              <p class="selectContinent">
+              <label for="continent-select">Select a continent</label>
+              <select 
+              name="continents" 
+              id="continent-select" 
+              bind:value={$clickedContinent}
+              on:change={() => clickedCountry.set("")}>
+                <option value="All">All</option>
+                {#each continents as continent}
+                  <option value={continent}>{continent}</option>
+                {/each}
+            </select> and click on a country’s name for information about its ratings in the different categories.
+          </p>
+            </div>
              <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {data} {years} {selectedContinent} {selectedCountry} />
-             
-             <!-- on:countryClick={handleCountryClick}   width={$continentWidth} -->
 
 
       </div>
         
-
-    <div class="countryChartWrapper" bind:this={countryView}> 
-      <!-- bind:clientWidth={width} -->
-      <!-- <svg {width} {height}> -->
-    
-      <!-- {#if selectedCountry}
-    
-        <IndicatorsChart width={countryWidth} {data} {selectedCountry} {years}/>
-    
-      {/if} -->
+    <div class="countryChartWrapper" bind:this={countryView} tabindex="0" role="region" aria-label="Country Info"> 
 
       <div class="countryInfo">
+        {#if !selectedCountry}
+          <p>Click on a country in the table or on the map for its individual ratings.</p>
+        {/if}
+        {#if selectedCountry}
         <p>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, 
-          sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, 
-          sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. 
-          Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+          Positive developments count as plus points, and negative ones as minus points. A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
         </p>
+        <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
+        </p>
+
+        {#if selectedCountry === "United States of America"}
+        <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
+        {/if}
         <button
         class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
         on:click={() => {
@@ -392,10 +332,13 @@ bind:clientHeight={$height}
           // scrollToTop() // here scrolling
         }}
         >Clear Country</button>
+        {/if}
       </div>
       <IndicatorsChart {data} {years}/>
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
+
+
 
 
     </div>
@@ -436,11 +379,18 @@ bind:clientHeight={$height}
   }
 
   h1 {
-  /* font-size: 2rem; */
+  /* font-size: 1.5rem; */
   line-height: 1.3;
+  /* margin-bottom: 20px; */
   margin: 0;
   font-size: clamp(1.5rem, 2vw + 1.5rem, 2.2rem);
   min-height: 0vh;
+  /* font-size: 2.5rem; */
+}
+
+
+.dataInfo {
+  font-size: 1rem;
 }
 
 /* .introText {
@@ -496,13 +446,13 @@ bind:clientHeight={$height}
   } */
 
   select {
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: dimgray;
   }
 
   .chartWrapper {
     display: flex;
-    gap: var(--gap);
+    /* gap: var(--gap); */
     flex-wrap: wrap;
 
   }
@@ -517,6 +467,10 @@ bind:clientHeight={$height}
   .continentChartWrapper {
     flex: 1;
   }
+
+  /* .chartWrapper p {
+    max-width: 500px;
+  } */
 
   .countryChartWrapper {
     flex: 1;
@@ -583,7 +537,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (max-width: 1150px){
+/* @media (max-width: 1150px){ */
     .topWrapper {
       flex-direction: column;
     }
@@ -612,30 +566,22 @@ button:focus-visible {
     }
 
     p {
-      max-width: 600px;
-      /* margin: 0; */
-      /* padding: 10px 0; */
-      /* padding-top: 10px; */
+      max-width: 700px;
     }
 
-    .selectContinentWrapper {
+    /* .selectContinentWrapper {
       /* max-width: 600px; */
       /* margin: 0; */
       /* display: flex;
       justify-content: center; */
       /* padding: 20px 0; */
-    }
-
-    h1 {
-      /* text-align: center; */
-      margin-bottom: 10px;
-    }
+    /* } */ 
 
     /* .countryInfo {
       max-width: 600px;
       margin: 0 auto;
     } */
-  }
+  /* } */
 
 
   /* https://stackoverflow.com/questions/30855985/pure-css-animation-visibility-with-delay */

@@ -70,7 +70,7 @@
                 background: {colorScale(data.total)};
                 color: {data.total < 8 && data.total > -15 ? "black" : "white"};
             ">
-            score: {data.total}
+            GTI: {data.total}
         </span>
         <p class="ranking">global ranking: {data.ranking}</p>
     </div>
