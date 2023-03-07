@@ -157,6 +157,24 @@ const handleIndicatorHover = (e, d) => {
                     <g 
                         transform="translate(0, {indicatorScale.bandwidth()/2})"
                     >
+                    {#if d.value !== 0}
+                    <line 
+                        x1={indicatorValueScale(0)}
+                        x2={indicatorValueScale(d.value)}
+                        y1={indicatorScale(d.indicator)}
+                        y2={indicatorScale(d.indicator)}
+                        stroke="dimgray"
+                        stroke-width=4
+                    />
+                    <line 
+                    x1={indicatorValueScale(0)}
+                    x2={indicatorValueScale(d.value)}
+                    y1={indicatorScale(d.indicator)}
+                    y2={indicatorScale(d.indicator)}
+                    stroke={indicatorValueColorScale(d.value)}
+                    stroke-width=2
+                />
+                    {/if}
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
@@ -181,16 +199,6 @@ const handleIndicatorHover = (e, d) => {
                         on:keydown={(e) => {e.key === "Escape" ? handleIndicatorHover(e, null) : null}}
                         />
                         <!-- r={hoveredIndicator === d ? 12 : 10} -->
-                    {#if d.value !== 0}
-                    <line 
-                        x1={indicatorValueScale(0)}
-                        x2={indicatorValueScale(d.value)}
-                        y1={indicatorScale(d.indicator)}
-                        y2={indicatorScale(d.indicator)}
-                        stroke={indicatorValueColorScale(d.value)}
-                        stroke-width=2
-                    />
-                    {/if}
                 </g>
                 {/each}
         

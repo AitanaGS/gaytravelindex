@@ -24,11 +24,11 @@ export const chartFontSize = derived(chartWidth, ($chartWidth) =>
   chartFontSizeScale($chartWidth)
 );
 
-const tooltipFontSizeScale = scaleLinear()
-  .domain([300, 2000])
-  .range([1.4, 1]) //.range([26, 16])
-  .clamp(true);
+// const tooltipFontSizeScale = scaleLinear()
+//   .domain([300, 2000])
+//   .range([1.4, 1]) //.range([26, 16])
+//   .clamp(true);
 
-export const tooltipFontSize = derived(width, ($width) =>
-  tooltipFontSizeScale($width)
-);
+// export const tooltipFontSize = derived(width, ($width) =>
+//   tooltipFontSizeScale($width)
+// );

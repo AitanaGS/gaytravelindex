@@ -53,7 +53,7 @@
         top: 60, // 60
         right: 10,
         bottom: 5,
-        left: 195 //200//210 // 220
+        left: 200 //195 //200//210 // 220
   }
 
   $: innerWidth = $chartWidth - margin.left - margin.right

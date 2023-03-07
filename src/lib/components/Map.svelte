@@ -91,6 +91,7 @@
             centroid,
             event,
             parentBoundingRect,
+            parentMap
             // svg,
             }
         } else {

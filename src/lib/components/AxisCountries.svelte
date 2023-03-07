@@ -66,12 +66,14 @@
                 on:focus={() => axisHandleHover(country)}
                 on:mouseleave={() => axisHandleHover(null)}
                 y={countryScale(country)} 
-                x={-country.length * 10} 
-                width={country.length * 10} 
+                x={-margin.left + 2} 
+                width={margin.left - 2} 
                 height={countryScale.bandwidth()} 
                 fill="transparent"
                 class="countryRect"
                 />
+                <!-- x={-country.length * 10} 
+                width={country.length * 10}  -->
             <!-- in:slide={{ duration: 200, delay: 50 + 50 * i}}  -->
             <text
                     y={countryScale(country)}

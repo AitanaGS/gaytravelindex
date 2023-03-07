@@ -7,7 +7,7 @@
   import { clickedContinent } from "./lib/stores/clickedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
-  import { width, height, chartWidth, desktopBreakpoint, isDesktop } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  import { width, height, chartWidth, desktopBreakpoint, isDesktop, isTablet, isMobile, isSmallMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
   // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
@@ -22,13 +22,14 @@
   //   window.scrollTo(0, 0)
   // }
 
-  if (history.scrollRestoration) {
-    history.scrollRestoration = 'manual';
-} else {
-    window.onbeforeunload = function () {
-        window.scrollTo(0, 0);
-    }
-}
+
+//   if (history.scrollRestoration) {
+//     history.scrollRestoration = 'manual';
+// } else {
+//     window.onbeforeunload = function () {
+//         window.scrollTo(0, 0);
+//     }
+// }
 
 
 
@@ -211,6 +212,10 @@
 
   // TODO flavicon
 
+  // TODO h1 fontsize scale
+
+  // TODO Transition countryView
+
   // let chartSelection
 
   // function scrollToChartSelection() {
@@ -244,7 +249,14 @@
 
   // $: console.log(innerHeight, mapHeight)
 
-  $: console.log($isDesktop, $width, $chartWidth)
+  // $: console.log("desktop", $isDesktop, $width)
+  // $: console.log("tablet", $isTablet, $width)
+  // $: console.log("mobile", $isMobile, $width)
+  // $: console.log("small mobile", $isSmallMobile, $width)
+
+  // $: pWidth = $isDesktop
+  //   ? 700
+  //   : 0.8 * $width
 
 </script>
 
@@ -252,20 +264,20 @@
 bind:clientWidth={$width}
 bind:clientHeight={$height}
 >
-  <h1>Gay Travel Index 2021</h1>
-  <div 
+  <!-- <div 
     class="wrapper" 
-    >
+    > -->
     
     <div class="topWrapper">
+      <h1>Gay Travel Index 2021</h1>
       <div class="intro">
         <!-- <h1>Gay Travel Index 2021</h1> -->
-        <div>
+        <!-- <div> -->
           <p>
             In many countries, lesbian, gay, bisexual, and transgender people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
           </p>
         </div>
-      </div>
+        <!-- </div> -->
   
       <div class="mapWrapper">
         {#if mapWidth > 0}
@@ -282,12 +294,13 @@ bind:clientHeight={$height}
       <!-- style="--gap: {$chartGap}px;" -->
         
         <div class="continentChartWrapper" bind:this={continentView} tabindex="0" role="region" aria-label="Ranking"> 
-             <p>
+            <p>
               The table below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
-             <div class="selectContinentWrapper">
+            <!-- </div> -->
+             <!-- <div class="selectContinentWrapper"> -->
 
-              <p class="selectContinent">
+              <p>
               <label for="continent-select">Select a continent</label>
               <select 
               name="continents" 
@@ -300,7 +313,7 @@ bind:clientHeight={$height}
                 {/each}
             </select> and click on a country’s name for information about its ratings in the different categories.
           </p>
-            </div>
+          <!-- </div> -->
              <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {data} {years} {selectedContinent} {selectedCountry} />
 
 
@@ -308,7 +321,6 @@ bind:clientHeight={$height}
         
     <div class="countryChartWrapper" bind:this={countryView} tabindex="0" role="region" aria-label="Country Info"> 
 
-      <div class="countryInfo">
         {#if !selectedCountry}
           <p>Click on a country in the table or on the map for its individual ratings.</p>
         {/if}
@@ -323,7 +335,7 @@ bind:clientHeight={$height}
         <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
         {/if}
         <button
-        class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}"
+        class="countryButton"
         on:click={() => {
           // selectedCountry = ""
           clickedCountry.set("")
@@ -332,8 +344,8 @@ bind:clientHeight={$height}
           // scrollToTop() // here scrolling
         }}
         >Clear Country</button>
+        <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
         {/if}
-      </div>
       <IndicatorsChart {data} {years}/>
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
@@ -344,7 +356,7 @@ bind:clientHeight={$height}
     </div>
 
 
-  </div>
+  <!-- </div> -->
 
 
 </main>
@@ -355,36 +367,60 @@ bind:clientHeight={$height}
     padding: 40px;
   }
 
+  /* .chartWrapper {
+    width: 1000px;
+  } */
+
   /* p {
     line-height: 1.5;
   } */
 
-  .wrapper {
-    /* width: var(--width); */
-    position: relative;
-  }
+  /* .wrapper {
+    max-width: 700px;
+      margin: 0 auto;
+  } */
+
+  p {
+      /* max-width: 700px; */
+      /* width: var(--pWidth); */
+      /* margin: 0 auto; */
+      margin-right: auto;
+      margin-left: auto;
+      max-width: 700px;
+    }
+
+/* @media (max-width: 1150px){ 
+    p {
+      width: 400px;
+    }
+
+  } */
+
 
   .topWrapper {
-    display: flex;
-    margin-bottom: 20px;
+    /* display: flex; */ 
+    /* margin-bottom: 20px; */
     /* flex-direction: column; */
   }
 
-  .intro {
+  .mapWrapper {
+      margin: 40px 0;
+    }
+
+  /* .intro {
     flex: 1;
   }
 
   .mapWrapper {
     flex: 2;
-  }
+  } */
 
   h1 {
   /* font-size: 1.5rem; */
   line-height: 1.3;
   /* margin-bottom: 20px; */
-  margin: 0;
-  font-size: clamp(1.5rem, 2vw + 1.5rem, 2.2rem);
-  min-height: 0vh;
+  /* font-size: clamp(2rem, 2vw + 2rem, 2.5rem); */
+  /* min-height: 0vh; */
   /* font-size: 2.5rem; */
 }
 
@@ -393,88 +429,35 @@ bind:clientHeight={$height}
   font-size: 1rem;
 }
 
-/* .introText {
-  font-size: 1rem;
-  line-height: 1.5;
-
+/* 
+.selectContinentWrapper {
+  max-width: var(--pWidth);
+      margin-right: auto;
+      margin-left: auto;
 } */
 
-  /* .selectContinentCountryWrapper { */
-    /* position: absolute;
-    left: 100; */
-    /* position: absolute; */
-    /* left: 210px; */
-    /* margin-bottom: 20px; */
-    /* display: flex; */
-    /* flex-direction: column;
-    align-items: flex-start;  */
-    /* justify-content: flex-start;
-     align-items: baseline; */
-    /* justify-content: baseline; */
-    /* gap: 10px; */
-    /* font-size: var(--bodyFontSize); */
-  /* } */
 
-  /* @media (max-width: 1100px){
-    .selectContinentCountryWrapper {
-      flex-direction: column;
-      gap: 0px;
-    }
-  } */
-
-  /* select {
-    font-size: var(--bodyFontSize);
-  } */
-
-  .selectContinentWrapper {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    /* flex: 1; */
-  }
-
-  /* .selectCountryWrapper { */
-    /* display: flex; */
-    /* gap: 20px; */
-    /* flex: 1; */
-  /* } */
-
-  /* @media (max-width: 1100px){
-    .selectCountryWrapper {
-      gap: 2px;
-    }
-  } */
-
-  select {
+select {
     font-size: 1.2rem;
     color: dimgray;
-  }
+    /* display: block; */
+}
 
-  .chartWrapper {
+  /* .chartWrapper {
     display: flex;
-    /* gap: var(--gap); */
     flex-wrap: wrap;
 
-  }
-
-  /* @media (max-width: 1100px){
-    .chartWrapper {
-      flex-direction: column;
-    }
   } */
 
 
-  .continentChartWrapper {
+  /* .continentChartWrapper {
     flex: 1;
-  }
-
-  /* .chartWrapper p {
-    max-width: 500px;
   } */
 
-  .countryChartWrapper {
+
+  /* .countryChartWrapper {
     flex: 1;
-  }
+  } */
 
 /* .continentButton { */
     /* transition: visibility 100ms ease ; */
@@ -482,14 +465,14 @@ bind:clientHeight={$height}
   /* } */
 
 
-  .visibleButton {
+  /* .visibleButton { */
     /* visibility: visible; */
     /* transition: visibility 200ms ease; */
     /* opacity: 1;
     transition: opacity 100ms ease-in; */
 
-    visibility: visible;
-    opacity: 1;
+    /* visibility: visible;
+    opacity: 1; */
     /* transition: visibility 0s linear 0s, opacity 300ms; */
     /* transition: all 2000ms ease; */
 
@@ -497,16 +480,16 @@ bind:clientHeight={$height}
       https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
     */
 
- } 
+ /* }  */
 
- .hiddenButton {
+ /* .hiddenButton { */
     /* visibility: hidden; */
     /* transition: visibility 100ms ease; */
     /* opacity: 0;
     transition: opacity 100ms ease-out; */
 
-    visibility: hidden;
-    opacity: 0;
+    /* visibility: hidden;
+    opacity: 0; */
     /* transition: visibility 0s linear 300ms, opacity 300ms; */
     /* transition: all 2000ms ease; */
 
@@ -514,7 +497,7 @@ bind:clientHeight={$height}
       visibility cannot be transitioned, because its 0/1
       https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
     */
- } 
+ /* }  */
 
  .countryButton {
   border-radius: 5px;
@@ -526,7 +509,7 @@ bind:clientHeight={$height}
   font-family: inherit;
   /* background-color: #1a1a1a; */
   cursor: pointer;
-  transition: border-color 0.25s;
+  /* transition: border-color 0.25s; */
   /* font-size: var(--bodyFontSize); */
 }
 button:hover {
@@ -538,18 +521,13 @@ button:focus-visible {
 }
 
 /* @media (max-width: 1150px){ */
-    .topWrapper {
+    /* .topWrapper {
       flex-direction: column;
-    }
+    } */
 
-    .mapWrapper {
-      margin-top: 20px;
-    }
-
-    .intro {
+    /* .intro {
       display: flex;
-      /* justify-content: center; */
-    }
+    } */
 
     /* .selectContinentCountryWrapper {
       flex-direction: column;
@@ -560,14 +538,9 @@ button:focus-visible {
       gap: 2px;
     } */
 
-    .chartWrapper {
+    /* .chartWrapper {
       flex-direction: column;
-      /* align-items: center; */
-    }
-
-    p {
-      max-width: 700px;
-    }
+    } */
 
     /* .selectContinentWrapper {
       /* max-width: 600px; */

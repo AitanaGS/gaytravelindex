@@ -24,7 +24,7 @@
     let yNudge = 5
     let yMobileNudge = 15
 
-    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1]  : mapData.event.clientY - mapData.parentBoundingRect.top
+    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1]  : mapData.event.clientY - mapData.parentBoundingRect.top + window.pageYOffset // window.scrollY
 
     let yPosition
 
@@ -59,6 +59,8 @@
 
     // TODO css variables for background and color
     // TODO accessibility tooltip
+
+    $: console.log(window.scrollY)
 
 </script>
 

@@ -1,9 +1,9 @@
 <script>
     import { scaleLinear } from "d3-scale"
     import { fade } from "svelte/transition"
-    import { chartFontSize, tooltipFontSize } from "../stores/responsiveFontSize";
+    import { chartFontSize } from "../stores/responsiveFontSize";
     // import { isTablet, isMobile } from "../stores/devices";
-    import { isTablet, isMobile } from "../stores/dimensions";
+    import { isTablet, isMobile, chartWidth, isDesktop } from "../stores/dimensions";
 
     export let colorScale
     export let hoveredMapCountryData
@@ -17,10 +17,10 @@
 
     const mapFontSizeScale = scaleLinear()
         .domain([300, 1000])
-        .range([1.2, 1.1]) //.range([26, 16])
+        .range([1.5, 0.8]) //.range([26, 16])
         .clamp(true);
 
-    $: mapFontSize = mapFontSizeScale(mapWidth)
+    $: mapFontSize = mapFontSizeScale($chartWidth)
 
 
     $: yPosition = $isMobile
@@ -48,6 +48,8 @@
     const legendHeight = 20
     const legendWidth = 100
 
+    $: yNudge = $isDesktop ? 14 : 20
+
 
 </script>
 
@@ -62,7 +64,7 @@
     <text 
         x={legendWidth / 2} 
         fill="darkgray" 
-        font-size={`${0.9 * mapFontSize}rem`}
+        font-size={`${0.8 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -82,16 +84,16 @@
     <rect 
         id="legendBar" 
         x={0}
-        y="20"
+        y={yNudge}
         width={legendWidth}
         height={legendHeight} 
     />
     <!-- y="40" -->
     <text 
         x=0 
-        y={20 + legendHeight + 5} 
+        y={yNudge + legendHeight + 5} 
         fill="darkgray" 
-        font-size={`${0.8 * mapFontSize}rem`}
+        font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="end"
     >
@@ -99,9 +101,9 @@
     </text>
     <text 
         x={legendWidth / 2} 
-        y={20 + legendHeight + 5} 
+        y={yNudge + legendHeight + 5} 
         fill="darkgray" 
-        font-size={`${0.8 * mapFontSize}rem`}
+        font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
     >
@@ -109,9 +111,9 @@
     </text>
     <text 
         x={legendWidth} 
-        y={20 + legendHeight + 5} 
+        y={yNudge + legendHeight + 5} 
         fill="darkgray" 
-        font-size={`${0.8 * mapFontSize}rem`}
+        font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="start"
     >
@@ -119,11 +121,19 @@
     </text>
     {#if (hoveredMapCountryData)}
     <line 
+    class="legendLine"
+    in:fade={{ duration: 250 }}
+    x1={legendWidth * totalScorePercent} 
+    x2={legendWidth * totalScorePercent} 
+    y1={yNudge} y2={yNudge + legendHeight} 
+    stroke="#FFFFFF"
+    stroke-width=3/>
+    <line 
         class="legendLine"
         in:fade={{ duration: 250 }}
         x1={legendWidth * totalScorePercent} 
         x2={legendWidth * totalScorePercent} 
-        y1={20} y2={20 + legendHeight} 
+        y1={yNudge} y2={yNudge + legendHeight} 
         stroke="#303030"
         stroke-width=2/>
     {/if}
