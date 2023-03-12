@@ -19,7 +19,7 @@
 <g class="axis years" transform="translate({margin.left}, {margin.top})">
     {#each years as year}
         <!-- <g class="tick" transform="translate({yearScale(year)}, 0)"> -->
-            <g class="tick" transform="translate({yearScale(year)}, 0)">
+            <g class="tick" transform="translate({yearScale(year)}, 0)" tabindex="-1">
             <text 
                 x={yearScale.bandwidth() / 2} 
                 y=0
@@ -41,7 +41,10 @@
                         : year === 2021 
                                 ? `${0.8 * $chartFontSize}rem`
                                 : `${0.7 * $chartFontSize}rem`
-                }>
+                }
+                role="presentation"
+                aria-hidden="true"
+                >
                     {year}
                 </text>
                 <!-- font-size={year === 2021 ? `${0.8 * $chartFontSize}rem` : `${0.7 * $chartFontSize}rem`} -->

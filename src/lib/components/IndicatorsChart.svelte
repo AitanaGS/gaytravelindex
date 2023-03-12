@@ -110,16 +110,37 @@ $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
 
 let hoveredIndicator
 
+// let indicatorData
+
+// let indicatorDescription
+
 const handleIndicatorHover = (e, d) => {
     hoveredIndicator = d
+
+    // if (d === null) {
+    //     indicatorData = null
+    //     indicatorDescription = ""
+    // } else {
+    //     indicatorData = selectedCountryData.filter(d => d.indicator === hoveredIndicator.indicator).sort((a, b) => a.year - b.year)
+    //     indicatorDescription = indicatorData.reduce((last, curr) => {
+    //             return last + `${curr.year}: ${curr.value}. `
+    //         }, `${indicatorLabelsLookup.get(hoveredIndicator.indicator)}: `)
+    // }
+
 }
 
+// $: console.log(hoveredIndicator, indicatorData, indicatorDescription)
+
+
 // TODO: check grid
+// $: console.log(selectedCountryData2021)
 
 </script>
 
 <div class="wrapper">
-    <svg width={$chartWidth} {height}>
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="indicatorChartTitle">
+        <title id="indicatorChartTitle">Lollipop Chart of ratings in different categories of {selectedCountry} in 2021</title>
         {#if selectedCountry}
         <text
             class="countryName"
@@ -128,7 +149,10 @@ const handleIndicatorHover = (e, d) => {
             text-anchor=middle
             dominant-baseline="middle"
             font-weight="bold"
-            font-size={`${$chartFontSize}rem`}>
+            font-size={`${$chartFontSize}rem`}
+            role="presentation"
+            aria-hidden="true"
+            >
             <!-- y=10 -->
                 {selectedCountry} 2021
         </text>
@@ -154,9 +178,19 @@ const handleIndicatorHover = (e, d) => {
             <g
             class="innerChart innerIndicatorsChart">
                     {#each selectedCountryData2021 as d, i (`${d.country}${d.indicator}`)}
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <g 
                         transform="translate(0, {indicatorScale.bandwidth()/2})"
+                        tabindex="0"
+                        aria-describedby="indicatorInfo" 
                     >
+
+                                            <!-- {#if hoveredIndicator} -->
+                                            <desc id="indicatorInfo">
+                                                {indicatorLabelsLookup.get(d.indicator)}: {d.value}
+                                                
+                                            </desc>
+                                            <!-- {/if} -->
                     {#if d.value !== 0}
                     <line 
                         x1={indicatorValueScale(0)}
@@ -196,8 +230,10 @@ const handleIndicatorHover = (e, d) => {
                         on:mouseover={(e) => handleIndicatorHover(e, d)}
                         on:focus={(e) => handleIndicatorHover(e, d)}
                         on:mouseleave={(e) => handleIndicatorHover(e, null)}
+                        on:blur={(e) => handleIndicatorHover(e, null)}
                         on:keydown={(e) => {e.key === "Escape" ? handleIndicatorHover(e, null) : null}}
                         />
+                        <!-- aria-label="indicatorTooltipInfo" -->
                         <!-- r={hoveredIndicator === d ? 12 : 10} -->
                 </g>
                 {/each}
@@ -212,6 +248,8 @@ const handleIndicatorHover = (e, d) => {
     {#if hoveredIndicator}
     <IndicatorTooltip indicator2021Data={hoveredIndicator} data={selectedCountryData} {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
     {/if}
+    <!-- data={selectedCountryData} 
+    {indicatorData} -->
 </div>
 
 <style>

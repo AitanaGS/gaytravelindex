@@ -153,7 +153,10 @@
 
   let countryView
 
+  $: countryInfoTabIndex = ""
+
   function scrollToCountryView() {
+    countryInfoTabIndex = "0"
     countryView.scrollIntoView();
     countryView.focus()
   }
@@ -161,6 +164,7 @@
   let continentView
 
   function scrollToContinentView() {
+    countryInfoTabIndex = "-1"
     continentView.scrollIntoView()
     continentView.focus()
   }
@@ -260,40 +264,41 @@
 
 </script>
 
-<main
+<div
+class="wrapper"
 bind:clientWidth={$width}
 bind:clientHeight={$height}
 >
-  <!-- <div 
-    class="wrapper" 
-    > -->
     
-    <div class="topWrapper">
-      <h1>Gay Travel Index 2021</h1>
+      <header>
+              <h1>Gay Travel Index 2021</h1>
       <div class="intro">
-        <!-- <h1>Gay Travel Index 2021</h1> -->
-        <!-- <div> -->
           <p>
-            In many countries, lesbian, gay, bisexual, and transgender people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
+            In many countries, lesbian, gay, bisexual, transgender, and intersex people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
           </p>
         </div>
-        <!-- </div> -->
+      </header>
   
-      <div class="mapWrapper">
-        {#if mapWidth > 0}
-        <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToCountryView}/>
-        {/if}
-        <p class="dataInfo">
-          Data: <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
-        </p>
-      </div>
+    <main>
 
-    </div>
+      <section>
+        <div class="mapWrapper">
+          {#if mapWidth > 0}
+          <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToCountryView}/>
+          {/if}
+          <p class="dataInfo">
+            Data: <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
+          </p>
+        </div>
 
+      </section>
+
+      <section>
     <div class="chartWrapper" >
       <!-- style="--gap: {$chartGap}px;" -->
         
-        <div class="continentChartWrapper" bind:this={continentView} tabindex="0" role="region" aria-label="Ranking"> 
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <div class="continentChartWrapper" bind:this={continentView} tabindex="0" role="region" aria-describedby="Country Ranking"> 
             <p>
               The table below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
@@ -319,33 +324,37 @@ bind:clientHeight={$height}
 
       </div>
         
-    <div class="countryChartWrapper" bind:this={countryView} tabindex="0" role="region" aria-label="Country Info"> 
-
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <div class="countryChartWrapper" tabindex="0" role="region" aria-describedby="Country Info" > 
         {#if !selectedCountry}
           <p>Click on a country in the table or on the map for its individual ratings.</p>
         {/if}
-        {#if selectedCountry}
-        <p>
-          Positive developments count as plus points, and negative ones as minus points. A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
-        </p>
-        <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
-        </p>
-
-        {#if selectedCountry === "United States of America"}
-        <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
-        {/if}
-        <button
-        class="countryButton"
-        on:click={() => {
-          // selectedCountry = ""
-          clickedCountry.set("")
-          scrollToContinentView()
-          // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
-          // scrollToTop() // here scrolling
-        }}
-        >Clear Country</button>
-        <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
-        {/if}
+        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+        <div tabindex={countryInfoTabIndex} bind:this={countryView} style="min-height: 1px;">
+          {#if selectedCountry}
+          <p >
+            Positive developments count as plus points, and negative ones as minus points. A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
+          </p>
+          <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
+          </p>
+  
+          {#if selectedCountry === "United States of America"}
+          <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
+          {/if}
+          <button
+          class="countryButton"
+          on:click={() => {
+            // selectedCountry = ""
+            clickedCountry.set("")
+            scrollToContinentView()
+            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+            // scrollToTop() // here scrolling
+          }}
+          >Clear Country</button>
+          <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
+          {/if}
+          
+        </div>
       <IndicatorsChart {data} {years}/>
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
@@ -355,15 +364,15 @@ bind:clientHeight={$height}
 
     </div>
 
-
+</section>
   <!-- </div> -->
 
-
 </main>
+</div>
 
 <style>
 
-  main {
+  .wrapper {
     padding: 40px;
   }
 
@@ -396,12 +405,6 @@ bind:clientHeight={$height}
 
   } */
 
-
-  .topWrapper {
-    /* display: flex; */ 
-    /* margin-bottom: 20px; */
-    /* flex-direction: column; */
-  }
 
   .mapWrapper {
       margin: 40px 0;

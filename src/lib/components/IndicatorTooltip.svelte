@@ -16,6 +16,7 @@
     export let innerWidth
     export let years
     export let indicatorValueColorScale
+    export let indicatorData
 
 
     $: indicatorData = data.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
@@ -97,6 +98,8 @@
 
     // $: flyDirection = yPosition < yValue ? 1 : -1
 
+    // $: console.log(indicator2021Data, indicatorData)
+
 
 
     const svgMargin = {
@@ -157,6 +160,7 @@
     <div>
         {#if tooltipWidth}
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
+            <!-- <title id="indicatorTooltipTitle">Point Chart of ratings of {indicatorLabelsLookup.get(indicator2021Data.indicator)} in {indicator2021Data.country} over the past few years</title> -->
             <TooltipAxisIndicatorValues {tooltipIndicatorValueScale} {svgMargin} {svgInnerWidth} {tooltipFontSize}/>
             <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {years} {tooltipFontSize}/>
             <g

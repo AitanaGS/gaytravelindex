@@ -137,7 +137,9 @@
 
 <div bind:this={parentMap} class="map">
     <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
-    <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} >
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} role="img" aria-labelledby="mapTitle" tabindex="0">
+        <title id="mapTitle">Thematic world map showing the Gay Travel Index in 2021</title>
         <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
         <!-- bind:this={selectInitZoom} 
         width={mapWidth} height={mapHeight} -->
@@ -148,6 +150,7 @@
             {#if country.properties.NAME_EN !== "Antarctica"}
             <path
                 class="countryPath"
+                tabindex="-1"
                 d={pathGenerator(country.geometry)}
                 fill={totalScale(Object(country.properties.data).total) || "dimgray"}
                 stroke="none"
@@ -155,12 +158,17 @@
                     cursor: {country.properties.data ? "pointer" : "auto"};
                 "
                 on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
-                on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:mouseleave={(e) => handleMapHover(e, null, null)}
-                on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
                 on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+                on:blur={(e) => handleMapHover(e, null, null)}
+                on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
+                on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
                 on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
             />
+            <!-- on:blur={(e) => handleMapHover(e, null, null)}
+            on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
+            on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
+            on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)} -->
             {/if}
         {/each}
         <path class="borders" d={pathGenerator(geoBorders)} fill="none" stroke="white"/>

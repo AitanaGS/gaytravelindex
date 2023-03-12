@@ -23,6 +23,8 @@ import { chartFontSize } from "../stores/responsiveFontSize";
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-size={`${0.8 * $chartFontSize}rem`}
+                role="presentation"
+                aria-hidden="true"
             > {value}</text>
             {:else if !$isSmallMobile}
             <text
@@ -31,6 +33,8 @@ import { chartFontSize } from "../stores/responsiveFontSize";
                 text-anchor="middle"
                 dominant-baseline="middle"
                 font-size={`${0.8 * $chartFontSize}rem`}
+                role="presentation"
+                aria-hidden="true"
                 > {value}</text>
 
             {/if}

@@ -20,6 +20,8 @@
                 dy={indicatorScale.bandwidth()/2}
                 dx=-5
                 font-size={`${0.9 * $chartFontSize}rem`}
+                role="presentation"
+                aria-hidden="true"
             > {indicatorLabelsLookup.get(indicator)}</text>
             <!-- dy={indicatorScale.bandwidth()/2} -->
             <line

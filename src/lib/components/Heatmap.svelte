@@ -100,14 +100,27 @@
 
 
 
+
     // const scrollIntoView = (node) => {
     //     node.scrollIntoView()
     // }
 
+    // $:console.log(selectedContinentData, selectedContinentData.keys().next().value, selectedContinentData.get(selectedContinentData.keys().next().value).shift().total)
+
 </script>
 
 <div class="continentHeatmap wrapper">
-    <svg width={$chartWidth} {height}>
+    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
+    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="heatmapTitle heatmapDescription">
+      <title id="heatmapTitle">{`Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021`}</title>
+      <desc id="heatmapDescription">
+        {`
+        ${selectedContinent === "All" 
+        ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
+        At the bottom of the list is Chechnya, with a rating of -19.`
+        : `Considering only countries in ${selectedContinent}, the country with the highest ranking is ${selectedContinentData.keys().next().value}, with a rating of ${selectedContinentData.get(selectedContinentData.keys().next().value).shift().total}.
+        `}`}
+      </desc>
         <text 
           class="continentName" 
           x={innerWidth/2 + margin.left} 
@@ -116,14 +129,16 @@
           dominant-baseline="middle" 
           font-weight="bold" 
           font-size={`${$chartFontSize}rem`}
+          role="presentation"
+          aria-hidden="true"
           >
-          {selectedContinent}
+          {`${selectedContinent === "All" ? "All continents" : selectedContinent}`}
         </text>
         <!-- font-size="1rem" -->
         <!-- use:scrollIntoView -->
         <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
-        <AxisCountries on:countryClick {countryScale} {selectedContinent} {margin}/>
+        <AxisCountries on:countryClick {countryScale} {selectedContinent} {margin} {selectedContinentData}/>
     
         <g class="chart continentHeatMap" transform="translate({margin.left}, {margin.top})">
             <g class="innerChart innerContinentHeatmap">
@@ -159,8 +174,11 @@
               on:mouseover={() => handleHeatmapHover(d)}
               on:focus={() => handleHeatmapHover(d)}
               on:mouseleave={() => handleHeatmapHover(null)}
+              on:blur={() => handleHeatmapHover(null)}
               on:keydown={(e) => {e.key === "Escape" ? handleHeatmapHover(null) : null}}
+              tabindex="-1"
               />
+              <!-- tabindex={i + 1} -->
               
               <text
               class="totalText"
@@ -187,6 +205,8 @@
                     ? `${0.85 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
                     : `${0.75 * $chartFontSize}rem`
                     }
+              role="presentation"
+              aria-hidden="true"
               >{d.total}</text> 
 <!-- 
               font-size={
