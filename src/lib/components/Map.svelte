@@ -1,10 +1,11 @@
 <script>
-    import data2021 from "../../../data/processed/GTI_2012-2021_data2021.json";
+    // import data2021 from "../../../data/processed/GTI_2012-2021_data2021.json";
     import geoWorld from "../../../data/processed/ne_110m_admin_0_countries_topo.json"
     import MapTooltip from "./MapTooltip.svelte";
     import MapLegend from "./MapLegend.svelte";
-    import { clickedCountry } from "../stores/clickedCountry";
-    import { clickedContinent } from "../stores/clickedContinent";
+    import { selectedCountry } from "../stores/selectedCountry";
+    import { selectedContinent } from "../stores/selectedContinent";
+    import { data2021, data2021Map } from "../stores/data"
 
     import * as topojson from "topojson-client"
     import {
@@ -21,17 +22,18 @@
     export let mapHeight
     export let totalScale
 
+    // test.set("test")
 
-    const data2021Map = new Map()
+    // const data2021Map = new Map()
 
-    data2021.forEach((d) => {
-        data2021Map.set(d.longName, {
-            shortName: d.country,
-            continent: d.continent,
-            ranking: d.ranking,
-            total: d.total
-        })
-    })
+    // data2021.forEach((d) => {
+    //     data2021Map.set(d.longName, {
+    //         shortName: d.country,
+    //         continent: d.continent,
+    //         ranking: d.ranking,
+    //         total: d.total
+    //     })
+    // })
 
 
     let geoCountries = topojson.feature(geoWorld, geoWorld.objects.ne_110m_admin_0_countries) //.features
@@ -39,7 +41,7 @@
     let geoBorders = topojson.mesh(geoWorld, geoWorld.objects.ne_110m_admin_0_countries, (a, b) => a !== b);
 
     geoCountries.features.forEach(country => {
-        const countryData = data2021Map.get(country.properties.NAME_EN)
+        const countryData = $data2021Map.get(country.properties.NAME_EN)
         if (countryData) {
             country.properties.data = countryData
         }
@@ -115,11 +117,16 @@
     function handleCountryClick(e, country, continent) {
         // console.log(country)
         // hoveredMapCountryData = null
+        // console.log(country, $selectedCountry)
+        // console.log(continent, $selectedContinent)
         handleMapHover(e, null, null)
-        clickedCountry.set(country)
-        clickedContinent.set(continent)
+        selectedCountry.set(country)
+        selectedContinent.set(continent)
+        // console.log(country, $selectedCountry)
+        // console.log(continent, $selectedContinent)
         dispatch("countryClick")
     }
+    // $:console.log($clickedCountry, $clickedContinent)
 
 
 // let selectedCountry = ""
@@ -139,7 +146,7 @@
     <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} role="img" aria-labelledby="mapTitle" tabindex="0">
-        <title id="mapTitle">Thematic world map showing the Gay Travel Index in 2021</title>
+        <desc id="mapTitle">Thematic world map showing the Gay Travel Index in 2021</desc>
         <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
         <!-- bind:this={selectInitZoom} 
         width={mapWidth} height={mapHeight} -->
@@ -160,10 +167,10 @@
                 on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:mouseleave={(e) => handleMapHover(e, null, null)}
                 on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+                on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
                 on:blur={(e) => handleMapHover(e, null, null)}
                 on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
-                on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
             />
             <!-- on:blur={(e) => handleMapHover(e, null, null)}
             on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
@@ -178,7 +185,7 @@
 
     {#if hoveredMapCountryData && hoveredMapCountryData.data}
     <MapTooltip 
-        mapData={hoveredMapCountryData} 
+        tooltipData={hoveredMapCountryData} 
         {totalScale}
         width = {mapWidth}
         />

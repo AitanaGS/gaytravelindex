@@ -1,8 +1,9 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
-    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { isMobile, isTablet, isDesktop, width } from "../stores/dimensions"
+    // import { countryScale } from "../stores/data";
 
-    export let data
+    export let tooltipData
     export let yearScale
     export let countryScale
     export let totalScale
@@ -13,7 +14,7 @@
 
     let tooltipHeight = 100
 
-    $: xValue = yearScale(data.year)
+    $: xValue = yearScale(tooltipData.year)
 
     // $: halfXBandWidth = yearScale.bandwidth() / 2 
 
@@ -84,7 +85,7 @@
     // }
 
 
-    let yValue = countryScale(data.country)
+    let yValue = countryScale(tooltipData.country)
 
     let yHalfBandwidth = countryScale.bandwidth() / 2
 
@@ -99,23 +100,27 @@
     $: if ($isMobile || $isTablet) {
         yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
         ? yValue + tooltipHeight - yHalfBandwidth
-        : yValue + margin.top - tooltipHeight - yBandwidth + yHalfBandwidth
+        : yValue + margin.top - tooltipHeight - yBandwidth + yHalfBandwidth / 2
     } else {
         yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
         ? yValue + tooltipHeight - yHalfBandwidth
-        : yValue + margin.top - tooltipHeight + yHalfBandwidth
+        : yValue + margin.top - tooltipHeight + yHalfBandwidth / 2
     }
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 
 
+    // $: console.log("desktop", $isDesktop, $width)
+
+
+    // TODO check tooltips (desktop)
 
 </script>
 
     <CountryTooltip 
     bind:tooltipWidth={tooltipWidth}
-    {data}
-    country={data.country}
+    {tooltipData}
+    country={tooltipData.country}
     colorScale={totalScale}
     lastYearOnly=FALSE
     {xPosition}

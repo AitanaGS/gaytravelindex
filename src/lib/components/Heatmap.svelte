@@ -5,15 +5,21 @@
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
     import { chartWidth } from "../stores/dimensions"
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion"
+    // import { clickedContinentData } from "../stores/clickedContinent"
+    import { data, data2021, data2021Map} from "../stores/data"
+    import { selectedContinent } from "../stores/selectedContinent"
+    import { selectedCountry } from "../stores/selectedCountry"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
     import { scaleBand, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
+    import { onMount } from "svelte";
 
-    export let selectedContinent
-    export let data
-    export let selectedCountry
+    // export let selectedContinent
+    // export let data
+    // export let selectedCountry
     // export let width
     export let years
     export let totalScale
@@ -27,21 +33,42 @@
     // $: console.log("chart", $chartFontSize)
 
 
+    // $: console.log($data2021, $data2021Map, topContinentCountry, $data2021Map.get(topContinentCountry).total)
+
+    // ${selectedContinentData.get(selectedContinentData.keys().next().value).shift().total
 
     // let width = 800
 
+    // let selectedContinentData
 
+// clickedContinentData.subscribe(data => {
+//   selectedContinentData = data
+// })
+
+// $: console.log($clickedContinentData)
 
     // $: years = yearScale.domain()
 
     $: height = max([450,  selectedContinentCountries.length * 30])
 
+    // let ready = false
+    // let height
+
+    // $: console.log("height", height, "ready", ready, selectedContinent$data)
+
+    // onMount(() => {
+    //   setTimeout(() => {
+    //       height = max([450,  selectedContinentCountries.length * 30])
+    //         ready = true;
+    //     }, 1000);
+    // })
+
     $: selectedContinentCountries = [... new Set(
-        data
+        $data
       // .filter(d => d.continent == selectedContinent)
       .filter(d => {
-        if (selectedContinent === "All") return true
-        else return d.continent === selectedContinent
+        if ($selectedContinent === "All") return true
+        else return d.continent === $selectedContinent
       })
       .filter(d => d.year === 2021)
       .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
@@ -76,9 +103,9 @@
 
 
     $: selectedContinentData = group(
-    data.filter(d => {
-      if (selectedContinent === "All") return true
-      else return d.continent === selectedContinent
+    $data.filter(d => {
+      if ($selectedContinent === "All") return true
+      else return d.continent === $selectedContinent
     })
       .sort((a, b) => {
         if(a.year !== 2021) return 1;
@@ -87,6 +114,7 @@
       }), d => d.country)
 
 
+      // $: console.log("heatmap", selectedContinentData, $selectedContinent)
 
       
       let hoveredCountryYear
@@ -99,11 +127,19 @@
       }
 
 
+      // $: console.log($prefersReducedMotion)
+
+
+      $: transitionToUse = $prefersReducedMotion ? () => {} : slide
+
+      $: topContinentCountry = selectedContinentData.keys().next().value
 
 
     // const scrollIntoView = (node) => {
     //     node.scrollIntoView()
     // }
+
+    // $: console.log(selectedContinentData, selectedContinentDataX)
 
     // $:console.log(selectedContinentData, selectedContinentData.keys().next().value, selectedContinentData.get(selectedContinentData.keys().next().value).shift().total)
 
@@ -111,15 +147,23 @@
 
 <div class="continentHeatmap wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="heatmapTitle heatmapDescription">
-      <title id="heatmapTitle">{`Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021`}</title>
+    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="heatmapDescription">
+      <!-- <title id="heatmapTitle">{`Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021`}</title> -->
       <desc id="heatmapDescription">
-        {`
+        <!-- {`
+        Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021.
         ${selectedContinent === "All" 
         ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
         At the bottom of the list is Chechnya, with a rating of -19.`
         : `Considering only countries in ${selectedContinent}, the country with the highest ranking is ${selectedContinentData.keys().next().value}, with a rating of ${selectedContinentData.get(selectedContinentData.keys().next().value).shift().total}.
-        `}`}
+        `}`} -->
+        {`
+          Heatmap of the Gay Travel Index in different countries ${$selectedContinent === "All" ? "" : `in ${$selectedContinent}`} from 2012 to 2021.
+          ${$selectedContinent === "All" 
+          ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
+          At the bottom of the list is Chechnya, with a rating of -19.`
+          : `Considering only countries in ${$selectedContinent}, the country with the highest ranking is ${topContinentCountry}, with a rating of ${$data2021Map.get(topContinentCountry).total}.
+          `}`}
       </desc>
         <text 
           class="continentName" 
@@ -132,22 +176,23 @@
           role="presentation"
           aria-hidden="true"
           >
-          {`${selectedContinent === "All" ? "All continents" : selectedContinent}`}
+          {`${$selectedContinent === "All" ? "All continents" : $selectedContinent}`}
         </text>
         <!-- font-size="1rem" -->
         <!-- use:scrollIntoView -->
         <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
-        <AxisCountries on:countryClick {countryScale} {selectedContinent} {margin} {selectedContinentData}/>
+        <AxisCountries on:countryClick {margin} {countryScale} {selectedContinentData}/>
     
         <g class="chart continentHeatMap" transform="translate({margin.left}, {margin.top})">
             <g class="innerChart innerContinentHeatmap">
             <!-- {#each Array.from(selectedContinentData.keys()) as country, i (country)}  -->
-            {#each Array.from(selectedContinentData.keys()) as country, i (`${selectedContinent}${country}`)} 
+            {#each Array.from(selectedContinentData.keys()) as country, i (`${$selectedContinent}${country}`)} 
             <g 
                 class="country"
-                in:slide={{ duration: 300, delay: 50 + 50 * i}} 
+                in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}} 
                 >  
+                <!-- in:slide={{ duration: 300, delay: 50 + 50 * i}}  -->
             {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
                 class="year"
@@ -247,7 +292,7 @@
     {/if} -->
 
     {#if hoveredCountryYear}
-    <HeatmapTooltip data={hoveredCountryYear} {yearScale} {countryScale} {totalScale} {margin} {innerWidth}/>
+    <HeatmapTooltip tooltipData={hoveredCountryYear} {yearScale} {totalScale} {margin} {innerWidth} {countryScale}/>
     {/if}
 </div>
 

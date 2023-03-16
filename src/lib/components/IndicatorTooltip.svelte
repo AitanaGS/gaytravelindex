@@ -2,13 +2,15 @@
     import TooltipAxisYears from "./TooltipAxisYears.svelte";
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
     import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion";
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
     import { fly, fade } from "svelte/transition"
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2021Data
-    export let data
+    // export let tooltipData
+    // export let indicatorData
     export let indicatorScale
     export let indicatorValueScale
     export let indicatorLabelsLookup
@@ -16,10 +18,10 @@
     export let innerWidth
     export let years
     export let indicatorValueColorScale
-    export let indicatorData
+    export let hoveredIndicatorData
 
 
-    $: indicatorData = data.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
+    // $: indicatorData = tooltipData.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
     
     
     let tooltipWidth = 270
@@ -74,6 +76,8 @@
         : yValue + margin.top - tooltipHeight
 
     $: flyDirection = yPosition < yValue ? 1 : -1
+
+    $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
     
     // let tooltipWidth = 300
@@ -143,7 +147,7 @@
 </script>
 
 <div
-    in:fly={{ y: flyDirection * 20,
+    in:transitionToUse={{ y: flyDirection * 20,
             duration: 200, 
             delay: 100 }}
     class="tooltip"
@@ -168,7 +172,7 @@
                 transform="translate({svgMargin.left}, {svgMargin.top})"
             >
                 <g class="innerChart innerTooltipChart">
-                    {#each indicatorData as d}
+                    {#each hoveredIndicatorData as d}
                     <circle 
                         cx={tooltipYearScale(d.year) + tooltipYearScale.bandwidth() / 2}
                         cy={tooltipIndicatorValueScale(d.value)}

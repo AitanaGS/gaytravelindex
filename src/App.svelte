@@ -1,16 +1,18 @@
 <script>
-  import data from "../data/processed/GTI_2012-2021.json";
+  // import data from "../data/processed/GTI_2012-2021.json";
+  import { data } from "./lib/stores/data.js"
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
-  import { clickedCountry } from "./lib/stores/clickedCountry"
-  import { clickedContinent } from "./lib/stores/clickedContinent";
+  import { selectedCountry } from "./lib/stores/selectedCountry"
+  import { selectedContinent } from "./lib/stores/selectedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
   import { width, height, chartWidth, desktopBreakpoint, isDesktop, isTablet, isMobile, isSmallMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
   // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
+  import { prefersReducedMotion } from "./lib/stores/preferesReducedMotion.js"
 
   import { onMount, afterUpdate } from "svelte"
   import { scaleDiverging } from "d3-scale"
@@ -22,6 +24,8 @@
   //   window.scrollTo(0, 0)
   // }
 
+  // $: console.log(data, dataX)
+
 
 //   if (history.scrollRestoration) {
 //     history.scrollRestoration = 'manual';
@@ -30,6 +34,26 @@
 //         window.scrollTo(0, 0);
 //     }
 // }
+
+  const mediaQueryList = window.matchMedia('(prefers-reduced-motion: no-preference)')
+
+  const getInitialState = () => !window.matchMedia('(prefers-reduced-motion: no-preference)').matches
+
+  const preferesReducedMotionListener = (event) => {
+    $prefersReducedMotion = !event.matches
+  }
+
+
+  onMount(() => {
+
+  mediaQueryList.addEventListener("change", preferesReducedMotionListener)
+  $prefersReducedMotion = getInitialState()
+
+  return () => {
+    mediaQueryList.removeEventListener("change", preferesReducedMotionListener)
+  }
+  })
+
 
 
 
@@ -130,25 +154,25 @@
   // $: console.log("mobile", $isMobile)
 
 
-  const continents = [... new Set(data.map(d => d.continent))].sort()
+  const continents = [... new Set($data.map(d => d.continent))].sort()
 
-  const years = [... new Set(data.map(d => d.year))].sort()
+  const years = [... new Set($data.map(d => d.year))].sort()
 
-  let selectedContinent = ""
+  // let selectedContinent = ""
 
-  let selectedCountry = ""
+  // let selectedCountry = ""
 
-  clickedCountry.subscribe(country => {
-    selectedCountry = country
-  })
+  // clickedCountry.subscribe(country => {
+  //   selectedCountry = country
+  // })
 
-  clickedContinent.subscribe(continent => {
-    selectedContinent = continent
-  })
+  // clickedContinent.subscribe(continent => {
+  //   selectedContinent = continent
+  // })
 
 
   const totalScale = scaleDiverging(interpolateRdYlBu)
-    .domain([min(data, d => d.total), 0, max(data, d => d.total)])
+    .domain([min($data, d => d.total), 0, max($data, d => d.total)])
 
 
   let countryView
@@ -157,7 +181,7 @@
 
   function scrollToCountryView() {
     countryInfoTabIndex = "0"
-    countryView.scrollIntoView();
+    countryView.scrollIntoView({block: "start"});
     countryView.focus()
   }
 
@@ -165,7 +189,7 @@
 
   function scrollToContinentView() {
     countryInfoTabIndex = "-1"
-    continentView.scrollIntoView()
+    continentView.scrollIntoView({block: "start"})
     continentView.focus()
   }
 
@@ -219,6 +243,8 @@
   // TODO h1 fontsize scale
 
   // TODO Transition countryView
+
+  // TODO scroll design
 
   // let chartSelection
 
@@ -298,20 +324,21 @@ bind:clientHeight={$height}
       <!-- style="--gap: {$chartGap}px;" -->
         
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-        <div class="continentChartWrapper" bind:this={continentView} tabindex="0" role="region" aria-describedby="Country Ranking"> 
-            <p>
-              The table below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
+        <div class="continentChartWrapper"> 
+            <p >
+              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
             <!-- </div> -->
              <!-- <div class="selectContinentWrapper"> -->
 
-              <p>
+              <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Country Selection">
               <label for="continent-select">Select a continent</label>
               <select 
               name="continents" 
               id="continent-select" 
-              bind:value={$clickedContinent}
-              on:change={() => clickedCountry.set("")}>
+              bind:value={$selectedContinent}
+              >
+              <!-- on:change={() => selectedContinent.set("")} -->
                 <option value="All">All</option>
                 {#each continents as continent}
                   <option value={continent}>{continent}</option>
@@ -319,33 +346,34 @@ bind:clientHeight={$height}
             </select> and click on a country’s name for information about its ratings in the different categories.
           </p>
           <!-- </div> -->
-             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {data} {years} {selectedContinent} {selectedCountry} />
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} />
 
 
       </div>
         
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <div class="countryChartWrapper" tabindex="0" role="region" aria-describedby="Country Info" > 
-        {#if !selectedCountry}
+    <div class="countryChartWrapper" tabindex={countryInfoTabIndex} bind:this={countryView} role="region" aria-describedby="Country Info"> 
+      <!-- tabindex="0" role="region" aria-describedby="Country Info" -->
+        {#if !$selectedCountry}
           <p>Click on a country in the table or on the map for its individual ratings.</p>
         {/if}
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-        <div tabindex={countryInfoTabIndex} bind:this={countryView} style="min-height: 1px;">
-          {#if selectedCountry}
+        <div  style="min-height: 1px;">
+          {#if $selectedCountry}
           <p >
             Positive developments count as plus points, and negative ones as minus points. A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
           </p>
           <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
           </p>
   
-          {#if selectedCountry === "United States of America"}
+          {#if $selectedCountry === "United States of America"}
           <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
           {/if}
           <button
           class="countryButton"
           on:click={() => {
             // selectedCountry = ""
-            clickedCountry.set("")
+            selectedCountry.set("")
             scrollToContinentView()
             // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
             // scrollToTop() // here scrolling
@@ -355,7 +383,7 @@ bind:clientHeight={$height}
           {/if}
           
         </div>
-      <IndicatorsChart {data} {years}/>
+          <IndicatorsChart {years} />
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
 
@@ -395,7 +423,8 @@ bind:clientHeight={$height}
       /* margin: 0 auto; */
       margin-right: auto;
       margin-left: auto;
-      max-width: 700px;
+      /* max-width: 1000px; */
+      max-width: 75ch;
     }
 
 /* @media (max-width: 1150px){ 
@@ -445,6 +474,10 @@ select {
     color: dimgray;
     /* display: block; */
 }
+
+/* .countryChartWrapper {
+  scroll-margin-top: 100px;
+} */
 
   /* .chartWrapper {
     display: flex;

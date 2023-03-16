@@ -1,11 +1,12 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion";
 
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';
 
-    export let data
+    export let tooltipData
     export let country
     export let colorScale
     export let lastYearOnly
@@ -29,6 +30,8 @@
 
     // TODO css variables for background and color
     // TODO: check hsla code in style
+
+    $: transitionToUse = $prefersReducedMotion ? () => {} : fly
     
 </script>
 
@@ -39,7 +42,7 @@
 
 <div
     bind:clientWidth={tooltipWidth} 
-    in:fly={{ y: 20 * flyDirection,
+    in:transitionToUse={{ y: 20 * flyDirection,
         duration: 200, 
         delay: 100 }}
     class="tooltip countryTooltip"
@@ -55,24 +58,24 @@
 <!-- bind:clientHeight={tooltipHeight} -->
 <!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
     {#if $isDesktop}
-        <h3>{country} {lastYearOnly === true ? "2021" : data.year}</h3>
+        <h3>{country} {lastYearOnly === true ? "2021" : tooltipData.year}</h3>
     {/if}
     {#if $isMobile || $isTablet}
         <h3 class="tooltipHeading">
             <span>{country}</span>
-            <span>{lastYearOnly === true ? "2021" : data.year}</span>
+            <span>{lastYearOnly === true ? "2021" : tooltipData.year}</span>
         </h3>
     {/if}
     <div class="info">
         <span 
             class="total"
             style="
-                background: {colorScale(data.total)};
-                color: {data.total < 8 && data.total > -15 ? "black" : "white"};
+                background: {colorScale(tooltipData.total)};
+                color: {tooltipData.total < 8 && tooltipData.total > -15 ? "black" : "white"};
             ">
-            GTI: {data.total}
+            GTI: {tooltipData.total}
         </span>
-        <p class="ranking">global ranking: {data.ranking}</p>
+        <p class="ranking">global ranking: {tooltipData.ranking}</p>
     </div>
 
 </div>

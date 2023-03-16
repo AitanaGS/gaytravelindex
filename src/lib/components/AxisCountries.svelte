@@ -1,14 +1,16 @@
 <script>
     import { slide } from "svelte/transition"
     import { createEventDispatcher } from "svelte"
-    import { clickedCountry } from "../stores/clickedCountry";
-    import { clickedContinent } from "../stores/clickedContinent";
+    import { selectedCountry } from "../stores/selectedCountry";
+    import { selectedContinent } from "../stores/selectedContinent";
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize";
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion"
+    // import { selectedContinentData } from "../stores/data";
 
     export let countryScale;
     // export let handleClick
-    export let selectedContinent
+    // export let selectedContinent
     export let margin
     export let selectedContinentData
     // export let currentWindowWidth
@@ -34,22 +36,26 @@
     //     })
     // }
 
-    let selectedCountry
+    // let selectedCountry
 
-    clickedCountry.subscribe(country => {
-        selectedCountry = country
-    })
+    // clickedCountry.subscribe(country => {
+    //     selectedCountry = country
+    // })
 
     function handleCountryClick(country, continent) {
-        selectedCountry = country
-        clickedCountry.set(country)
-        clickedContinent.set(continent)
+        // selectedCountry = country
+        selectedCountry.set(country)
+        selectedContinent.set(continent)
         dispatch("countryClick")
     }
+
+    $: transitionToUse = $prefersReducedMotion ? () => {} : slide
 
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
     // TODO: check screen reader list (number of items)
     // $: console.log(selectedContinentData)
+
+    $: console.log("axis countries", selectedContinentData, $selectedCountry)
 
 
 </script>
@@ -59,11 +65,11 @@
 <g class="axis countries" transform="translate({margin.left}, {margin.top})" tabindex="0" role="list" aria-label="Country list" > 
     <!-- tabindex="0" role="list" aria-describedby="Country list" -->
     <!-- {#each countries as country, i (country)} -->
-    {#each countries as country, i (`${selectedContinent}${country}`)}
+    {#each countries as country, i (`${$selectedContinent}${country}`)}
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <g 
             class="tick country"
-            in:slide={{ duration: 300, delay: 50 + 50 * i}}
+            in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}}
             tabindex="0"
             aria-describedby="countryInfo"
             role="listitem"
@@ -78,8 +84,8 @@
                 {/each}
             </desc>
             <rect 
-                on:click={() => handleCountryClick(country, selectedContinent)}
-                on:keypress={() => handleCountryClick(country, selectedContinent)}
+                on:click={() => handleCountryClick(country, $selectedContinent)}
+                on:keypress={() => handleCountryClick(country, $selectedContinent)}
                 on:mouseover={() => axisHandleHover(country)}
                 on:focus={() => axisHandleHover(country)}
                 on:mouseleave={() => axisHandleHover(null)}
@@ -101,7 +107,7 @@
                     text-anchor="end"
                     dominant-baseline="middle"
                     dy={countryScale.bandwidth()/2}
-                    font-weight={hoveredCountry === country ||  selectedCountry == country ? "bold" : "normal"}
+                    font-weight={hoveredCountry === country ||  $selectedCountry == country ? "bold" : "normal"}
                     font-size={`${0.9 * $chartFontSize}rem`}
                     class="countryName"
                 >{country}</text>

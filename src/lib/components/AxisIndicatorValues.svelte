@@ -1,6 +1,6 @@
 <script>
     import { isSmallMobile } from "../stores/dimensions";
-import { chartFontSize } from "../stores/responsiveFontSize";
+    import { chartFontSize } from "../stores/responsiveFontSize";
 
     export let indicatorValueScale
     export let margin

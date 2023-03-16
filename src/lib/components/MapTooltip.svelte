@@ -2,16 +2,16 @@
     import CountryTooltip from "./CountryTooltip.svelte";
     import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
     
-    export let mapData
+    export let tooltipData
     export let totalScale
     export let width
 
     let tooltipWidth
     let tooltipHeight = 100
 
-    $: xValue = mapData.event.type === "focus" ? mapData.centroid[0]  : mapData.event.clientX - mapData.parentBoundingRect.left//+ mapData.parentBoundingRect.left 
+    $: xValue = tooltipData.event.type === "focus" ? tooltipData.centroid[0]  : tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
 
-    $: xPosition = mapData.event.type === "focus"
+    $: xPosition = tooltipData.event.type === "focus"
         ? xValue - tooltipWidth / 2
         : xValue + tooltipWidth / 2 > width
             ? xValue - tooltipWidth
@@ -24,12 +24,12 @@
     let yNudge = 5
     let yMobileNudge = 15
 
-    $: yValue = mapData.event.type === "focus" ? mapData.centroid[1]  : mapData.event.clientY - mapData.parentBoundingRect.top + window.pageYOffset // window.scrollY
+    $: yValue = tooltipData.event.type === "focus" ? tooltipData.centroid[1]  : tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
 
     let yPosition
 
     $: if ($isMobile || $isTablet) {
-        yPosition = mapData.event.type === "focus"
+        yPosition = tooltipData.event.type === "focus"
         ? yValue - tooltipHeight < 0
             ? yValue
             : yValue - tooltipHeight - yMobileNudge
@@ -38,7 +38,7 @@
             : yValue - tooltipHeight - yMobileNudge //- yNudge
 
     } else {
-        yPosition = mapData.event.type === "focus"
+        yPosition = tooltipData.event.type === "focus"
         ? yValue - tooltipHeight < 0
             ? yValue
             : yValue - tooltipHeight 
@@ -47,7 +47,7 @@
             : yValue - tooltipHeight //- yNudge
     }
 
-    // $: yPosition = mapData.event.type === "focus"
+    // $: yPosition = tooltipData.event.type === "focus"
     //     ? yValue - tooltipHeight < 0
     //         ? yValue
     //         : yValue - tooltipHeight 
@@ -60,14 +60,14 @@
     // TODO css variables for background and color
     // TODO accessibility tooltip
 
-    $: console.log(window.scrollY)
+    // $: console.log(window.scrollY)
 
 </script>
 
 <div class="mapTooltip">
     <CountryTooltip 
-    data={mapData.data} 
-    country={mapData.data.shortName} 
+    tooltipData={tooltipData.data} 
+    country={tooltipData.data.shortName} 
     colorScale={totalScale}
     lastYearOnly={true}
     {xPosition}

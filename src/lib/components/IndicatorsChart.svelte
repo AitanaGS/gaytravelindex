@@ -3,7 +3,7 @@
     import AxisIndicators from './AxisIndicators.svelte'
     import AxisIndicatorValues from './AxisIndicatorValues.svelte'
     import IndicatorTooltip from './IndicatorTooltip.svelte'
-    import { clickedCountry } from '../stores/clickedCountry'
+    import { selectedCountry} from '../stores/selectedCountry'
     import { slide, fly } from "svelte/transition"
     import { extent, min, max } from "d3-array"
     import { tidy, pivotLonger } from '@tidyjs/tidy'
@@ -11,19 +11,22 @@
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
     import { isDesktop, isMobile, isTablet, isSmallMobile, chartWidth } from '../stores/dimensions'
+    import { data } from "../stores/data"
 
 
-    export let data
+    // export let data
     // export let selectedCountry
     // export let width
     export let years
 
 
-    let selectedCountry = ""
+//     let selectedCountry = ""
 
-    clickedCountry.subscribe(country => {
-    selectedCountry = country
-  })
+//     clickedCountry.subscribe(country => {
+//     selectedCountry = country
+//   })
+
+//   $:console.log($selectedCountry)
 
 
     const indicatorLabels = [
@@ -77,7 +80,7 @@
     left: 230//210
   }
 
-  const dataLonger = tidy(data, pivotLonger({
+  const dataLonger = tidy($data, pivotLonger({
       cols: indicatorVariables,
       namesTo: 'indicator',
       valuesTo: 'value'
@@ -103,19 +106,50 @@ $: indicatorValueScale = scaleLinear()
     .range([20, innerWidth - 20])
 
 
-$: selectedCountryData = dataLonger.filter(d => d.country == selectedCountry).filter(d => d.value !== undefined)
+$: selectedCountryData = dataLonger.filter(d => d.country == $selectedCountry).filter(d => d.value !== undefined)
 
 $: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
 
+// $: console.log(hoveredIndicator, hoveredIndicatorData)
+
+const indicatorDataLookup = new Map()
+
+$: if (selectedCountryData) {
+    // console.log(selectedCountryData, indicatorVariables)
+    indicatorVariables.forEach(indicator => {
+        indicatorDataLookup.set(indicator,
+        selectedCountryData.filter(d => d.indicator === indicator).sort((a, b) => a.year - b.year))
+        // "test")
+        // selectedCountryData.filter(d => d.indicator === indicator).sort((a, b) => a.year - b.year))
+    })
+
+    
+//     selectedCountryData.forEach((data, i) => {
+//     indicatorDataLookup.set(indicatorLabelsLookup.get(data[0].indicator), data.filter(d => d.indicator === data.indicator).sort((a, b) => a.year - b.year))
+// })
+
+}
+// $: console.log(indicatorDataLookup)
+
 
 let hoveredIndicator
+let hoveredIndicatorData   
 
 // let indicatorData
 
 // let indicatorDescription
 
+// $: console.log(indicatorDataLookup, hoveredIndicator, hoveredIndicatorData)
+
 const handleIndicatorHover = (e, d) => {
     hoveredIndicator = d
+
+    if (d) {
+        // hoveredIndicatorData = selectedCountryData.filter(data => data.indicator === d.indicator).sort((a, b) => a.year - b.year)
+        hoveredIndicatorData = indicatorDataLookup.get(d.indicator)
+    } else {
+        hoveredIndicatorData = null
+    }
 
     // if (d === null) {
     //     indicatorData = null
@@ -127,8 +161,7 @@ const handleIndicatorHover = (e, d) => {
     //         }, `${indicatorLabelsLookup.get(hoveredIndicator.indicator)}: `)
     // }
 
-}
-
+    }
 // $: console.log(hoveredIndicator, indicatorData, indicatorDescription)
 
 
@@ -139,9 +172,9 @@ const handleIndicatorHover = (e, d) => {
 
 <div class="wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="indicatorChartTitle">
-        <title id="indicatorChartTitle">Lollipop Chart of ratings in different categories of {selectedCountry} in 2021</title>
-        {#if selectedCountry}
+    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="indicatorChartDescription">
+        <desc id="indicatorChartDescription">Lollipop Chart of ratings in different categories of {$selectedCountry} in 2021</desc>
+        {#if $selectedCountry}
         <text
             class="countryName"
             x={innerWidth / 2 + margin.left}
@@ -154,7 +187,7 @@ const handleIndicatorHover = (e, d) => {
             aria-hidden="true"
             >
             <!-- y=10 -->
-                {selectedCountry} 2021
+                {$selectedCountry} 2021
         </text>
         {/if}
         <!-- {#if !selectedCountry}
@@ -187,7 +220,13 @@ const handleIndicatorHover = (e, d) => {
 
                                             <!-- {#if hoveredIndicator} -->
                                             <desc id="indicatorInfo">
-                                                {indicatorLabelsLookup.get(d.indicator)}: {d.value}
+                                                <!-- {indicatorLabelsLookup.get(d.indicator)}: {d.value} -->
+                                                {
+                                                indicatorDataLookup.get(d.indicator)
+                                                    .reduce((prev, curr) => {
+                                                        return `${prev} ${curr.year}: ${curr.value},`
+                                                    }, `${indicatorLabelsLookup.get(d.indicator)}: `)
+                                                }
                                                 
                                             </desc>
                                             <!-- {/if} -->
@@ -246,7 +285,7 @@ const handleIndicatorHover = (e, d) => {
     </svg>
 
     {#if hoveredIndicator}
-    <IndicatorTooltip indicator2021Data={hoveredIndicator} data={selectedCountryData} {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
+    <IndicatorTooltip indicator2021Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
     {/if}
     <!-- data={selectedCountryData} 
     {indicatorData} -->
