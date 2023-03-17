@@ -12,6 +12,7 @@
     import { chartFontSize } from '../stores/responsiveFontSize'
     import { isDesktop, isMobile, isTablet, isSmallMobile, chartWidth } from '../stores/dimensions'
     import { data } from "../stores/data"
+    import { prefersReducedMotion } from '../stores/preferesReducedMotion'
 
 
     // export let data
@@ -165,6 +166,9 @@ const handleIndicatorHover = (e, d) => {
 // $: console.log(hoveredIndicator, indicatorData, indicatorDescription)
 
 
+$: transitionToUse = $prefersReducedMotion ? () => {} : fly
+
+
 // TODO: check grid
 // $: console.log(selectedCountryData2021)
 
@@ -238,6 +242,7 @@ const handleIndicatorHover = (e, d) => {
                         y2={indicatorScale(d.indicator)}
                         stroke="dimgray"
                         stroke-width=4
+                        in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                     />
                     <line 
                     x1={indicatorValueScale(0)}
@@ -246,6 +251,7 @@ const handleIndicatorHover = (e, d) => {
                     y2={indicatorScale(d.indicator)}
                     stroke={indicatorValueColorScale(d.value)}
                     stroke-width=2
+                    in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                 />
                     {/if}
                     <circle
@@ -265,7 +271,7 @@ const handleIndicatorHover = (e, d) => {
                         fill={indicatorValueColorScale(d.value)}
                         stroke="dimgray"
                         class="indicator"
-                        in:fly={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
+                        in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                         on:mouseover={(e) => handleIndicatorHover(e, d)}
                         on:focus={(e) => handleIndicatorHover(e, d)}
                         on:mouseleave={(e) => handleIndicatorHover(e, null)}
@@ -300,12 +306,12 @@ const handleIndicatorHover = (e, d) => {
         position: relative;
     } */
 
-    .countryName {
+    /* .countryName {
         transition: all 100ms ease;
-    }
+    } */
 
     .indicator {
         cursor: pointer;
-        transition: r 100ms ease;
+        transition: r 200ms ease;
     }
 </style>

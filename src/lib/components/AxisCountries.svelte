@@ -55,7 +55,7 @@
     // TODO: check screen reader list (number of items)
     // $: console.log(selectedContinentData)
 
-    $: console.log("axis countries", selectedContinentData, $selectedCountry)
+    // $: console.log("axis countries", selectedContinentData, $selectedCountry)
 
 
 </script>
@@ -126,7 +126,7 @@
 
     .countryName {
         pointer-events: none;
-        transition: all 200ms ease;
+        transition: font-weight 200ms ease, font-size 200ms ease;
     }
 
     /* .countryList {

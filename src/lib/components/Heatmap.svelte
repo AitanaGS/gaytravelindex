@@ -16,6 +16,8 @@
     import { scaleBand, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { onMount } from "svelte";
+    import { heatmapLoaded } from "../stores/heatmapLoaded"
+    import { beforeUpdate, afterUpdate } from "svelte"
 
     // export let selectedContinent
     // export let data
@@ -24,6 +26,16 @@
     export let years
     export let totalScale
     // export let currentWindowWidth
+
+    // afterUpdate(() => {
+    //   $heatmapLoaded = true
+    // })
+
+    // beforeUpdate(() => {
+    //   $heatmapLoaded = false
+    // })
+
+    // $: console.log("heatmap loaded", $heatmapLoaded)
 
 
     // let chartFontSize
@@ -332,7 +344,7 @@
     } */
 
     text {
-        transition: font-size 100ms ease, font-weight 100ms ease;
+        transition: font-size 200ms ease, font-weight 200ms ease;
     }
   </style>
 

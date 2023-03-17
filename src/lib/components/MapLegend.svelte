@@ -4,6 +4,7 @@
     import { chartFontSize } from "../stores/responsiveFontSize";
     // import { isTablet, isMobile } from "../stores/devices";
     import { isTablet, isMobile, chartWidth, isDesktop } from "../stores/dimensions";
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion";
 
     export let colorScale
     export let hoveredMapCountryData
@@ -49,6 +50,8 @@
     const legendWidth = 100
 
     $: yNudge = $isDesktop ? 14 : 20
+
+    $: transitionToUse = $prefersReducedMotion ? () => {} : fade
 
 
 </script>
@@ -122,7 +125,7 @@
     {#if (hoveredMapCountryData)}
     <line 
     class="legendLine"
-    in:fade={{ duration: 250 }}
+    in:transitionToUse={{ duration: 50 }}
     x1={legendWidth * totalScorePercent} 
     x2={legendWidth * totalScorePercent} 
     y1={yNudge} y2={yNudge + legendHeight} 
@@ -130,7 +133,7 @@
     stroke-width=3/>
     <line 
         class="legendLine"
-        in:fade={{ duration: 250 }}
+        in:transitionToUse={{ duration: 50 }}
         x1={legendWidth * totalScorePercent} 
         x2={legendWidth * totalScorePercent} 
         y1={yNudge} y2={yNudge + legendHeight} 
@@ -158,7 +161,7 @@
     }
 
     .legendLine {
-        transition: all 500ms ease;
+        transition: opacity 200ms ease;
     }
 
 </style>

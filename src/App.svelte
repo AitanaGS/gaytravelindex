@@ -18,6 +18,7 @@
   import { scaleDiverging } from "d3-scale"
   import { max, min, group } from "d3-array"
   import { interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
+  import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
 
 
   // window.onbeforeunload = function () {
@@ -183,6 +184,12 @@
     countryInfoTabIndex = "0"
     countryView.scrollIntoView({block: "start"});
     countryView.focus()
+
+    // setTimeout(() => {
+    //   countryInfoTabIndex = "0"
+    // countryView.scrollIntoView({block: "start"});
+    // countryView.focus()
+    // }, 500)
   }
 
   let continentView

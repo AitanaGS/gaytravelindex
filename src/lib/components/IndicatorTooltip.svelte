@@ -148,7 +148,7 @@
 
 <div
     in:transitionToUse={{ y: flyDirection * 20,
-            duration: 200, 
+            duration: 250, 
             delay: 100 }}
     class="tooltip"
     style="

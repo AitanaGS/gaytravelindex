@@ -43,7 +43,7 @@
 <div
     bind:clientWidth={tooltipWidth} 
     in:transitionToUse={{ y: 20 * flyDirection,
-        duration: 200, 
+        duration: 250, 
         delay: 100 }}
     class="tooltip countryTooltip"
     style="
@@ -53,6 +53,9 @@
         --width: {tooltipWidth}px;
     "
 >
+<!-- in:transitionToUse={{ y: 20 * flyDirection,
+    duration: 200, 
+    delay: 100 }} -->
 <!-- bind:clientWidth={tooltipWidth} -->
 <!-- --fontSize: {$tooltipFontSize}rem; -->
 <!-- bind:clientHeight={tooltipHeight} -->
