@@ -27,6 +27,7 @@
 
   // $: console.log(data, dataX)
 
+  // $: console.log("ismobile", $isMobile, "issmall", $isSmallMobile, "istablet", $isTablet)
 
 //   if (history.scrollRestoration) {
 //     history.scrollRestoration = 'manual';

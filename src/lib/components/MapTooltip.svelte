@@ -11,13 +11,28 @@
 
     $: xValue = tooltipData.event.type === "focus" ? tooltipData.centroid[0]  : tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
 
-    $: xPosition = tooltipData.event.type === "focus"
+    // $: xPosition = tooltipData.event.type === "focus"
+    //     ? xValue - tooltipWidth / 2
+    //     : xValue + tooltipWidth / 2 > width
+    //         ? xValue - tooltipWidth
+    //         : xValue < tooltipWidth / 2
+    //             ? xValue
+    //             : xValue - tooltipWidth / 2
+
+    let xPosition
+
+    $: if ($isMobile) {
+        xPosition = 10
+
+    } else {
+        xPosition = tooltipData.event.type === "focus"
         ? xValue - tooltipWidth / 2
         : xValue + tooltipWidth / 2 > width
             ? xValue - tooltipWidth
             : xValue < tooltipWidth / 2
                 ? xValue
                 : xValue - tooltipWidth / 2
+    }
 
 
 
@@ -28,16 +43,20 @@
 
     let yPosition
 
-    $: if ($isMobile || $isTablet) {
+    $: if ($isMobile) {
+
+        yPosition = 10
+
+    } else if ($isTablet) {
         yPosition = tooltipData.event.type === "focus"
         ? yValue - tooltipHeight < 0
             ? yValue
             : yValue - tooltipHeight - yMobileNudge
         : yValue - tooltipHeight - yNudge < 0
             ? yValue + yNudge
-            : yValue - tooltipHeight - yMobileNudge //- yNudge
+            : yValue - tooltipHeight - yMobileNudge
 
-    } else {
+    } else if ($isDesktop) {
         yPosition = tooltipData.event.type === "focus"
         ? yValue - tooltipHeight < 0
             ? yValue
@@ -46,14 +65,26 @@
             ? yValue + yNudge
             : yValue - tooltipHeight //- yNudge
     }
+    
+    // $: if ($isMobile || $isDesktop) {
+    //     yPosition = tooltipData.event.type === "focus"
+    //     ? yValue - tooltipHeight < 0
+    //         ? yValue
+    //         : yValue - tooltipHeight - yMobileNudge
+    //     : yValue - tooltipHeight - yNudge < 0
+    //         ? yValue + yNudge
+    //         : yValue - tooltipHeight - yMobileNudge
 
-    // $: yPosition = tooltipData.event.type === "focus"
+    // } else {
+    //     yPosition = tooltipData.event.type === "focus"
     //     ? yValue - tooltipHeight < 0
     //         ? yValue
     //         : yValue - tooltipHeight 
     //     : yValue - tooltipHeight - yNudge < 0
     //         ? yValue + yNudge
     //         : yValue - tooltipHeight //- yNudge
+    // }
+
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 

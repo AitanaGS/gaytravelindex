@@ -74,11 +74,11 @@
   $: innerHeight = height - margin.top - margin.bottom
 
 
-  const margin = {
+  $: margin = {
     top: 60, // 80
     right: 5,
     bottom: 5,
-    left: 230//210
+    left: $isMobile ? 180 : 230//230
   }
 
   const dataLonger = tidy($data, pivotLonger({
@@ -186,7 +186,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
             text-anchor=middle
             dominant-baseline="middle"
             font-weight="bold"
-            font-size={`${$chartFontSize}rem`}
+            font-size={$isMobile ? `${0.8 * $chartFontSize}rem`: `${$chartFontSize}rem`}
             role="presentation"
             aria-hidden="true"
             >
@@ -254,6 +254,16 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
                     in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                 />
                     {/if}
+                    <!-- svelte-ignore a11y-mouse-events-have-key-events -->
+                    <circle
+                    class="indicator"
+                    cx={indicatorValueScale(d.value)}
+                    cy={indicatorScale(d.indicator)}
+                    r={20}
+                    fill="transparent"
+                    on:mouseover={(e) => handleIndicatorHover(e, d)}
+                    on:mouseleave={(e) => handleIndicatorHover(e, null)}
+                    />
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}

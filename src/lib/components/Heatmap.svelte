@@ -4,7 +4,7 @@
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
-    import { chartWidth } from "../stores/dimensions"
+    import { chartWidth, isDesktop, isTablet, isSmallMobile, isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { clickedContinentData } from "../stores/clickedContinent"
     import { data, data2021, data2021Map} from "../stores/data"
@@ -88,12 +88,14 @@
       )]
 
 
-    const margin = {
+    $: margin = {
         top: 60, // 60
-        right: 10,
+        right: $isMobile ? 5 : 10,
         bottom: 5,
-        left: 200 //195 //200//210 // 220
+        left: $isMobile ? 130 : 200 //200
   }
+
+  // $: console.log("ismobile", $isMobile)
 
   $: innerWidth = $chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom

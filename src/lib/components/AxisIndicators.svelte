@@ -1,5 +1,6 @@
 <script>
     import { chartFontSize } from "../stores/responsiveFontSize";
+    import { isMobile } from "../stores/dimensions";
 
     export let indicatorScale;
     export let indicatorVariables
@@ -19,7 +20,7 @@
                 dominant-baseline="middle"
                 dy={indicatorScale.bandwidth()/2}
                 dx=-5
-                font-size={`${0.9 * $chartFontSize}rem`}
+                font-size={$isMobile ? `${0.8 * $chartFontSize}rem` : `${0.9 * $chartFontSize}rem`}
                 role="presentation"
                 aria-hidden="true"
             > {indicatorLabelsLookup.get(indicator)}</text>

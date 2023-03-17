@@ -101,7 +101,7 @@
         }
     }
 
-    const dispatch = createEventDispatcher()
+    // const dispatch = createEventDispatcher()
 
     // function dispatchCountryClick(e, country, continent) {
     //     // handleMapHover(e, null, null)
@@ -114,18 +114,18 @@
     //     dispatch("countryClick")
     // }
 
-    function handleCountryClick(e, country, continent) {
-        // console.log(country)
-        // hoveredMapCountryData = null
-        // console.log(country, $selectedCountry)
-        // console.log(continent, $selectedContinent)
-        handleMapHover(e, null, null)
-        selectedCountry.set(country)
-        selectedContinent.set(continent)
-        // console.log(country, $selectedCountry)
-        // console.log(continent, $selectedContinent)
-        dispatch("countryClick")
-    }
+    // function handleCountryClick(e, country, continent) {
+    //     // console.log(country)
+    //     // hoveredMapCountryData = null
+    //     // console.log(country, $selectedCountry)
+    //     // console.log(continent, $selectedContinent)
+    //     handleMapHover(e, null, null)
+    //     selectedCountry.set(country)
+    //     selectedContinent.set(continent)
+    //     // console.log(country, $selectedCountry)
+    //     // console.log(continent, $selectedContinent)
+    //     dispatch("countryClick")
+    // }
     // $:console.log($clickedCountry, $clickedContinent)
 
 
@@ -166,12 +166,18 @@
                 "
                 on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:mouseleave={(e) => handleMapHover(e, null, null)}
-                on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
-                on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
                 on:blur={(e) => handleMapHover(e, null, null)}
                 on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
             />
+            <!-- on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
+            on:mouseleave={(e) => handleMapHover(e, null, null)}
+            on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+            on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
+            on:blur={(e) => handleMapHover(e, null, null)}
+            on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
+            on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}} -->
+
             <!-- on:blur={(e) => handleMapHover(e, null, null)}
             on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
             on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}

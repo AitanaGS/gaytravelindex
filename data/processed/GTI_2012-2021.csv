@@ -115,7 +115,7 @@ Japan,Asia,55,2018,1,0,0,0,NA,1,0,0,0,0,0,-1,0,0,0,1,NA,NA,Japan
 Mexico,Americas,55,2018,1,1,1,2,NA,1,-1,0,0,0,0,-1,0,-2,0,0,NA,NA,Mexico
 Mongolia,Asia,55,2018,1,1,0,0,NA,1,0,0,0,0,0,-1,0,0,0,0,NA,NA,Mongolia
 Panama,Americas,55,2018,1,1,0,0,NA,1,0,-1,-1,0,0,0,0,0,0,1,NA,NA,Panama
-United States Virgin Islands,Americas,55,2018,1,1,2,0,NA,1,-1,0,0,0,0,-1,0,-1,0,0,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,55,2018,1,1,2,0,NA,1,-1,0,0,0,0,-1,0,-1,0,0,NA,NA,Virgin Islands (USA)
 Aruba,Americas,67,2018,0,0,0,0,NA,1,0,0,0,0,0,0,0,0,0,-1,NA,NA,Aruba
 Benin,Africa,67,2018,0,0,0,0,NA,1,0,0,0,0,0,-1,0,0,0,0,NA,NA,Benin
 Bulgaria,Europe,67,2018,0,2,0,0,NA,1,-1,0,-1,0,0,-1,0,0,0,0,NA,NA,Bulgaria
@@ -325,7 +325,7 @@ Ecuador,Americas,42,2017,2,3,1,0,0,1,-1,-1,0,0,0,-1,0,0,0,NA,NA,NA,Ecuador
 Liechtenstein,Europe,42,2017,2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,Liechtenstein
 Hungary,Europe,42,2017,2,2,1,0,0,1,-1,0,-1,0,0,0,0,0,0,NA,NA,NA,Hungary
 Mexico,Americas,42,2017,2,1,1,2,1,1,-1,0,0,0,0,-1,0,-2,0,NA,NA,NA,Mexico
-United States Virgin Islands,Americas,42,2017,2,1,2,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,42,2017,2,1,2,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 Mozambique,Africa,42,2017,2,1,0,0,0,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,Mozambique
 Nepal,Asia,42,2017,2,3,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Nepal
 Mongolia,Asia,49,2017,1,1,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Mongolia
@@ -563,7 +563,7 @@ Lithuania,Europe,57,2019,1,2,0,0,NA,1,-1,0,-1,0,0,-1,0,0,0,1,NA,NA,Lithuania
 Mexico,Americas,57,2019,1,1,1,2,NA,1,-1,0,0,0,0,-1,0,-2,0,0,NA,NA,Mexico
 Mongolia,Asia,57,2019,1,1,0,0,NA,1,0,0,0,0,0,-1,0,0,0,0,NA,NA,Mongolia
 Panama,Americas,57,2019,1,1,0,0,NA,1,0,-1,-1,0,0,0,0,0,0,1,NA,NA,Panama
-United States Virgin Islands,Americas,57,2019,1,1,2,0,NA,1,-1,0,0,0,0,-1,0,-1,0,0,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,57,2019,1,1,2,0,NA,1,-1,0,0,0,0,-1,0,-1,0,0,NA,NA,Virgin Islands (USA)
 Albania,Europe,68,2019,0,2,0,0,NA,1,-1,0,0,0,0,-1,0,0,0,-1,NA,NA,Albania
 Aruba,Americas,68,2019,0,0,0,0,NA,1,0,0,0,0,0,0,0,0,0,-1,NA,NA,Aruba
 Benin,Africa,68,2019,0,0,0,0,NA,1,0,0,0,0,0,-1,0,0,0,0,NA,NA,Benin
@@ -761,7 +761,7 @@ Vanuatu,Oceania,90,2015,-2,0,0,0,0,1,-1,-1,0,0,0,-1,0,0,0,NA,NA,NA,Vanuatu
 Vatican City,Europe,176,2015,-8,0,0,0,0,0,-2,0,-1,-1,0,-2,-2,0,0,NA,NA,NA,Vatican City
 Venezuela,Americas,55,2015,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Venezuela
 Vietnam,Asia,55,2015,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Vietnam
-United States Virgin Islands,Americas,55,2015,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,55,2015,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 Yemen,Asia,190,2015,-10,0,0,0,0,0,-2,-1,-1,-1,0,-2,0,-2,-1,NA,NA,NA,Yemen
 Zambia,Africa,141,2015,-6,0,0,0,0,0,-2,0,-1,-1,0,-1,-1,0,0,NA,NA,NA,Zambia
 Zimbabwe,Africa,176,2015,-8,0,0,0,0,0,-1,0,-1,-1,0,-2,-1,-2,0,NA,NA,NA,Zimbabwe
@@ -811,7 +811,7 @@ Liechtenstein,Europe,42,2016,2,0,1,0,0,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,Liechtenstei
 Ecuador,Americas,42,2016,2,3,1,0,0,1,-1,-1,0,0,0,-1,0,0,0,NA,NA,NA,Ecuador
 Mexico,Americas,42,2016,2,1,1,2,1,1,-1,0,0,0,0,-1,0,-2,0,NA,NA,NA,Mexico
 Hungary,Europe,42,2016,2,2,1,0,0,1,-1,0,-1,0,0,0,0,0,0,NA,NA,NA,Hungary
-United States Virgin Islands,Americas,42,2016,2,1,2,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,42,2016,2,1,2,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 Nepal,Asia,42,2016,2,3,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Nepal
 Curaçao,Americas,49,2016,1,0,0,0,1,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Curaçao
 Bolivia,Americas,49,2016,1,2,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Bolivia
@@ -1020,7 +1020,7 @@ Greece,Europe,56,2020,-2,1,1,0,0,0,-1,0,0,0,0,0,0,-1,0,0,-1,-1,Greece
 South Korea,Asia,56,2020,-2,1,-1,0,0,1,0,0,0,0,0,-1,0,0,0,0,-1,-1,South Korea
 Macau,Asia,56,2020,-2,1,-1,0,0,0,0,0,0,0,0,-1,0,0,0,1,-1,-1,Macau
 Seychelles,Africa,56,2020,-2,2,-1,0,0,0,-1,0,0,0,0,-1,0,0,0,1,-1,-1,Seychelles
-United States Virgin Islands,Americas,56,2020,-2,1,2,0,0,0,-1,0,0,0,0,-1,0,-1,0,0,-1,-1,United States Virgin Islands
+Virgin Islands (USA),Americas,56,2020,-2,1,2,0,0,0,-1,0,0,0,0,-1,0,-1,0,0,-1,-1,Virgin Islands (USA)
 Angola,Africa,66,2020,-3,2,-1,0,0,0,-1,0,0,0,0,0,0,0,0,-1,-1,-1,Angola
 Cambodia,Asia,66,2020,-3,0,-1,0,0,0,0,0,0,0,0,-1,0,0,0,1,-1,-1,Cambodia
 China incl. Hong Kong,Asia,66,2020,-3,0,-1,0,0,0,0,0,0,0,0,-1,0,0,0,0,-1,0,People's Republic of China
@@ -1063,7 +1063,7 @@ Italy,Europe,51,2021,0,1,1,0,0,0,-1,0,0,0,0,0,0,0,0,1,-1,-1,Italy
 Liechtenstein,Europe,51,2021,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,-1,-1,-1,Liechtenstein
 Nepal,Asia,51,2021,0,3,-1,0,0,0,-1,0,0,0,0,-1,0,0,0,0,1,-1,Nepal
 Slovakia,Europe,51,2021,0,2,0,0,0,0,0,0,0,0,0,-1,0,0,0,1,-1,-1,Slovakia
-United States Virgin Islands,Americas,51,2021,0,1,2,2,0,0,-1,0,0,0,0,-1,0,-1,0,0,-1,-1,United States Virgin Islands
+Virgin Islands (USA),Americas,51,2021,0,1,2,2,0,0,-1,0,0,0,0,-1,0,-1,0,0,-1,-1,Virgin Islands (USA)
 Bolivia,Americas,58,2021,-1,2,0,0,0,0,-1,0,0,0,0,-1,0,0,0,1,-1,-1,Bolivia
 Bosnia and Herzegovina,Europe,58,2021,-1,2,-1,0,0,0,0,0,0,0,0,-1,0,0,0,1,-1,-1,Bosnia and Herzegovina
 Albania,Europe,60,2021,-2,2,-1,0,0,0,-1,0,0,0,0,-1,0,0,0,-1,-1,1,Albania
@@ -1418,7 +1418,7 @@ Chile,Americas,49,2014,0,1,0,0,0,0,-1,0,0,0,0,0,0,0,0,NA,NA,NA,Chile
 Guam,Oceania,49,2014,0,NA,NA,NA,0,1,-1,NA,0,0,0,0,0,0,0,NA,NA,NA,Guam
 Philippines,Asia,49,2014,0,1,0,0,0,0,-1,0,0,0,0,0,0,0,0,NA,NA,NA,Philippines
 Slovakia,Europe,49,2014,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Slovakia
-United States Virgin Islands,Americas,49,2014,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,49,2014,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 Bosnia and Herzegovina,Europe,49,2014,0,1,0,0,0,1,0,0,0,0,-1,-1,0,0,0,NA,NA,NA,Bosnia and Herzegovina
 Latvia,Europe,60,2014,-1,0,0,0,0,1,0,0,0,0,-1,-1,0,0,0,NA,NA,NA,Latvia
 Laos,Asia,60,2014,-1,0,0,0,0,0,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Laos
@@ -1555,7 +1555,7 @@ Malta,Europe,48,2013,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Malta
 Philippines,Asia,48,2013,0,1,0,0,0,0,-1,0,0,0,0,0,0,0,0,NA,NA,NA,Philippines
 Slovakia,Europe,48,2013,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Slovakia
 Vietnam,Asia,48,2013,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,Vietnam
-United States Virgin Islands,Americas,48,2013,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,48,2013,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 Azerbaijan,Asia,60,2013,-1,0,0,0,0,0,0,0,0,0,-1,-1,0,0,0,NA,NA,NA,Azerbaijan
 Bermuda,Americas,60,2013,-1,0,0,0,0,0,0,NA,0,0,0,-1,0,0,0,NA,NA,NA,Bermuda
 Bolivia,Americas,60,2013,-1,0,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Bolivia
@@ -1681,7 +1681,7 @@ Thailand,Asia,38,2012,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,NA,NA,NA,Thailand
 United States of America,Americas,38,2012,1,1,1,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States of America
 Italy,Europe,38,2012,1,1,0,0,0,1,-1,0,0,0,0,0,0,0,0,NA,NA,NA,Italy
 Bosnia and Herzegovina,Europe,47,2012,0,1,0,0,0,1,0,0,0,0,-1,-1,0,0,0,NA,NA,NA,Bosnia and Herzegovina
-United States Virgin Islands,Americas,47,2012,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,United States Virgin Islands
+Virgin Islands (USA),Americas,47,2012,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Virgin Islands (USA)
 China incl. Hong Kong,Asia,47,2012,0,0,0,0,0,1,0,0,0,0,0,-1,0,0,0,NA,NA,NA,People's Republic of China
 Costa Rica,Americas,47,2012,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Costa Rica
 Greece,Europe,47,2012,0,1,0,0,0,1,-1,0,0,0,0,-1,0,0,0,NA,NA,NA,Greece

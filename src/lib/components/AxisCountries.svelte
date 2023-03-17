@@ -7,6 +7,7 @@
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { selectedContinentData } from "../stores/data";
+    import { isMobile } from "../stores/dimensions";
 
     export let countryScale;
     // export let handleClick
@@ -58,6 +59,7 @@
     // $: console.log("axis countries", selectedContinentData, $selectedCountry)
 
 
+
 </script>
 
 
@@ -103,15 +105,14 @@
             -->
             <!-- in:slide={{ duration: 200, delay: 50 + 50 * i}}  -->
             <text
-                    y={countryScale(country)}
-                    text-anchor="end"
-                    dominant-baseline="middle"
-                    dy={countryScale.bandwidth()/2}
-                    font-weight={hoveredCountry === country ||  $selectedCountry == country ? "bold" : "normal"}
-                    font-size={`${0.9 * $chartFontSize}rem`}
-                    class="countryName"
-                >{country}</text>
-                <!-- font-size="0.9rem" -->
+            y={countryScale(country)}
+            text-anchor="end"
+            dominant-baseline="middle"
+            dy={countryScale.bandwidth()/2}
+            font-weight={hoveredCountry === country ||  $selectedCountry == country ? "bold" : "normal"}
+            font-size={$isMobile ? `${0.7 * $chartFontSize}rem` : `${0.9 * $chartFontSize}rem`}
+            class="countryName"
+            >{country}</text>
         </g>
 
     {/each}
