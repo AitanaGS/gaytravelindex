@@ -181,12 +181,12 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
         {#if $selectedCountry}
         <text
             class="countryName"
-            x={innerWidth / 2 + margin.left}
+            x={$isMobile ? 0 : innerWidth / 2 + margin.left}
             y=30
-            text-anchor=middle
+            text-anchor={$isMobile ? "start" : "middle"}
             dominant-baseline="middle"
             font-weight="bold"
-            font-size={$isMobile ? `${0.8 * $chartFontSize}rem`: `${$chartFontSize}rem`}
+            font-size={$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}
             role="presentation"
             aria-hidden="true"
             >
