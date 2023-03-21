@@ -181,7 +181,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
         {#if $selectedCountry}
         <text
             class="countryName"
-            x={$isMobile ? 0 : innerWidth / 2 + margin.left}
+            x={$isMobile ? 5 : innerWidth / 2 + margin.left}
             y=30
             text-anchor={$isMobile ? "start" : "middle"}
             dominant-baseline="middle"

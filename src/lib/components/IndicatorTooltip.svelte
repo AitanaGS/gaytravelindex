@@ -31,43 +31,62 @@
     $: xValue = indicatorValueScale(indicator2021Data.value)
     $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
 
+
     let xPosition
 
-    $: if ($isMobile || $isTablet) {
+$: if ($isMobile) {
 
-        xPosition = indicator2021Data.value === -5
-            ? margin.left + xValue - xBandwidth * 4 //5
-            : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-            ? margin.left + xValue - xBandwidth * 6 //7
-            : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-            ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
-            : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-            ? margin.left + xValue - tooltipWidth + xBandwidth
-            : margin.left + xValue - tooltipWidth
+    xPosition = indicator2021Data.value === -5
+        ? margin.left + xValue - xBandwidth * 4 //5
+        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+        ? margin.left + xValue - xBandwidth * 6 //7
+        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+        ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
+        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+        ? margin.left + xValue - tooltipWidth + xBandwidth
+        : margin.left + xValue - tooltipWidth
 
-    } else {
+} else {
 
-        xPosition = indicator2021Data.value === -5
-            ? margin.left + xValue
-            : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-            ? margin.left + xValue - xBandwidth
-            : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-            ? margin.left + xValue - tooltipWidth / 2
-            : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-            ? margin.left + xValue - tooltipWidth + xBandwidth
-            : margin.left + xValue - tooltipWidth
-    }
+    xPosition = indicator2021Data.value === -5
+        ? margin.left + xValue - xBandwidth * 2
+        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+        ? margin.left + xValue - xBandwidth
+        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+        ? margin.left + xValue - tooltipWidth / 2
+        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+        ? margin.left + xValue - tooltipWidth + xBandwidth
+        : margin.left + xValue - tooltipWidth
+}
 
-    // $: xPosition = indicator2021Data.value === -5
-    //     ? margin.left + xValue
-    //     : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-    //     ? margin.left + xValue - xBandwidth
-    //     : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-    //     ? margin.left + xValue - tooltipWidth / 2
-    //     : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-    //     ? margin.left + xValue - tooltipWidth + xBandwidth
-    //     : margin.left + xValue - tooltipWidth
-    
+    // let xPosition
+
+    // $: if ($isMobile || $isTablet) {
+
+    //     xPosition = indicator2021Data.value === -5
+    //         ? margin.left + xValue - xBandwidth * 4 //5
+    //         : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+    //         ? margin.left + xValue - xBandwidth * 6 //7
+    //         : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+    //         ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
+    //         : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+    //         ? margin.left + xValue - tooltipWidth + xBandwidth
+    //         : margin.left + xValue - tooltipWidth
+
+    // } else {
+
+    //     xPosition = indicator2021Data.value === -5
+    //         ? margin.left + xValue
+    //         : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+    //         ? margin.left + xValue - xBandwidth
+    //         : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+    //         ? margin.left + xValue - tooltipWidth / 2
+    //         : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+    //         ? margin.left + xValue - tooltipWidth + xBandwidth
+    //         : margin.left + xValue - tooltipWidth
+    // }
+
+
     
     $: yValue = indicatorScale(indicator2021Data.indicator)
 
