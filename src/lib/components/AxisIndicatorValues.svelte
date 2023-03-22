@@ -1,6 +1,7 @@
 <script>
     import { isSmallMobile } from "../stores/dimensions";
     import { chartFontSize } from "../stores/responsiveFontSize";
+    import { COLORS } from "../utils/colors"
 
     export let indicatorValueScale
     export let margin
@@ -22,6 +23,7 @@
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"
+                fill={COLORS.gray["700"]}
                 font-size={`${0.8 * $chartFontSize}rem`}
                 role="presentation"
                 aria-hidden="true"
@@ -32,6 +34,7 @@
                 x={indicatorValueScale(value)}
                 text-anchor="middle"
                 dominant-baseline="middle"
+                fill={COLORS.gray["800"]}
                 font-size={`${0.8 * $chartFontSize}rem`}
                 role="presentation"
                 aria-hidden="true"
@@ -43,7 +46,7 @@
                 x2={indicatorValueScale((value))}
                 y1=10
                 y2={innerHeight}
-                stroke="lightgray"
+                stroke={COLORS.gray["200"]}
                 stroke-width=1
             />
             <!-- dy={indicatorScale.bandwidth()/2} -->

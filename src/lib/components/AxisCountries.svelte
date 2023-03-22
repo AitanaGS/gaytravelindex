@@ -8,6 +8,7 @@
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { selectedContinentData } from "../stores/data";
     import { isMobile } from "../stores/dimensions";
+    import { COLORS } from "../utils/colors"
 
     export let countryScale;
     // export let handleClick
@@ -109,6 +110,7 @@
             text-anchor="end"
             dominant-baseline="middle"
             dy={countryScale.bandwidth()/2}
+            fill={COLORS.gray["800"]}
             font-weight={hoveredCountry === country ||  $selectedCountry == country ? "bold" : "normal"}
             font-size={$isMobile ? `${0.7 * $chartFontSize}rem` : `${0.9 * $chartFontSize}rem`}
             class="countryName"

@@ -10,6 +10,7 @@
     import { data, data2021, data2021Map} from "../stores/data"
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
+    import { COLORS } from "../utils/colors"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
@@ -185,6 +186,7 @@
           y= 30 
           text-anchor="middle" 
           dominant-baseline="middle" 
+          fill={COLORS.gray["800"]}
           font-weight="bold" 
           font-size={`${$chartFontSize}rem`}
           role="presentation"
@@ -242,7 +244,7 @@
               <text
               class="totalText"
               fill={
-                d.total < 8 && d.total > -15 ? "black" : "white"
+                d.total < 9 && d.total > -17 ? COLORS.gray["900"] : COLORS.gray["50"]
               }
               x={yearScale(d.year)}
               y={countryScale(d.country)}
@@ -259,36 +261,24 @@
                 }
                 font-size={
                     d.year === 2021 && d === hoveredCountryYear
-                    ? `${0.95 * $chartFontSize}rem`
+                    ? `${1 * $chartFontSize}rem`
                     : d.year === 2021 || d === hoveredCountryYear
-                    ? `${0.85 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
-                    : `${0.75 * $chartFontSize}rem`
+                    ? `${0.95 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
+                    : `${0.85 * $chartFontSize}rem`
                     }
               role="presentation"
               aria-hidden="true"
               >{d.total}</text> 
-<!-- 
-              font-size={
-                d.year === 2021 && d === hoveredCountryYear
-                ? "1rem"
-                : d.year === 2021 || d === hoveredCountryYear
-                ? "0.9rem"
-                : "0.8rem"
-                } -->
-                 
+              <!-- fill={
+                d.total < 8 && d.total > -15 ? COLORS.gray["900"] : COLORS.gray["100"]
+              } -->
               <!-- font-size={
-                d === hoveredCountryYear
-                ? "0.9rem"
-                : "0.8rem"
+                d.year === 2021 && d === hoveredCountryYear
+                ? `${0.95 * $chartFontSize}rem`
+                : d.year === 2021 || d === hoveredCountryYear
+                ? `${0.85 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
+                : `${0.75 * $chartFontSize}rem`
                 } -->
-        
-                <!-- font-size={
-                    d.year === 2021 || hoveredCountryYear
-                    ? d.year === 2021 || hoveredCountryYear === d
-                        ? "1rem"
-                        : "0.8rem"
-                    : "0.8rem"
-                    } -->
                </g>
             {/each}
         </g>

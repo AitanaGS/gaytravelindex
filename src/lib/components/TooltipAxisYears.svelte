@@ -1,6 +1,7 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
-
+    import { COLORS } from "../utils/colors"  
+    
     export let tooltipYearScale
     export let svgMargin
     export let years
@@ -23,6 +24,7 @@
                 y=10
                 text-anchor=middle
                 dominant-baseline="hanging"
+                fill={COLORS.gray["700"]}
                 font-size={`${0.55 * tooltipFontSize}rem`}
 
                 >

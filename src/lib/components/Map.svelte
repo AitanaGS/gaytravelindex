@@ -6,6 +6,7 @@
     import { selectedCountry } from "../stores/selectedCountry";
     import { selectedContinent } from "../stores/selectedContinent";
     import { data2021, data2021Map } from "../stores/data"
+    import { COLORS } from "../utils/colors"
 
     import * as topojson from "topojson-client"
     import {
@@ -159,7 +160,7 @@
                 class="countryPath"
                 tabindex="-1"
                 d={pathGenerator(country.geometry)}
-                fill={totalScale(Object(country.properties.data).total) || "dimgray"}
+                fill={totalScale(Object(country.properties.data).total) || COLORS.gray["700"]}
                 stroke="none"
                 style="
                     cursor: {country.properties.data ? "pointer" : "auto"};

@@ -5,6 +5,7 @@
     // import { isTablet, isMobile } from "../stores/devices";
     import { isTablet, isMobile, chartWidth, isDesktop } from "../stores/dimensions";
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
+    import { COLORS } from "../utils/colors"
 
     export let colorScale
     export let hoveredMapCountryData
@@ -66,7 +67,7 @@
     </defs>
     <text 
         x={legendWidth / 2} 
-        fill="darkgray" 
+        fill={COLORS.gray["700"]}
         font-size={`${0.8 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
@@ -95,7 +96,7 @@
     <text 
         x=0 
         y={yNudge + legendHeight + 5} 
-        fill="darkgray" 
+        fill={COLORS.gray["700"]}
         font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="end"
@@ -105,7 +106,7 @@
     <text 
         x={legendWidth / 2} 
         y={yNudge + legendHeight + 5} 
-        fill="darkgray" 
+        fill={COLORS.gray["700"]}
         font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="middle"
@@ -115,7 +116,7 @@
     <text 
         x={legendWidth} 
         y={yNudge + legendHeight + 5} 
-        fill="darkgray" 
+        fill={COLORS.gray["700"]}
         font-size={`${0.7 * mapFontSize}rem`}
         dominant-baseline="hanging" 
         text-anchor="start"
@@ -129,7 +130,7 @@
     x1={legendWidth * totalScorePercent} 
     x2={legendWidth * totalScorePercent} 
     y1={yNudge} y2={yNudge + legendHeight} 
-    stroke="#FFFFFF"
+    stroke={COLORS.gray["100"]}
     stroke-width=3/>
     <line 
         class="legendLine"
@@ -137,7 +138,7 @@
         x1={legendWidth * totalScorePercent} 
         x2={legendWidth * totalScorePercent} 
         y1={yNudge} y2={yNudge + legendHeight} 
-        stroke="#303030"
+        stroke={COLORS.gray["700"]}
         stroke-width=2/>
     {/if}
     

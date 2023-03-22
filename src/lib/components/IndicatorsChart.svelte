@@ -13,6 +13,7 @@
     import { isDesktop, isMobile, isTablet, isSmallMobile, chartWidth } from '../stores/dimensions'
     import { data } from "../stores/data"
     import { prefersReducedMotion } from '../stores/preferesReducedMotion'
+    import { COLORS } from "../utils/colors"
 
 
     // export let data
@@ -185,6 +186,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
             y=30
             text-anchor={$isMobile ? "start" : "middle"}
             dominant-baseline="middle"
+            fill={COLORS.gray["800"]}
             font-weight="bold"
             font-size={$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}
             role="presentation"
@@ -240,7 +242,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
                         x2={indicatorValueScale(d.value)}
                         y1={indicatorScale(d.indicator)}
                         y2={indicatorScale(d.indicator)}
-                        stroke="dimgray"
+                        stroke={COLORS.gray["700"]}
                         stroke-width=4
                         in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                     />
@@ -279,7 +281,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
                                     ? 10
                                     : 8 }
                         fill={indicatorValueColorScale(d.value)}
-                        stroke="dimgray"
+                        stroke={COLORS.gray["700"]}
                         class="indicator"
                         in:transitionToUse={{ x: d.value < 0 ? 100 : d.value === 0 ? 0 : -100, duration: 200, delay: 0}}
                         on:mouseover={(e) => handleIndicatorHover(e, d)}

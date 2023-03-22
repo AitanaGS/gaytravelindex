@@ -1,4 +1,7 @@
 <script>
+  import { COLORS } from "../utils/colors";
+
+
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let tooltipIndicatorValueScale
@@ -20,6 +23,7 @@
                 y={tooltipIndicatorValueScale(value)}
                 text-anchor="end"
                 dominant-baseline="middle"
+                fill={COLORS.gray["700"]}
                 font-size={`${0.55 * tooltipFontSize}rem`}
             >
             <!-- font-size="0.55rem" -->
@@ -31,7 +35,7 @@
                 x2={svgInnerWidth}
                 y1={tooltipIndicatorValueScale(value)}
                 y2={tooltipIndicatorValueScale(value)}
-                stroke={value === 0 ? "gray" : "lightgray"}
+                stroke={value === 0 ? COLORS.gray["500"] : COLORS.gray["200"]}
                 stroke-width=1
             />
 

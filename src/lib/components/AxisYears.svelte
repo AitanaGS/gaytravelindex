@@ -2,6 +2,7 @@
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { isDesktop, isTablet, isMobile, isSmallMobile } from "../stores/dimensions";
+    import { COLORS } from "../utils/colors"
 
     export let yearScale
     export let margin
@@ -25,6 +26,7 @@
                 y=0
                 text-anchor="middle"
                 dominant-baseline="middle"
+                fill={COLORS.gray["800"]}
                 font-weight={year === 2021 ? "bold" : "normal"}
                 font-size={ $isSmallMobile
                     ? year === 2012 || year === 2021

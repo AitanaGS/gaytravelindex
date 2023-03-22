@@ -17,9 +17,12 @@
   import { onMount, afterUpdate } from "svelte"
   import { scaleDiverging } from "d3-scale"
   import { max, min, group } from "d3-array"
-  import { interpolateRdYlBu, schemeRdYlBu } from "d3-scale-chromatic"
+  import { interpolateRdYlBu, schemeRdYlBu, interpolateGreys } from "d3-scale-chromatic"
+  import { interpolateHsl } from "d3-interpolate"
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
+  import { COLORS } from "./lib/utils/colors.js"
 
+  // $: console.log(COLORS.gray["100"])
 
   // window.onbeforeunload = function () {
   //   window.scrollTo(0, 0)
@@ -176,6 +179,17 @@
   const totalScale = scaleDiverging(interpolateRdYlBu)
     .domain([min($data, d => d.total), 0, max($data, d => d.total)])
 
+  // const interpolatedGrays = interpolateHsl(COLORS.gray["100"], COLORS.gray["900"])
+
+  // console.log(interpolatedGrays(0.1))
+
+  // const totalFontColorScale = scaleDiverging()
+  //   .domain([min($data, d => d.total), 0, max($data, d => d.total)])
+  //   .range([COLORS.gray["100"], COLORS.gray["900"], COLORS.gray["100"]])
+
+    // console.log(totalFontColorScale(0))
+
+
 
   let countryView
 
@@ -302,6 +316,12 @@
 class="wrapper"
 bind:clientWidth={$width}
 bind:clientHeight={$height}
+style="
+  --bodyColor: {COLORS.gray["700"]};
+  --linkColor: {COLORS.secondary.light};
+  --linkHoverColor: {COLORS.secondary.dark};
+  
+  "
 >
     
       <header>
@@ -410,7 +430,17 @@ bind:clientHeight={$height}
 
   .wrapper {
     padding: 40px;
+    color: var(--bodyColor);
   }
+
+  a {
+  font-weight: 500;
+  color: var(--linkColor);
+  text-decoration: inherit;
+}
+a:hover {
+  color: var(--linkHoverColor);
+}
 
   /* .chartWrapper {
     width: 1000px;
@@ -458,6 +488,7 @@ bind:clientHeight={$height}
   h1 {
   /* font-size: 1.5rem; */
   line-height: 1.3;
+  margin-bottom: 20px;
   /* margin-bottom: 20px; */
   /* font-size: clamp(2rem, 2vw + 2rem, 2.5rem); */
   /* min-height: 0vh; */
@@ -479,7 +510,7 @@ bind:clientHeight={$height}
 
 select {
     font-size: 1.2rem;
-    color: dimgray;
+    color: var(--bodyColor);
     /* display: block; */
 }
 
@@ -553,6 +584,7 @@ select {
   font-family: inherit;
   /* background-color: #1a1a1a; */
   cursor: pointer;
+  margin-top: 10px;
   /* transition: border-color 0.25s; */
   /* font-size: var(--bodyFontSize); */
 }

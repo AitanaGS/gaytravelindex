@@ -2,6 +2,7 @@
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
+    import { COLORS } from "../utils/colors.js"
 
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';
@@ -74,10 +75,11 @@
             class="total"
             style="
                 background: {colorScale(tooltipData.total)};
-                color: {tooltipData.total < 8 && tooltipData.total > -15 ? "black" : "white"};
+                color: {tooltipData.total < 8 && tooltipData.total > -15 ? COLORS.gray["900"] : COLORS.gray["50"]};
             ">
             GTI: {tooltipData.total}
         </span>
+        <!-- color: {tooltipData.total < 8 && tooltipData.total > -15 ? "black" : "white"}; -->
         <p class="ranking">global ranking: {tooltipData.ranking}</p>
     </div>
 

@@ -1,6 +1,7 @@
 <script>
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { isMobile } from "../stores/dimensions";
+    import { COLORS } from "../utils/colors";
 
     export let indicatorScale;
     export let indicatorVariables
@@ -20,6 +21,7 @@
                 dominant-baseline="middle"
                 dy={indicatorScale.bandwidth()/2}
                 dx=-5
+                fill={COLORS.gray["800"]}
                 font-size={$isMobile ? `${0.8 * $chartFontSize}rem` : `${0.9 * $chartFontSize}rem`}
                 role="presentation"
                 aria-hidden="true"
@@ -30,7 +32,7 @@
             x2={innerWidth}
             y1={indicatorScale(indicator) + indicatorScale.bandwidth()/2}
             y2={indicatorScale(indicator) + indicatorScale.bandwidth()/2}
-            stroke="lightgray"
+            stroke={COLORS.gray["200"]}
             stroke-width=1
         />
         </g>
