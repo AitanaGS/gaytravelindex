@@ -191,11 +191,12 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
             dominant-baseline="middle"
             fill={COLORS.gray["800"]}
             font-weight="bold"
-            font-size={$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}
+            font-size={`${$chartFontSize}rem`}
             role="presentation"
             aria-hidden="true"
             >
-            <!-- y=10 -->
+            <!-- y=10 
+            {$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}-->
                 {$selectedCountry} 2021
         </text>
         {/if}

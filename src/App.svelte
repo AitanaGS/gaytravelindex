@@ -359,13 +359,13 @@ style="
         
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div class="continentChartWrapper"> 
-            <p >
+            <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Heatmap Intro">
               The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
             <!-- </div> -->
              <!-- <div class="selectContinentWrapper"> -->
 
-              <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Country Selection">
+              <p>
               <label for="continent-select">Select a continent</label>
               <select 
               name="continents" 
@@ -390,10 +390,10 @@ style="
       </div>
         
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <div class="countryChartWrapper" tabindex={countryInfoTabIndex} bind:this={countryView} role="region" aria-describedby="Country Info"> 
+    <div class="countryChartWrapper" tabindex={countryInfoTabIndex} bind:this={countryView} role="region" aria-describedby="Indicator Chart Intro"> 
       <!-- tabindex="0" role="region" aria-describedby="Country Info" -->
         {#if !$selectedCountry}
-          <p>Click on a country in the table or on the map for its individual ratings.</p>
+          <p>Click on a country’s name for its individual ratings.</p>
         {/if}
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div  style="min-height: 1px;">
