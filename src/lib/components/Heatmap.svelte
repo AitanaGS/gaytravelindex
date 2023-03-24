@@ -91,9 +91,9 @@
 
     $: margin = {
         top: 60, // 60
-        right: $isMobile ? 5 : 10,
+        right: $isMobile ? 0 : 10,
         bottom: 5,
-        left: $isMobile ? 130 : 200 //200
+        left: $isMobile ? 130 : 200 // $isMobile ? 130 : 200 
   }
 
   // $: console.log("ismobile", $isMobile)

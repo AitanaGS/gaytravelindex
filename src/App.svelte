@@ -22,6 +22,9 @@
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
   import { COLORS } from "./lib/utils/colors.js"
 
+  import "@fontsource/plus-jakarta-sans"
+  import "@fontsource/plus-jakarta-sans/700.css"
+
   // $: console.log(COLORS.gray["100"])
 
   // window.onbeforeunload = function () {
@@ -318,8 +321,8 @@ bind:clientWidth={$width}
 bind:clientHeight={$height}
 style="
   --bodyColor: {COLORS.gray["700"]};
-  --linkColor: {COLORS.secondary.light};
-  --linkHoverColor: {COLORS.secondary.dark};
+  --linkColor: {COLORS.secondary["500"]};
+  --linkHoverColor: {COLORS.secondary["900"]};
   
   "
 >
@@ -365,6 +368,10 @@ style="
               name="continents" 
               id="continent-select" 
               bind:value={$selectedContinent}
+              style="
+              --selectBackgroundColor: {COLORS.secondary["100"]};
+              --selectColor: {COLORS.secondary["600"]};
+              "
               >
               <!-- on:change={() => selectedContinent.set("")} -->
                 <option value="All">All</option>
@@ -399,6 +406,11 @@ style="
           {/if}
           <button
           class="countryButton"
+          style="
+          --buttonBackgroundColor: {COLORS.secondary["200"]};
+          --buttonColor: {COLORS.secondary["700"]};
+            
+            "
           on:click={() => {
             // selectedCountry = ""
             selectedCountry.set("")
@@ -409,7 +421,11 @@ style="
           >Clear Country</button>
           <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
           {/if}
-          
+          <!-- --buttonBackgroundColor: {COLORS.secondary["100"]};
+          --buttonColor: {COLORS.secondary["600"]};
+          --buttonHoverBackgroundColor: {COLORS.secondary["50"]};
+          --buttonHoverColor: {COLORS.secondary["500"]};
+           -->
         </div>
           <IndicatorsChart {years} />
       <!-- {selectedCountry} width={$countryWidth} --> 
@@ -430,7 +446,11 @@ style="
 
   .wrapper {
     padding: 40px;
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.8;
     color: var(--bodyColor);
+    font-family: "Plus Jakarta Sans", sans-serif;
   }
 
   a {
@@ -462,7 +482,7 @@ a:hover {
       margin-right: auto;
       margin-left: auto;
       /* max-width: 1000px; */
-      max-width: 75ch;
+      max-width: 70ch;
     }
 
 /* @media (max-width: 1150px){ 
@@ -476,6 +496,10 @@ a:hover {
   .mapWrapper {
       margin: 40px 0;
     }
+
+  .continentChartWrapper {
+    margin-bottom: 20px;
+  }
 
   /* .intro {
     flex: 1;
@@ -510,7 +534,13 @@ a:hover {
 
 select {
     font-size: 1.2rem;
-    color: var(--bodyColor);
+    background-color: var(--selectBackgroundColor);
+    color: var(--selectColor);
+    border: 2px solid var(--selectColor);
+    border-radius: 8px;
+    padding: 3px 5px;
+    margin: 0px 2px;
+    /* color: var(--bodyColor); */
     /* display: block; */
 }
 
@@ -575,26 +605,34 @@ select {
  /* }  */
 
  .countryButton {
-  border-radius: 5px;
-  border: 1px solid transparent;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  /* border: 1px solid var(--buttonColor); */
+  color: var(--buttonColor);
   /* padding: 0.6em 1.2em; */
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  font-weight: 400;
+  padding: 8px 15px;
+  font-size: 1rem;
+  font-weight: 600;
   font-family: inherit;
-  /* background-color: #1a1a1a; */
+  background-color: var(--buttonBackgroundColor);
   cursor: pointer;
   margin-top: 10px;
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, font-weight 200ms ease;
   /* transition: border-color 0.25s; */
   /* font-size: var(--bodyFontSize); */
 }
 button:hover {
-  border-color: #646cff;
+  /* border-color: #646cff; */
+  /* background-color: var(--buttonHoverBackgroundColor); */
+  /* color: var(--buttonColor); */
+  border: 2px solid var(--buttonColor);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+  outline-color: var(--buttonColor);
 }
+
 
 /* @media (max-width: 1150px){ */
     /* .topWrapper {

@@ -9,8 +9,12 @@
     let tooltipWidth
     let tooltipHeight = 100
 
-    $: xValue = tooltipData.event.type === "focus" ? tooltipData.centroid[0]  : tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
 
+    // $: xValue = tooltipData.event.type === "focus" ? tooltipData.centroid[0]  : tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
+
+    $: xValue = tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
+
+    // $: console.log(tooltipData.event.clientX, tooltipData.parentBoundingRect.left )
     // $: xPosition = tooltipData.event.type === "focus"
     //     ? xValue - tooltipWidth / 2
     //     : xValue + tooltipWidth / 2 > width
@@ -19,27 +23,33 @@
     //             ? xValue
     //             : xValue - tooltipWidth / 2
 
+    // $: console.log(xValue)
+
     let xPosition
 
     $: if ($isMobile) {
         xPosition = 10
 
     } else {
-        xPosition = tooltipData.event.type === "focus"
-        ? xValue - tooltipWidth / 2
-        : xValue + tooltipWidth / 2 > width
-            ? xValue - tooltipWidth
-            : xValue < tooltipWidth / 2
-                ? xValue
-                : xValue - tooltipWidth / 2
+    xPosition = xValue
     }
+    // xPosition = tooltipData.event.type === "focus"
+    //     ? xValue - tooltipWidth / 2
+    //     : xValue + tooltipWidth / 2 > width
+    //         ? xValue - tooltipWidth
+    //         : xValue < tooltipWidth / 2
+    //             ? xValue
+    //             : xValue - tooltipWidth / 2
 
 
 
     let yNudge = 5
     let yMobileNudge = 15
 
-    $: yValue = tooltipData.event.type === "focus" ? tooltipData.centroid[1]  : tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
+    // $: yValue = tooltipData.event.type === "focus" ? tooltipData.centroid[1]  : tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
+
+    $: yValue = tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
+
 
     let yPosition
 
@@ -48,22 +58,31 @@
         yPosition = 10
 
     } else if ($isTablet) {
-        yPosition = tooltipData.event.type === "focus"
-        ? yValue - tooltipHeight < 0
-            ? yValue
-            : yValue - tooltipHeight - yMobileNudge
-        : yValue - tooltipHeight - yNudge < 0
+        yPosition = yValue - tooltipHeight - yNudge < 0
             ? yValue + yNudge
             : yValue - tooltipHeight - yMobileNudge
 
+
+        //     yPosition = tooltipData.event.type === "focus"
+        // ? yValue - tooltipHeight < 0
+        //     ? yValue
+        //     : yValue - tooltipHeight - yMobileNudge
+        // : yValue - tooltipHeight - yNudge < 0
+        //     ? yValue + yNudge
+        //     : yValue - tooltipHeight - yMobileNudge
+
     } else if ($isDesktop) {
-        yPosition = tooltipData.event.type === "focus"
-        ? yValue - tooltipHeight < 0
-            ? yValue
-            : yValue - tooltipHeight 
-        : yValue - tooltipHeight - yNudge < 0
+        yPosition = yValue - tooltipHeight - yNudge < 0
             ? yValue + yNudge
-            : yValue - tooltipHeight //- yNudge
+            : yValue - tooltipHeight
+
+        //     yPosition = tooltipData.event.type === "focus"
+        // ? yValue - tooltipHeight < 0
+        //     ? yValue
+        //     : yValue - tooltipHeight 
+        // : yValue - tooltipHeight - yNudge < 0
+        //     ? yValue + yNudge
+        //     : yValue - tooltipHeight
     }
     
     // $: if ($isMobile || $isDesktop) {
