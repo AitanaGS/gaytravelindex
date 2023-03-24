@@ -50,9 +50,9 @@ export const isDesktop = derived(
 //   }
 // );
 
-export const chartWidth = derived([width], ([$width]) => {
-  return $width * 0.8; // 0.9 0.85
-});
+// export const chartWidth = derived([width], ([$width]) => {
+//   return $width * 0.8; // 0.9 0.85
+// });
 
 // export const chartWidth = derived([width], ([$width]) => {
 //   return $width * 0.8; // 0.9 0.85

@@ -3,7 +3,7 @@
     import { fade } from "svelte/transition"
     import { chartFontSize } from "../stores/responsiveFontSize";
     // import { isTablet, isMobile } from "../stores/devices";
-    import { isTablet, isMobile, chartWidth, isDesktop } from "../stores/dimensions";
+    import { isTablet, isMobile, isDesktop } from "../stores/dimensions";
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
     import { COLORS } from "../utils/colors"
 
@@ -11,6 +11,9 @@
     export let hoveredMapCountryData
     export let mapWidth
     export let height
+    export let width
+
+    $: chartWidth = width * 0.8
 
 
     // $: yPosition = mapWidth <= 800 ? height - 60 : height * 0.5
@@ -22,7 +25,7 @@
         .range([1.5, 0.8]) //.range([26, 16])
         .clamp(true);
 
-    $: mapFontSize = mapFontSizeScale($chartWidth)
+    $: mapFontSize = mapFontSizeScale(chartWidth)
 
 
     $: yPosition = $isMobile

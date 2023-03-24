@@ -10,7 +10,7 @@
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
-    import { isDesktop, isMobile, isTablet, isSmallMobile, chartWidth } from '../stores/dimensions'
+    import { isDesktop, isMobile, isTablet, isSmallMobile } from '../stores/dimensions'
     import { data } from "../stores/data"
     import { prefersReducedMotion } from '../stores/preferesReducedMotion'
     import { COLORS } from "../utils/colors"
@@ -20,6 +20,9 @@
     // export let selectedCountry
     // export let width
     export let years
+    export let width
+
+    $: chartWidth = width * 0.8
 
 
 //     let selectedCountry = ""
@@ -71,7 +74,7 @@
 
   $: height = indicatorVariables.length * 40 // 50
 
-  $: innerWidth = $chartWidth - margin.left - margin.right
+  $: innerWidth = chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
 
 
@@ -177,7 +180,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
 <div class="wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="indicatorChartDescription">
+    <svg width={chartWidth} height={height} tabindex="0" role="figure" aria-describedby="indicatorChartDescription">
         <desc id="indicatorChartDescription">Lollipop Chart of ratings in different categories of {$selectedCountry} in 2021</desc>
         {#if $selectedCountry}
         <text

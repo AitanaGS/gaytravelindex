@@ -7,6 +7,7 @@
     import { selectedContinent } from "../stores/selectedContinent";
     import { data2021, data2021Map } from "../stores/data"
     import { COLORS } from "../utils/colors"
+    import { width } from "../stores/dimensions"
 
     import * as topojson from "topojson-client"
     import {
@@ -186,7 +187,7 @@
             {/if}
         {/each}
         <path class="borders" d={pathGenerator(geoBorders)} fill="none" stroke="white"/>
-        <MapLegend colorScale={totalScale} {hoveredMapCountryData} {mapWidth} height={mapHeight}/>
+        <MapLegend colorScale={totalScale} {hoveredMapCountryData} {mapWidth} height={mapHeight} width={$width}/>
     </g>
     </svg>
 

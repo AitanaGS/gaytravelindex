@@ -4,7 +4,7 @@
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
-    import { chartWidth, isDesktop, isTablet, isSmallMobile, isMobile } from "../stores/dimensions"
+    import { isDesktop, isTablet, isSmallMobile, isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { clickedContinentData } from "../stores/clickedContinent"
     import { data, data2021, data2021Map} from "../stores/data"
@@ -26,14 +26,11 @@
     // export let width
     export let years
     export let totalScale
+    export let width
     // export let currentWindowWidth
 
     // afterUpdate(() => {
     //   $heatmapLoaded = true
-    // })
-
-    // beforeUpdate(() => {
-    //   $heatmapLoaded = false
     // })
 
     // $: console.log("heatmap loaded", $heatmapLoaded)
@@ -44,6 +41,8 @@
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
 
     // $: console.log("chart", $chartFontSize)
+
+    $: chartWidth = width * 0.8
 
 
     // $: console.log($data2021, $data2021Map, topContinentCountry, $data2021Map.get(topContinentCountry).total)
@@ -98,7 +97,7 @@
 
   // $: console.log("ismobile", $isMobile)
 
-  $: innerWidth = $chartWidth - margin.left - margin.right
+  $: innerWidth = chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
 
   $: yearScale = scaleBand()
@@ -162,7 +161,7 @@
 
 <div class="continentHeatmap wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-    <svg width={$chartWidth} {height} tabindex="0" role="figure" aria-describedby="heatmapDescription">
+    <svg width={chartWidth} height={height} tabindex="0" role="figure" aria-describedby="heatmapDescription">
       <!-- <title id="heatmapTitle">{`Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021`}</title> -->
       <desc id="heatmapDescription">
         <!-- {`
@@ -305,6 +304,7 @@
     .wrapper {
       position: relative;
     }
+
 
     /* .innerContinentHeatmap {
         position: relative;

@@ -31,7 +31,7 @@
         xPosition = 10
 
     } else {
-    xPosition = xValue
+    xPosition = xValue - tooltipWidth / 2
     }
     // xPosition = tooltipData.event.type === "focus"
     //     ? xValue - tooltipWidth / 2
@@ -42,14 +42,14 @@
     //             : xValue - tooltipWidth / 2
 
 
-
-    let yNudge = 5
     let yMobileNudge = 15
 
     // $: yValue = tooltipData.event.type === "focus" ? tooltipData.centroid[1]  : tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
 
     $: yValue = tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
 
+
+    let yNudge = 20
 
     let yPosition
 
@@ -58,9 +58,9 @@
         yPosition = 10
 
     } else if ($isTablet) {
-        yPosition = yValue - tooltipHeight - yNudge < 0
+        yPosition = yValue - tooltipHeight < 0
             ? yValue + yNudge
-            : yValue - tooltipHeight - yMobileNudge
+            : yValue - tooltipHeight - yNudge// - yMobileNudge
 
 
         //     yPosition = tooltipData.event.type === "focus"
@@ -72,7 +72,7 @@
         //     : yValue - tooltipHeight - yMobileNudge
 
     } else if ($isDesktop) {
-        yPosition = yValue - tooltipHeight - yNudge < 0
+        yPosition = yValue - tooltipHeight < 0
             ? yValue + yNudge
             : yValue - tooltipHeight
 

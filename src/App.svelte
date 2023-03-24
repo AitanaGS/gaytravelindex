@@ -8,7 +8,7 @@
   import { selectedContinent } from "./lib/stores/selectedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
-  import { width, height, chartWidth, desktopBreakpoint, isDesktop, isTablet, isMobile, isSmallMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  import { width, height, desktopBreakpoint, isDesktop, isTablet, isMobile, isSmallMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
   // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
@@ -22,8 +22,9 @@
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
   import { COLORS } from "./lib/utils/colors.js"
 
-  import "@fontsource/plus-jakarta-sans"
-  import "@fontsource/plus-jakarta-sans/700.css"
+  // import "@fontsource/plus-jakarta-sans"
+  // import "@fontsource/plus-jakarta-sans/600.css"
+  // import "@fontsource/plus-jakarta-sans/700.css"
 
   // $: console.log(COLORS.gray["100"])
 
@@ -56,6 +57,7 @@
 
   mediaQueryList.addEventListener("change", preferesReducedMotionListener)
   $prefersReducedMotion = getInitialState()
+  // $width = 
 
   return () => {
     mediaQueryList.removeEventListener("change", preferesReducedMotionListener)
@@ -63,6 +65,7 @@
   })
 
 
+  $: console.log($width)
 
 
   // onMount(() => {
@@ -381,7 +384,7 @@ style="
             </select> and click on a country’s name for information about its ratings in the different categories.
           </p>
           <!-- </div> -->
-             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} />
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} width={$width}/>
 
 
       </div>
@@ -427,7 +430,7 @@ style="
           --buttonHoverColor: {COLORS.secondary["500"]};
            -->
         </div>
-          <IndicatorsChart {years} />
+          <IndicatorsChart {years} width={$width} />
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
 
@@ -450,7 +453,7 @@ style="
     font-size: 1.2rem;
     line-height: 1.8;
     color: var(--bodyColor);
-    font-family: "Plus Jakarta Sans", sans-serif;
+    /* font-family: "Plus Jakarta Sans", sans-serif; */
   }
 
   a {
@@ -476,13 +479,13 @@ a:hover {
   } */
 
   p {
-      /* max-width: 700px; */
+      max-width: 800px;
       /* width: var(--pWidth); */
       /* margin: 0 auto; */
       margin-right: auto;
       margin-left: auto;
       /* max-width: 1000px; */
-      max-width: 70ch;
+      /* max-width: 65ch; */
     }
 
 /* @media (max-width: 1150px){ 
