@@ -5,7 +5,7 @@
     import MapLegend from "./MapLegend.svelte";
     import { selectedCountry } from "../stores/selectedCountry";
     import { selectedContinent } from "../stores/selectedContinent";
-    import { data2021, data2021Map } from "../stores/data"
+    import { data2023, data2023Map } from "../stores/data"
     import { COLORS } from "../utils/colors"
     import { width } from "../stores/dimensions"
 
@@ -43,7 +43,7 @@
     let geoBorders = topojson.mesh(geoWorld, geoWorld.objects.ne_110m_admin_0_countries, (a, b) => a !== b);
 
     geoCountries.features.forEach(country => {
-        const countryData = $data2021Map.get(country.properties.NAME_EN)
+        const countryData = $data2023Map.get(country.properties.NAME_EN)
         if (countryData) {
             country.properties.data = countryData
         }

@@ -4,8 +4,8 @@ import { json } from 'd3-fetch';
 import { extent, max, min, group } from 'd3-array';
 import { tidy, pivotLonger } from '@tidyjs/tidy';
 import { scaleBand, scaleSequential } from 'd3-scale';
-import gtiData from '../../../data/processed/GTI_2012-2021.json';
-import gti2021Data from '../../../data/processed/GTI_2012-2021_data2021.json';
+import gtiData from '../../../data/processed/GTI_2012-2023.json';
+import gti2023Data from '../../../data/processed/GTI_2012-2023_data2023.json';
 
 // const dataPath = '../../../data/processed/GTI_2012-2021.json';
 
@@ -16,9 +16,9 @@ import gti2021Data from '../../../data/processed/GTI_2012-2021_data2021.json';
 
 export const data = readable(gtiData);
 
-export const data2021 = readable(gti2021Data);
+export const data2023 = readable(gti2023Data);
 
-export const data2021Map = derived([data2021], ([$data2021]) => {
+export const data2023Map = derived([data2023], ([$data2021]) => {
   const dataMap = new Map();
   $data2021.forEach((d) => {
     dataMap.set(d.longName, {

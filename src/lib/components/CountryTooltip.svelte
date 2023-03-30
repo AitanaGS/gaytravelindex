@@ -62,12 +62,12 @@
 <!-- bind:clientHeight={tooltipHeight} -->
 <!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
     {#if $isDesktop}
-        <h3>{country} {lastYearOnly === true ? "2021" : tooltipData.year}</h3>
+        <h3>{country} {lastYearOnly === true ? "2023" : tooltipData.year}</h3>
     {/if}
     {#if $isMobile || $isTablet}
         <h3 class="tooltipHeading">
             <span>{country}</span>
-            <span>{lastYearOnly === true ? "2021" : tooltipData.year}</span>
+            <span>{lastYearOnly === true ? "2023" : tooltipData.year}</span>
         </h3>
     {/if}
     <div class="info">

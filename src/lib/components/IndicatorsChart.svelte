@@ -57,7 +57,7 @@
     const camelize = (str) => str.toLowerCase().replaceAll("'", '').replace(/\W+(.)/g, (match, chr) => chr.toUpperCase())
 
     const indicatorVariables = indicatorLabels.map(label => label === "Intersex / 3rd Option" ? label = "intersex3RdOption"
-                                                        : label ===  "Transgender Rights" ? label = "transGenderRights" 
+                                                        : label ===  "Transgender Rights" ? label = "transgenderRights" 
                                                         : camelize(label))
 
     const indicatorLabelsLookup = new Map()
@@ -113,7 +113,7 @@ $: indicatorValueScale = scaleLinear()
 
 $: selectedCountryData = dataLonger.filter(d => d.country == $selectedCountry).filter(d => d.value !== undefined)
 
-$: selectedCountryData2021 = selectedCountryData.filter(d => d.year === 2021)
+$: selectedCountryData2023 = selectedCountryData.filter(d => d.year === 2023)
 
 // $: console.log(hoveredIndicator, hoveredIndicatorData)
 
@@ -181,7 +181,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 <div class="wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg width={chartWidth} height={height} tabindex="0" role="figure" aria-describedby="indicatorChartDescription">
-        <desc id="indicatorChartDescription">Lollipop Chart of ratings in different categories of {$selectedCountry} in 2021</desc>
+        <desc id="indicatorChartDescription">Lollipop Chart of ratings in different categories of {$selectedCountry} in 2023</desc>
         {#if $selectedCountry}
         <text
             class="countryName"
@@ -197,7 +197,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
             >
             <!-- y=10 
             {$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}-->
-                {$selectedCountry} 2021
+                {$selectedCountry} 2023
         </text>
         {/if}
         <!-- {#if !selectedCountry}
@@ -220,7 +220,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
          >
             <g
             class="innerChart innerIndicatorsChart">
-                    {#each selectedCountryData2021 as d, i (`${d.country}${d.indicator}`)}
+                    {#each selectedCountryData2023 as d, i (`${d.country}${d.indicator}`)}
                     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <g 
                         transform="translate(0, {indicatorScale.bandwidth()/2})"
@@ -236,6 +236,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
                                                     .reduce((prev, curr) => {
                                                         return `${prev} ${curr.year}: ${curr.value},`
                                                     }, `${indicatorLabelsLookup.get(d.indicator)}: `)
+                                                + ". Note: There is no data for 2022."
                                                 }
                                                 
                                             </desc>
@@ -307,7 +308,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
     </svg>
 
     {#if hoveredIndicator}
-    <IndicatorTooltip indicator2021Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
+    <IndicatorTooltip indicator2023Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
     {/if}
     <!-- data={selectedCountryData} 
     {indicatorData} -->

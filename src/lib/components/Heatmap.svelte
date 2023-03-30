@@ -7,7 +7,7 @@
     import { isDesktop, isTablet, isSmallMobile, isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { clickedContinentData } from "../stores/clickedContinent"
-    import { data, data2021, data2021Map} from "../stores/data"
+    import { data, data2023, data2023Map} from "../stores/data"
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
     import { COLORS } from "../utils/colors"
@@ -82,7 +82,7 @@
         if ($selectedContinent === "All") return true
         else return d.continent === $selectedContinent
       })
-      .filter(d => d.year === 2021)
+      .filter(d => d.year === 2023)
       .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
       .map(d => d.country)
       )]
@@ -122,8 +122,8 @@
       else return d.continent === $selectedContinent
     })
       .sort((a, b) => {
-        if(a.year !== 2021) return 1;
-        else if(b.year !== 2021) return -1;
+        if(a.year !== 2023) return 1;
+        else if(b.year !== 2023) return -1;
         else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
       }), d => d.country)
 
@@ -176,7 +176,7 @@
           ${$selectedContinent === "All" 
           ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
           At the bottom of the list is Chechnya, with a rating of -19.`
-          : `Considering only countries in ${$selectedContinent}, the country with the highest ranking is ${topContinentCountry}, with a rating of ${$data2021Map.get(topContinentCountry).total}.
+          : `Considering only countries in ${$selectedContinent}, the country with the highest ranking is ${topContinentCountry}, with a rating of ${$data2023Map.get(topContinentCountry).total}.
           `}`}
       </desc>
         <text 
@@ -252,16 +252,16 @@
               text-anchor="middle"
               dominant-baseline="middle"
               font-weight={
-                d.year === 2021 || hoveredCountryYear
-                ? d.year === 2021 || hoveredCountryYear === d 
+                d.year === 2023 || hoveredCountryYear
+                ? d.year === 2023 || hoveredCountryYear === d 
                     ? "bold"
                     : "normal"
                 : "normal"
                 }
                 font-size={
-                    d.year === 2021 && d === hoveredCountryYear
+                    d.year === 2023 && d === hoveredCountryYear
                     ? `${1 * $chartFontSize}rem`
-                    : d.year === 2021 || d === hoveredCountryYear
+                    : d.year === 2023 || d === hoveredCountryYear
                     ? `${0.95 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
                     : `${0.85 * $chartFontSize}rem`
                     }

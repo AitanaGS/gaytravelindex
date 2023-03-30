@@ -24,22 +24,52 @@ here::i_am("analysis.Rmd")
 
 
 ```{r}
-original_data <- read_xlsx(here("original","GTI_2012-2021.xlsx"))
+original_data_2012_2021 <- read_xlsx(here("original","GTI_2012-2021.xlsx"))
+
 ```
 
 
 ```{r}
-glimpse(original_data)
+glimpse(original_data_2012_2021)
 ```
 
 
-### Clean Data and Add Continents
+
+### Clean Data
 
 
 ```{r}
-data <- original_data %>%
+data_2012_2021 <- original_data_2012_2021 %>%
     # pivot_longer(`Antidiscrimination Legislation`:`Conversion Therapy`, "indicator", "value") %>%
   clean_names(case = "lower_camel") %>%
+  rename("transgenderRights" = "transGenderRights") 
+
+```
+
+
+
+### Add 2023 data (see "pdfScraping.Rmd)
+
+
+```{r}
+data_2023 <- read_csv(here("processed","GTI_2023.csv"))
+
+```
+
+
+
+```{r}
+data_2012_2023 <- bind_rows(data_2012_2021, data_2023)
+```
+
+
+
+
+### Add Continents
+
+
+```{r}
+data <- data_2012_2023 %>%
   # mutate(across(c(where(is.numeric)),
   #              factor)) %>%
   mutate(country = case_when(
@@ -104,20 +134,22 @@ data <- original_data %>%
 
 
 
+
+
 ```{r}
-countries2021 <- data %>%
-  filter(year == 2021) %>%
+countries2023 <- data %>%
+  filter(year == 2023) %>%
   distinct(country) %>%
   pull()
 
-countries2021
+countries2023
 ```
 
 
 
 ```{r}
 data %>%
-  filter(!country %in% countries2021) %>%
+  filter(!country %in% countries2023) %>%
   distinct(country)
 
 # data cleaning above
@@ -133,11 +165,11 @@ summary(data)
 ```
 
 
-### seperate dataset for 2021
+### seperate dataset for 2023
 
 
 ```{r}
-data2021 <- toJSON(as_tibble(data %>% filter(year == 2021)))
+data2023 <- toJSON(as_tibble(data %>% filter(year == 2023)))
 ```
 
 
@@ -147,7 +179,7 @@ data2021 <- toJSON(as_tibble(data %>% filter(year == 2021)))
 
 
 ```{r}
-write_csv(data, here("processed/GTI_2012-2021.csv"))
+write_csv(data, here("processed/GTI_2012-2023.csv"))
 ```
 
 
@@ -160,12 +192,12 @@ dataJSON <- toJSON(data)
 
 
 ```{r}
-write(dataJSON, here("processed/GTI_2012-2021.json"))
+write(dataJSON, here("processed/GTI_2012-2023.json"))
 ```
 
 
 ```{r}
-write(data2021, here("processed/GTI_2012-2021_data2021.json"))
+write(data2023, here("processed/GTI_2012-2023_data2023.json"))
 ```
 
 

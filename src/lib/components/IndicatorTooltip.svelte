@@ -1,14 +1,14 @@
 <script>
     import TooltipAxisYears from "./TooltipAxisYears.svelte";
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
-    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { isMobile, isTablet, isDesktop, isSmallMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
     import { fly, fade } from "svelte/transition"
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
-    export let indicator2021Data
+    export let indicator2023Data
     // export let tooltipData
     // export let indicatorData
     export let indicatorScale
@@ -24,11 +24,11 @@
     // $: indicatorData = tooltipData.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
     
     
-    let tooltipWidth = 270
+    let tooltipWidth = $isMobile ? 200 : 280 //270
 
-    let tooltipHeight = 150
+    let tooltipHeight = 160//150
     
-    $: xValue = indicatorValueScale(indicator2021Data.value)
+    $: xValue = indicatorValueScale(indicator2023Data.value)
     $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
 
 
@@ -36,25 +36,25 @@
 
 $: if ($isMobile) {
 
-    xPosition = indicator2021Data.value === -5
+    xPosition = indicator2023Data.value === -5
         ? margin.left + xValue - xBandwidth * 4 //5
-        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
         ? margin.left + xValue - xBandwidth * 6 //7
-        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
         ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
-        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
 
 } else {
 
-    xPosition = indicator2021Data.value === -5
+    xPosition = indicator2023Data.value === -5
         ? margin.left + xValue - xBandwidth * 2
-        : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
+        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
         ? margin.left + xValue - xBandwidth
-        : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
+        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
         ? margin.left + xValue - tooltipWidth / 2
-        : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
+        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
 }
@@ -88,7 +88,7 @@ $: if ($isMobile) {
 
 
     
-    $: yValue = indicatorScale(indicator2021Data.indicator)
+    $: yValue = indicatorScale(indicator2023Data.indicator)
 
     $: yPosition = yValue - tooltipHeight < 0
         ? yValue + tooltipHeight / 2 + indicatorScale.bandwidth() / 2
@@ -127,15 +127,17 @@ $: if ($isMobile) {
 
     const svgMargin = {
         top: 5, //10,
-        right: 10,
+        right: 15, //10,
         bottom: 20, //20,
         left: 20
     }
 
     const headingMargin = 40
 
+    const noteMargin = 10
+
     $: svgWidth = tooltipWidth
-    $: svgHeight = tooltipHeight - headingMargin
+    $: svgHeight = tooltipHeight - headingMargin - noteMargin
 
     $: svgInnerWidth = svgWidth - svgMargin.right - svgMargin.left
     $: svgInnerHeight = svgHeight - svgMargin.top - svgMargin.bottom
@@ -179,7 +181,7 @@ $: if ($isMobile) {
     "
     bind:clientWidth={tooltipWidth}
     >
-    <h3>{indicatorLabelsLookup.get(indicator2021Data.indicator)}</h3>
+    <h3 class={$isMobile ? "mobileHeading" : "heading"}>{indicatorLabelsLookup.get(indicator2023Data.indicator)}</h3>
     <div>
         {#if tooltipWidth}
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
@@ -207,6 +209,7 @@ $: if ($isMobile) {
             </g>
         </svg>
         {/if}
+        <p>Note: There is no data for 2022.</p>
     </div>
 
 </div>
@@ -229,9 +232,22 @@ $: if ($isMobile) {
 
     h3 {
         margin: 0;
-        font-size: calc(var(--fontSize) * 0.8);
         font-weight: 700;
         margin-bottom: 3px;
+    }
+
+    .heading {
+        font-size: calc(var(--fontSize) * 0.8);
+    }
+
+    .mobileHeading {
+        font-size: calc(var(--fontSize) * 0.7);
+    }
+
+    p {
+        margin: 0;
+        font-size: calc(var(--fontSize) * 0.6);
+        float: left;
     }
 
 </style>

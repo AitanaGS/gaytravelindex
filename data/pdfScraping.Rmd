@@ -1,0 +1,132 @@
+---
+title: "Untitled"
+output: html_document
+date: "2023-03-30"
+---
+
+
+
+
+```{r}
+library(rJava)      # Needed for tabulizer
+library(tabulizer)
+library(tidyverse)
+library(janitor)
+library(here)
+library(glue)
+
+
+
+here::i_am("pdfScraping.Rmd")
+```
+
+
+
+
+
+
+```{r}
+extract2023 <- extract_tables(
+    file   = here("original", "pdfs", "gaytravelindex_2023.pdf"),
+    method =  "decide", #stream", #"decide", # lattice
+    output = "data.frame")
+```
+
+
+
+
+```{r}
+# check lists one by one
+# tbl1 <- extract2023 %>%
+#     pluck(1) %>%
+#     as_tibble()
+```
+
+
+
+```{r}
+tbl2023 <- tibble()
+for (i in 1:4) {
+    tbl <- extract2023 %>%
+    pluck(i) %>%
+    as_tibble()
+    
+    tbl2023 <- bind_rows(tbl2023, tbl)
+  }
+```
+
+
+
+
+```{r}
+rename_cols <- c(
+  "Ranking" = 1,
+  "Country" = 2,
+  "Total" = 3,
+  "Antidiscrimination Legislation" = 4,
+  "Marriage / Civil Partnership" = 5,
+  "Adoption Allowed" = 6,
+  "Transgender Rights" = 7,
+  "Intersex / 3rd Option" = 8,
+  "Equal Age of Consent" = 9,
+  "'Conversion Therapy'" = 10,
+  "LGBT Marketing" = 11,
+  "Religious Influence" = 12,
+  "HIV Travel Restrictions" = 13,
+  "Anti-Gay Laws" = 14,
+  "Homosexuality Illegal" = 15,
+  "Pride Banned" = 16,
+  "Locals Hostile" = 17,
+  "Prosecution" = 18,
+  "Murders" = 19,
+  "Death Sentence" = 20
+)
+```
+       
+
+
+
+```{r}
+data2023 <- tbl2023 %>%
+     rename(all_of(rename_cols)) %>%
+     clean_names(case = "lower_camel") %>%
+     mutate(across(where(is.character), ~ na_if(.,""))) %>%
+     fill(country, .direction = "up") %>%
+     filter(country != "Country") %>%
+     filter(!is.na(ranking)) %>%
+     add_column(year = 2023) %>%
+     relocate(year, .before = ranking)
+```
+
+
+
+```{r}
+# Check
+data2023 %>%
+  filter_all(any_vars(is.na(.)))
+```
+
+
+
+```{r}
+# Check
+data2023 %>%
+  get_dupes(country)
+```
+
+
+
+
+
+```{r}
+write_csv(data2023, here("processed/GTI_2023.csv"))
+```
+
+
+
+
+
+
+
+
+

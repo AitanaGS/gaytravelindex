@@ -65,7 +65,7 @@
   })
 
 
-  $: console.log($width)
+  // $: console.log($width)
 
 
   // onMount(() => {
@@ -168,6 +168,8 @@
   const continents = [... new Set($data.map(d => d.continent))].sort()
 
   const years = [... new Set($data.map(d => d.year))].sort()
+
+  // console.log(years)
 
   // let selectedContinent = ""
 
@@ -331,7 +333,7 @@ style="
 >
     
       <header>
-              <h1>Gay Travel Index 2021</h1>
+              <h1>Gay Travel Index 2023</h1>
       <div class="intro">
           <p>
             In many countries, lesbian, gay, bisexual, transgender, and intersex people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
@@ -360,7 +362,7 @@ style="
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div class="continentChartWrapper"> 
             <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Heatmap Intro">
-              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2021 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
+              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2023 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
              </p>
             <!-- </div> -->
              <!-- <div class="selectContinentWrapper"> -->
@@ -383,6 +385,7 @@ style="
                 {/each}
             </select> and click on a country’s name for information about its ratings in the different categories.
           </p>
+          <p class="note">Note: There is no data for 2022.</p>
           <!-- </div> -->
              <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} width={$width}/>
 
@@ -524,6 +527,10 @@ a:hover {
 
 
 .dataInfo {
+  font-size: 1rem;
+}
+
+.note {
   font-size: 1rem;
 }
 
