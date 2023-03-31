@@ -195,7 +195,7 @@
     <MapTooltip 
         tooltipData={hoveredMapCountryData} 
         {totalScale}
-        width = {mapWidth}
+         width={$width}
         />
     {/if}
 </div>

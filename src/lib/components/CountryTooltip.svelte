@@ -15,6 +15,9 @@
     export let yPosition
     export let flyDirection
     export let tooltipWidth
+    export let tooltipHeight
+    export let arrow
+    export let xArrowPosition
 
     // let tooltipWidth = 200
 
@@ -33,6 +36,8 @@
     // TODO: check hsla code in style
 
     $: transitionToUse = $prefersReducedMotion ? () => {} : fly
+
+    $: console.log(flyDirection, tooltipHeight)
     
 </script>
 
@@ -52,6 +57,12 @@
         left: {xPosition}px;
         --fontSize: {tooltipFontSize}rem;
         --width: {tooltipWidth}px;
+        --backgroundColor: {COLORS.white};
+        --borderColor: {COLORS.secondary["100"]};
+        --yArrowPosition: {flyDirection < 0 ? `100%` : 0};
+        --xArrowPosition: {xArrowPosition === "left" ? "calc(0% + 12px)" : xArrowPosition === "right" ? "calc(100% - 12px)" : "50%"};
+        --arrowColor: {arrow ? COLORS.white : "transparent"};
+        --arrowSize: { flyDirection < 0 ? "70%" : "30%"};
     "
 >
 <!-- in:transitionToUse={{ y: 20 * flyDirection,
@@ -88,10 +99,13 @@
 <style>
     .tooltip {
         position: absolute;
-        background: white;
-        box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px;
+        /* background: white; */
+        background: var(--backgroundColor);
+        box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px;
+        /* box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 8px 6px;
-        border-radius: 4px;
+        /* border-radius: 4px; */
+        border-radius: 8px;
         pointer-events: none;
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease; 
@@ -99,6 +113,23 @@
         /* margin: 0 auto; */
         width: var(--width);
     }
+
+    .tooltip:before {
+    content: '';
+    position: absolute;
+    /* box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px; */
+    bottom: var(--yArrowPosition);
+    left: var(--xArrowPosition);
+    width: 12px;
+    height: 12px;
+    background: var(--arrowColor);
+    /* border: 1px solid #ddd; */
+    /* border-top-color: transparent;
+    border-left-color: transparent; */
+    transform: translate(-50%, var(--arrowSize)) rotate(45deg);
+    transform-origin: center center;
+    z-index: 10;
+}
 
     .tooltipHeading {
         display: flex;

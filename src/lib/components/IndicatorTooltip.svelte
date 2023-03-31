@@ -6,6 +6,7 @@
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
     import { fly, fade } from "svelte/transition"
+  import { COLORS } from "../utils/colors";
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2023Data
@@ -37,23 +38,39 @@
 $: if ($isMobile) {
 
     xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 4 //5
+        ? margin.left + xValue //- xBandwidth * 2 //5
         : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 6 //7
+        ? margin.left + xValue - xBandwidth //* 6 //7
         : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
-        ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
+        ? margin.left + xValue - tooltipWidth / 2 // + xBandwidth * 3 /// 2
         : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
 
+    // xPosition = indicator2023Data.value === -5
+    //     ? margin.left + xValue - xBandwidth * 4 //5
+    //     : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
+    //     ? margin.left + xValue - xBandwidth * 6 //7
+    //     : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
+    //     ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
+    //     : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
+    //     ? margin.left + xValue - tooltipWidth + xBandwidth
+    //     : margin.left + xValue - tooltipWidth
+
 } else {
 
+    // xPosition = xValue + margin.left - tooltipWidth / 2 < margin.left
+    //     ? xValue + margin.left
+    //     : xValue + margin.left + tooltipWidth / 2 > innerWidth
+    //         ? xValue + margin.left
+    //         : xValue + margin.left - tooltipWidth / 2
+
     xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 2
+        ? margin.left + xValue - xBandwidth * 2//* 2
         : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth
+        ? margin.left + xValue - xBandwidth * 4
         : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
-        ? margin.left + xValue - tooltipWidth / 2
+        ? margin.left + xValue - xBandwidth - tooltipWidth / 2
         : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
@@ -199,7 +216,7 @@ $: if ($isMobile) {
                         cy={tooltipIndicatorValueScale(d.value)}
                         r=5
                         fill={indicatorValueColorScale(d.value)}
-                        stroke="darkgray"
+                        stroke={COLORS.gray["700"]}
                     />
                 {/each}
 

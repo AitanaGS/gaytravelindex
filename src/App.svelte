@@ -336,8 +336,12 @@ style="
               <h1>Gay Travel Index 2023</h1>
       <div class="intro">
           <p>
-            In many countries, lesbian, gay, bisexual, transgender, and intersex people still have to fear for their safety and happiness. Every year, the Spartacus International Gay Guide publishes the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community in each country and serves as a first guide to help tourists travel safely.
+            In many countries, lesbian, gay, bisexual, transgender, and intersex people still have to fear 
+            for their safety and happiness. Every year, the Spartacus International Gay Guide publishes 
+            the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community 
+            in each country and serves as a first guide to help tourists travel safely.
           </p>
+
         </div>
       </header>
   
@@ -349,7 +353,10 @@ style="
           <Map {mapWidth} {mapHeight} {totalScale} on:countryClick={scrollToCountryView}/>
           {/if}
           <p class="dataInfo">
-            Data: <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
+            Data: 
+            <a 
+              href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+              target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
           </p>
         </div>
 
@@ -362,7 +369,10 @@ style="
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div class="continentChartWrapper"> 
             <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Heatmap Intro">
-              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2023 ranking. The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, transgender rights and violence against the LGBTQ+ community. In recent years the index has become more diverse with the addition of new categories.
+              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2023 ranking.
+              The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, 
+              transgender rights and violence against the LGBTQ+ community. In recent years the index has become 
+              more diverse with the addition of new categories.
              </p>
             <!-- </div> -->
              <!-- <div class="selectContinentWrapper"> -->
@@ -402,7 +412,8 @@ style="
         <div  style="min-height: 1px;">
           {#if $selectedCountry}
           <p >
-            Positive developments count as plus points, and negative ones as minus points. A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
+            Positive developments count as plus points, and negative ones as minus points. 
+            A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
           </p>
           <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
           </p>

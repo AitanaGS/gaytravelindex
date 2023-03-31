@@ -20,6 +20,28 @@
 
     $: xBandwidth = yearScale.bandwidth()
 
+    $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+        ? xValue + margin.left - tooltipWidth + xBandwidth
+        : xValue + margin.left - tooltipWidth/2 < margin.left
+        ? xValue + margin.left //+ tooltipWidth/2
+        : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+
+
+    $: xArrowPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+        ? "right"
+        : xValue + margin.left - tooltipWidth/2 < margin.left
+            ? "left"
+            : "center"
+
+    $: arrow = true
+
+
+    //last
+    // $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2
+    //last
+
 
     // const xNudge = 5
 
@@ -32,9 +54,9 @@
     //     : xValue + margin.left + halfXBandWidth - tooltipWidth / 2
 
 
-    $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth + xBandwidth
-        : xValue + margin.left - tooltipWidth / 2
+    // $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth
+    //     : xValue + margin.left - tooltipWidth / 2
 
     // let xPosition
 
@@ -126,5 +148,8 @@
     {xPosition}
     {yPosition}
     {flyDirection}
+    {tooltipHeight}
+    {arrow}
+    {xArrowPosition}
 />
 <!-- bind:tooltipWidth={tooltipWidth} -->

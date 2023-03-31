@@ -259,11 +259,13 @@
                 : "normal"
                 }
                 font-size={
-                    d.year === 2023 && d === hoveredCountryYear
-                    ? `${1 * $chartFontSize}rem`
-                    : d.year === 2023 || d === hoveredCountryYear
-                    ? `${0.95 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
-                    : `${0.85 * $chartFontSize}rem`
+                    $isSmallMobile 
+                      ? `${0.75 * $chartFontSize}rem`
+                      : d.year === 2023 && d === hoveredCountryYear
+                        ? `${1 * $chartFontSize}rem`
+                        : d.year === 2023 || d === hoveredCountryYear
+                        ? `${0.95 * $chartFontSize}rem`//`${chartFontSize * 0.9}px`
+                        : `${0.85 * $chartFontSize}rem`
                     }
               role="presentation"
               aria-hidden="true"
