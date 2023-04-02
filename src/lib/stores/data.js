@@ -1,4 +1,4 @@
-import { readable, derived } from 'svelte/store';
+import { readable, derived, writable } from 'svelte/store';
 import { selectedContinent } from './selectedContinent';
 import { json } from 'd3-fetch';
 import { extent, max, min, group } from 'd3-array';
@@ -31,6 +31,28 @@ export const data2023Map = derived([data2023], ([$data2021]) => {
 
   return dataMap;
 });
+
+// export const activeData = derived([data], ([$data]) => {
+//   group(
+//     $data.filter((d) => {
+//       return d.country === '';
+//     }),
+//     (d) => d.country
+//   );
+// });
+
+// export const activeCountries = writable([]);
+
+//         activeData = group(
+//   $data.filter(d => {
+//   return d.country === ""
+// }), d => d.country)
+
+//   activeCountries = []
+
+// export const activeData = writable();
+
+// export const activeCountries = writable(['test1', 'test2']);
 
 // export const selectedContinentData = derived(
 //   [data, selectedContinent],

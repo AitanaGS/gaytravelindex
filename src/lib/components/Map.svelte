@@ -148,7 +148,7 @@
     <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} role="img" aria-labelledby="mapTitle" tabindex="0">
-        <desc id="mapTitle">Thematic world map showing the Gay Travel Index in 2021</desc>
+        <desc id="mapTitle">Thematic world map showing the Gay Travel Index in 2023</desc>
         <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
         <!-- bind:this={selectInitZoom} 
         width={mapWidth} height={mapHeight} -->

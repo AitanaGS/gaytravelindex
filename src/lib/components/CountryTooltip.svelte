@@ -62,7 +62,7 @@
         --yArrowPosition: {flyDirection < 0 ? `100%` : 0};
         --xArrowPosition: {xArrowPosition === "left" ? "calc(0% + 12px)" : xArrowPosition === "right" ? "calc(100% - 12px)" : "50%"};
         --arrowColor: {arrow ? COLORS.white : "transparent"};
-        --arrowSize: { flyDirection < 0 ? "70%" : "30%"};
+        --arrowSize: { flyDirection < 0 ? "80%" : "20%"};
     "
 >
 <!-- in:transitionToUse={{ y: 20 * flyDirection,

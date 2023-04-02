@@ -11,6 +11,7 @@
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
     import { COLORS } from "../utils/colors"
+    import { activeSearch, searchResult, cleanData } from "../stores/search"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
@@ -18,7 +19,7 @@
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { onMount } from "svelte";
     import { heatmapLoaded } from "../stores/heatmapLoaded"
-    import { beforeUpdate, afterUpdate } from "svelte"
+    import { beforeUpdate, afterUpdate, onDestroy } from "svelte"
 
     // export let selectedContinent
     // export let data
@@ -27,6 +28,8 @@
     export let years
     export let totalScale
     export let width
+    export let activeData
+    export let activeCountries
     // export let currentWindowWidth
 
     // afterUpdate(() => {
@@ -34,6 +37,17 @@
     // })
 
     // $: console.log("heatmap loaded", $heatmapLoaded)
+
+    // beforeUpdate(() => {
+
+    //         activeData = group(
+    //   $data.filter(d => {
+    //   return d.country === ""
+    // }), d => d.country)
+
+    //   activeCountries = []
+
+    // })
 
 
     // let chartFontSize
@@ -61,7 +75,6 @@
 
     // $: years = yearScale.domain()
 
-    $: height = max([450,  selectedContinentCountries.length * 30])
 
     // let ready = false
     // let height
@@ -75,17 +88,40 @@
     //     }, 1000);
     // })
 
-    $: selectedContinentCountries = [... new Set(
-        $data
-      // .filter(d => d.continent == selectedContinent)
-      .filter(d => {
-        if ($selectedContinent === "All") return true
-        else return d.continent === $selectedContinent
-      })
-      .filter(d => d.year === 2023)
-      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
-      .map(d => d.country)
-      )]
+
+    // $: height = max([450,  selectedContinentCountries.length * 30])
+
+
+    // $: height = max([200,  activeCountries.length * 30])
+
+    // $: console.log("hier", activeCountries)
+    $: height = activeCountries.length * 30 + 100
+
+    // onMount(() => {
+
+    //   activeData = group(
+    //   $data.filter(d => {
+    //   return d.country === ""
+    // }), d => d.country)
+
+    //   activeCountries = []
+
+    // })
+
+
+    // hier
+    // $: selectedContinentCountries = [... new Set(
+    //     $data
+    //   // .filter(d => d.continent == selectedContinent)
+    //   .filter(d => {
+    //     if ($selectedContinent === "All") return true
+    //     else if ($selectedContinent === "") return false
+    //     else return d.continent === $selectedContinent
+    //   })
+    //   .filter(d => d.year === 2023)
+    //   .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+    //   .map(d => d.country)
+    //   )]
 
 
     $: margin = {
@@ -107,7 +143,7 @@
     .paddingOuter(0.1)
 
   $: countryScale = scaleBand()
-    .domain(selectedContinentCountries)
+    .domain(activeCountries) // selectedContinentCountries
     .range([0, innerHeight])
     .paddingInner(0.05)
     .paddingOuter(0.3)
@@ -116,16 +152,97 @@
     // .domain(extent(data.map(d => d.total)))
 
 
-    $: selectedContinentData = group(
-    $data.filter(d => {
-      if ($selectedContinent === "All") return true
-      else return d.continent === $selectedContinent
-    })
-      .sort((a, b) => {
-        if(a.year !== 2023) return 1;
-        else if(b.year !== 2023) return -1;
-        else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
-      }), d => d.country)
+    // hier
+    // $: selectedContinentData = group(
+    // $data.filter(d => {
+    //   if ($selectedContinent === "All") return true
+    //   else if ($selectedContinent === "") return false
+    //   else return d.continent === $selectedContinent
+    // })
+    //   .sort((a, b) => {
+    //     if(a.year !== 2023) return 1;
+    //     else if(b.year !== 2023) return -1;
+    //     else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+    //   }), d => d.country)
+
+
+
+    //   let searchedCountries
+    //   let searchedCountryData
+
+    //   $: if ($activeSearch) {
+
+    //     searchedCountries = [... new Set(
+    //     $data
+    //   // .filter(d => d.continent == selectedContinent)
+    //   .filter(d => {
+    //     return d.country.toLowerCase().includes($searchResult.toLowerCase())
+    //   })
+    //   .filter(d => d.year === 2023)
+    //   .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+    //   .map(d => d.country)
+    //   )]
+
+    //     // searchedCountry = selectedContinentCountries.filter(country => {
+    //     //   return country.toLowerCase().includes($searchResult.toLowerCase())
+    //     // })
+
+    //     searchedCountryData = group(
+    //         $data.filter(d => {
+    //         return d.country.toLowerCase().includes($searchResult.toLowerCase())
+    //   // if ($selectedContinent === "All") return true
+    //   // else return d.continent === $selectedContinent
+    //       })
+    //       .sort((a, b) => {
+    //         if(a.year !== 2023) return 1;
+    //         else if(b.year !== 2023) return -1;
+    //         else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+    //       }), d => d.country)
+
+    //   }
+
+    //   $: if ($cleanData) {
+    //           activeData = group(
+    //   $data.filter(d => {
+    //   return d.country === ""
+    // }), d => d.country)
+
+    //   activeCountries = []
+    //   $cleanData = false
+    //   }
+
+    // $cleanData ? clean() : () => {}
+
+  
+    // function clean() {
+    //                 activeData = group(
+    //   $data.filter(d => {
+    //   return d.country === ""
+    // }), d => d.country)
+
+    //   activeCountries = []
+    //   $cleanData = false
+
+    // }
+
+
+
+//       $: if ($activeSearch) {
+
+//       activeData = group(
+//       $data.filter(d => {
+//       return d.country === ""
+//     }), d => d.country)
+
+//       activeCountries = []
+// }
+
+
+
+      // $: console.log(searchedCountries, searchedCountryData)
+
+
+
 
 
       // $: console.log("heatmap", selectedContinentData, $selectedContinent)
@@ -144,9 +261,27 @@
       // $: console.log($prefersReducedMotion)
 
 
-      $: transitionToUse = $prefersReducedMotion ? () => {} : slide
+      $: transitionToUse = $prefersReducedMotion || $activeSearch ? () => {} : slide
 
-      $: topContinentCountry = selectedContinentData.keys().next().value
+      $: topContinentCountry = activeData.keys().next().value // check
+
+
+
+
+      // $: activeData = $activeSearch ? searchedCountryData : selectedContinentData
+
+      // $: activeCountries = $activeSearch ? searchedCountries: selectedContinentCountries
+
+      // $: console.log($activeSearch, activeData, activeCountries)
+
+      // $activeData = $activeSearch ? searchedCountryData : selectedContinentData
+
+      //   $activeCountries = $activeSearch ? searchedCountries: selectedContinentCountries
+
+      // $: console.log($activeSearch, $activeData, $activeCountries)
+
+      
+
 
 
     // const scrollIntoView = (node) => {
@@ -164,15 +299,13 @@
     <svg width={chartWidth} height={height} tabindex="0" role="figure" aria-describedby="heatmapDescription">
       <!-- <title id="heatmapTitle">{`Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021`}</title> -->
       <desc id="heatmapDescription">
-        <!-- {`
-        Heatmap of the Gay Travel Index in different countries ${selectedContinent === "All" ? "" : `in ${selectedContinent}`} from 2012 to 2021.
-        ${selectedContinent === "All" 
-        ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
-        At the bottom of the list is Chechnya, with a rating of -19.`
-        : `Considering only countries in ${selectedContinent}, the country with the highest ranking is ${selectedContinentData.keys().next().value}, with a rating of ${selectedContinentData.get(selectedContinentData.keys().next().value).shift().total}.
-        `}`} -->
-        {`
-          Heatmap of the Gay Travel Index in different countries ${$selectedContinent === "All" ? "" : `in ${$selectedContinent}`} from 2012 to 2021.
+        {
+        $activeSearch
+        ?
+        `Heatmap of the Gay Travel Index for countries that meet the search criteria, from 2012 to 2023.`
+        :
+        `
+          Heatmap of the Gay Travel Index for different countries ${$selectedContinent === "All" ? "" : `in ${$selectedContinent}`}, from 2012 to 2023.
           ${$selectedContinent === "All" 
           ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
           At the bottom of the list is Chechnya, with a rating of -19.`
@@ -197,18 +330,19 @@
         <!-- use:scrollIntoView -->
         <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
-        <AxisCountries on:countryClick {margin} {countryScale} {selectedContinentData}/>
+        <AxisCountries on:countryClick {margin} {countryScale} {activeData}/>
+        <!-- {selectedContinentData} -->
     
         <g class="chart continentHeatMap" transform="translate({margin.left}, {margin.top})">
             <g class="innerChart innerContinentHeatmap">
-            <!-- {#each Array.from(selectedContinentData.keys()) as country, i (country)}  -->
-            {#each Array.from(selectedContinentData.keys()) as country, i (`${$selectedContinent}${country}`)} 
+            <!-- {#each Array.from(selectedContinentData.keys()) as country, i (`${$selectedContinent}${country}`)}  -->
+            {#each Array.from(activeData.keys()) as country, i (`${country}`)} 
             <g 
                 class="country"
                 in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}} 
                 >  
-                <!-- in:slide={{ duration: 300, delay: 50 + 50 * i}}  -->
-            {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
+                <!-- {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d} -->
+            {#each activeData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
                 class="year"
                 id={`${country}.${d.year}`}

@@ -21,6 +21,9 @@
   import { interpolateHsl } from "d3-interpolate"
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
   import { COLORS } from "./lib/utils/colors.js"
+  import { searchResult, activeSearch, cleanData } from "./lib/stores/search"
+  import { createEventDispatcher } from "svelte"
+  import { SearchIcon, MousePointerIcon } from "svelte-feather-icons"
 
   // import "@fontsource/plus-jakarta-sans"
   // import "@fontsource/plus-jakarta-sans/600.css"
@@ -318,6 +321,140 @@
   //   ? 700
   //   : 0.8 * $width
 
+
+  $: selectedContinentCountries = [... new Set(
+        $data
+      // .filter(d => d.continent == selectedContinent)
+      .filter(d => {
+        if ($selectedContinent === "All") return true
+        else if ($selectedContinent === "") return false
+        else return d.continent === $selectedContinent
+      })
+      .filter(d => d.year === 2023)
+      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+      .map(d => d.country)
+      )]
+
+      $: selectedContinentData = group(
+    $data.filter(d => {
+      if ($selectedContinent === "All") return true
+      else if ($selectedContinent === "") return false
+      else return d.continent === $selectedContinent
+    })
+      .sort((a, b) => {
+        if(a.year !== 2023) return 1;
+        else if(b.year !== 2023) return -1;
+        else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+      }), d => d.country)
+
+
+    let searchValue
+  // $: console.log(search, $searchResult)
+
+
+  function handleSearch() {
+    $searchResult = searchValue
+    $activeSearch = true
+    $selectedContinent = "All"
+    $selectedCountry = ""
+  }
+
+  function deleteSearchData() {
+    searchedCountryData = group(
+      $data.filter(d => {
+      return d.country === ""
+    }), d => d.country)
+
+    searchedCountries = []
+  }
+
+  function clearSearch() {
+    
+    deleteSearchData()
+
+    setTimeout(() => {
+    $activeSearch = false
+    searchValue = ""
+    $selectedCountry = ""
+    selectedValue = "All"
+
+    $selectedContinent = selectedValue
+    }, 0.1)
+  }
+
+  let selectedValue
+
+  function handleSelect() {
+    // searchedCountryData = group(
+    //   $data.filter(d => {
+    //   return d.country === ""
+    // }), d => d.country)
+
+    // searchedCountries = []
+
+    deleteSearchData()
+
+    setTimeout(() => {
+      $activeSearch = false
+    searchValue = ""
+    $selectedCountry = ""
+
+    $selectedContinent = selectedValue
+    }, 0.1)
+
+  }
+
+
+      let searchedCountries
+      let searchedCountryData
+
+      $: if ($activeSearch) {
+
+        searchedCountries = [... new Set(
+        $data
+      // .filter(d => d.continent == selectedContinent)
+      .filter(d => {
+        return d.country.toLowerCase().includes($searchResult.toLowerCase())
+      })
+      .filter(d => d.year === 2023)
+      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+      .map(d => d.country)
+      )]
+
+        // searchedCountry = selectedContinentCountries.filter(country => {
+        //   return country.toLowerCase().includes($searchResult.toLowerCase())
+        // })
+
+        searchedCountryData = group(
+            $data.filter(d => {
+            return d.country.toLowerCase().includes($searchResult.toLowerCase())
+      // if ($selectedContinent === "All") return true
+      // else return d.continent === $selectedContinent
+          })
+          .sort((a, b) => {
+            if(a.year !== 2023) return 1;
+            else if(b.year !== 2023) return -1;
+            else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+          }), d => d.country)
+
+      }
+
+
+      $: activeData = $activeSearch ? searchedCountryData : selectedContinentData
+
+$: activeCountries = $activeSearch ? searchedCountries: selectedContinentCountries
+
+// $: console.log($activeSearch, activeData, activeCountries)
+
+function clearCountry() {
+  selectedCountry.set("")
+  scrollToContinentView()
+  // if ($activeSearch) {
+  //   clearSearch()
+  // }
+}
+
+
 </script>
 
 <div
@@ -382,22 +519,49 @@ style="
               <select 
               name="continents" 
               id="continent-select" 
-              bind:value={$selectedContinent}
+              bind:value={selectedValue}
               style="
               --selectBackgroundColor: {COLORS.secondary["100"]};
               --selectColor: {COLORS.secondary["600"]};
               "
+              on:change={() => handleSelect()}
               >
               <!-- on:change={() => selectedContinent.set("")} -->
                 <option value="All">All</option>
                 {#each continents as continent}
                   <option value={continent}>{continent}</option>
                 {/each}
-            </select> and click on a country’s name for information about its ratings in the different categories.
+            </select> or search for a country
+            <label
+              role="search"
+              class="searchWrapper"
+              style="
+              --searchBackgroundColor: {COLORS.secondary["100"]};
+              --searchColor: {COLORS.secondary["600"]};
+              ">
+              <div class="searchIconWrapper"><SearchIcon size="24"/></div>
+              <input 
+                type="search" 
+                placeholder="Country"
+                id="search"
+                bind:value={searchValue} 
+                on:keyup={() => handleSearch()}
+                on:search={() => clearSearch()}
+                >
+              <!-- <button 
+                type="submit" 
+                on:click={() => handleSearch()}
+                on:keypress={() => handleSearch()}
+                ><SearchIcon size="24"/></button> -->
+            </label>
+          </p>
+          <p>
+            <span class="mousePointerIconWrapper" style="--mousePointerColor: {COLORS.secondary["600"]};"><MousePointerIcon size="24"/></span> 
+            Click on a country’s name for information about its ratings in the different categories.
           </p>
           <p class="note">Note: There is no data for 2022.</p>
           <!-- </div> -->
-             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} width={$width}/>
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} width={$width} {activeData} {activeCountries}/>
 
 
       </div>
@@ -428,14 +592,13 @@ style="
           --buttonColor: {COLORS.secondary["700"]};
             
             "
-          on:click={() => {
-            // selectedCountry = ""
-            selectedCountry.set("")
-            scrollToContinentView()
-            // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
-            // scrollToTop() // here scrolling
-          }}
+          on:click={() => clearCountry()}
           >Clear Country</button>
+          <!-- // // selectedCountry = ""
+          // selectedCountry.set("")
+          // scrollToContinentView()
+          // // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+          // // scrollToTop() // here scrolling -->
           <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
           {/if}
           <!-- --buttonBackgroundColor: {COLORS.secondary["100"]};
@@ -460,6 +623,14 @@ style="
 </div>
 
 <style>
+
+/* #searchBar {
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 10px;
+  width: 300px;
+} */
 
   .wrapper {
     padding: 40px;
@@ -552,6 +723,16 @@ a:hover {
       margin-left: auto;
 } */
 
+.mousePointerIconWrapper {
+  /* position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto 0; */
+  /* height: 24px; */
+  color: var(--mousePointerColor);
+  display: inline-block;
+}
 
 select {
     font-size: 1.2rem;
@@ -560,9 +741,52 @@ select {
     border: 2px solid var(--selectColor);
     border-radius: 8px;
     padding: 3px 5px;
-    margin: 0px 2px;
+    margin: 4px 2px;
     /* color: var(--bodyColor); */
     /* display: block; */
+}
+
+.searchWrapper {
+  display: inline-block;
+  position: relative;
+}
+
+.searchIconWrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto 0;
+  height: 24px;
+  color: var(--searchColor);
+
+}
+
+#search {
+  font-size: 1.2rem;
+  height: 2.2rem;
+  color: var(--searchColor);
+  width: 250px;
+  border: 2px solid var(--searchColor);
+  border-radius: 8px;
+  /* display: block; */
+  padding: 3px 5px 3px 40px;
+  background-color: var(--searchBackgroundColor);
+  margin: 4px 2px;
+  /* background: var(--searchBackgroundColor) url("./assets/search.svg") no-repeat 10px center; */
+}
+
+#search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: var(--searchColor);
+  opacity: 1; /* Firefox */
+}
+
+#search:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: var(--searchColor);
+}
+
+#search::-ms-input-placeholder { /* Microsoft Edge */
+  color: var(--searchColor);
 }
 
 /* .countryChartWrapper {

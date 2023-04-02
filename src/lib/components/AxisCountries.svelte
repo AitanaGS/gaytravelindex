@@ -9,13 +9,12 @@
     // import { selectedContinentData } from "../stores/data";
     import { isMobile } from "../stores/dimensions";
     import { COLORS } from "../utils/colors"
+    import { activeSearch } from "../stores/search";
 
     export let countryScale;
-    // export let handleClick
-    // export let selectedContinent
     export let margin
-    export let selectedContinentData
-    // export let currentWindowWidth
+    // export let selectedContinentData
+    export let activeData
 
     $: countries = countryScale.domain()
 
@@ -51,7 +50,7 @@
         dispatch("countryClick")
     }
 
-    $: transitionToUse = $prefersReducedMotion ? () => {} : slide
+    $: transitionToUse = $prefersReducedMotion || $activeSearch ? () => {} : slide
 
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
     // TODO: check screen reader list (number of items)
@@ -67,8 +66,8 @@
 <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
 <g class="axis countries" transform="translate({margin.left}, {margin.top})" tabindex="0" role="list" aria-label="Country list" > 
     <!-- tabindex="0" role="list" aria-describedby="Country list" -->
-    <!-- {#each countries as country, i (country)} -->
-    {#each countries as country, i (`${$selectedContinent}${country}`)}
+    <!-- {#each countries as country, i (`${$selectedContinent}${country}`)} -->
+    {#each countries as country, i (`${country}`)}
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <g 
             class="tick country"
@@ -82,7 +81,8 @@
             tabindex="0" -->
             <desc id="countryInfo">
                 {country}:
-                {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d}
+                <!-- {#each activeData.get(country).sort((a, b) => a.year - b.year) as d} -->
+                {#each activeData.get(country) ? activeData.get(country).sort((a, b) => a.year - b.year) : [] as d}
                 year: {d.year}: total rating: {d.total}, global ranking: {d.ranking}
                 {/each}
             </desc>
