@@ -20,14 +20,16 @@
 
     $: xBandwidth = yearScale.bandwidth()
 
-    $: xPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth + xBandwidth
+    const xNudge = 1
+
+    $: xPosition = xValue + margin.left + tooltipWidth  > innerWidth + margin.left
+        ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
         : xValue + margin.left - tooltipWidth/2 < margin.left
         ? xValue + margin.left //+ tooltipWidth/2
         : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
 
 
-    $: xArrowPosition = xValue + margin.left + tooltipWidth/2  > innerWidth + margin.left
+    $: xArrowPosition = xValue + margin.left + tooltipWidth > innerWidth + margin.left
         ? "right"
         : xValue + margin.left - tooltipWidth/2 < margin.left
             ? "left"

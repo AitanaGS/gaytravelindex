@@ -4,6 +4,8 @@
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
+  import Select from "./lib/components/Select.svelte"
+  import Search from "./lib/components/Search.svelte"
   import DataInfoTooltip from "./lib/components/DataInfoTooltip.svelte"
   import { selectedCountry } from "./lib/stores/selectedCountry"
   import { selectedContinent } from "./lib/stores/selectedContinent";
@@ -349,15 +351,18 @@
       }), d => d.country)
 
 
-    let searchValue
+    // let searchValue
   // $: console.log(search, $searchResult)
+
+    // let selectedValue
 
 
   function handleSearch() {
-    $searchResult = searchValue
+    // $searchResult = searchValue
     $activeSearch = true
     $selectedContinent = "All"
     $selectedCountry = ""
+    // selectedValue = "All"
   }
 
   function deleteSearchData() {
@@ -369,38 +374,40 @@
     searchedCountries = []
   }
 
-  function clearSearch() {
+  // function clearSearch() {
     
-    deleteSearchData()
+  //   deleteSearchData()
 
-    setTimeout(() => {
-    $activeSearch = false
-    searchValue = ""
-    $selectedCountry = ""
-    selectedValue = "All"
+  //   setTimeout(() => {
+  //   $activeSearch = false
+  //   searchValue = ""
+  //   $selectedCountry = ""
+  //   selectedValue = "All"
 
-    $selectedContinent = selectedValue
-    }, 0.1)
-  }
+  //   $selectedContinent = selectedValue
+  //   }, 0.1)
+  // }
 
-  let selectedValue
+  // let selectedValue
 
-  function handleSelect() {
+  function handleSelect(event) {
     // searchedCountryData = group(
     //   $data.filter(d => {
     //   return d.country === ""
     // }), d => d.country)
 
     // searchedCountries = []
+    // selectedValue = event.detail
 
     deleteSearchData()
 
     setTimeout(() => {
       $activeSearch = false
-    searchValue = ""
+    // searchValue = ""
+    $searchResult = "" //neu
     $selectedCountry = ""
 
-    $selectedContinent = selectedValue
+    // $selectedContinent = selectedValue//event.detail.selectedValue
     }, 0.1)
 
   }
@@ -547,7 +554,8 @@ style="
 
   
               <p>
-              <label for="continent-select">Select a continent</label>
+                <Select {continents} on:selectContinent={handleSelect} />
+              <!-- <label for="continent-select">Select a continent</label>
               <select 
               name="continents" 
               id="continent-select" 
@@ -558,15 +566,15 @@ style="
               "
               on:change={() => handleSelect()}
               >
-              <!-- on:change={() => selectedContinent.set("")} -->
                 <option value="All">All</option>
                 {#each continents as continent}
                   <option value={continent}>{continent}</option>
                 {/each}
-            </select> 
+            </select>  -->
 
             or search for a country
-            <label
+            <Search on:searchCountry={handleSearch}/>.
+            <!-- <label
               role="search"
               class="searchWrapper"
               style="
@@ -580,14 +588,9 @@ style="
                 id="search"
                 bind:value={searchValue} 
                 on:keyup={() => handleSearch()}
-                on:search={() => clearSearch()}
+                on:search={() => handleSearch()} 
                 >
-              <!-- <button 
-                type="submit" 
-                on:click={() => handleSearch()}
-                on:keypress={() => handleSearch()}
-                ><SearchIcon size="24"/></button> -->
-            </label>.
+            </label>. -->
           </p>
 
           <p> 
@@ -613,7 +616,11 @@ style="
             Positive developments count as plus points, and negative ones as minus points. 
             A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
           </p>
-          <p><span class="mousePointerIconWrapper" style="--mousePointerColor: {COLORS.primary["600"]};"><MousePointerIcon size="24"/></span>
+          <p>
+            <span 
+              class="mousePointerIconWrapper" 
+              style="--mousePointerColor: {COLORS.primary["600"]};">
+              <MousePointerIcon size="24"/></span>
             Hover over the circles or access them with the tab key for the ratings from other years.
           </p>
   
@@ -623,8 +630,8 @@ style="
           <button
           class="countryButton"
           style="
-          --buttonBackgroundColor: {COLORS.primary["200"]};
-          --buttonColor: {COLORS.primary["700"]};
+          --buttonBackgroundColor: {COLORS.primary["100"]};
+          --buttonColor: {COLORS.primary["600"]};
             
             "
           on:click={() => clearCountry()}
@@ -819,7 +826,7 @@ a:hover {
   margin-right: 2px;
 }
 
-select {
+/* select {
     font-size: 1.2rem;
     background-color: var(--selectBackgroundColor);
     color: var(--selectColor);
@@ -827,52 +834,9 @@ select {
     border-radius: 8px;
     padding: 3px 5px;
     margin: 4px 2px;
-    /* color: var(--bodyColor); */
-    /* display: block; */
-}
+} */
 
-.searchWrapper {
-  display: inline-block;
-  position: relative;
-}
 
-.searchIconWrapper {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 10px;
-  margin: auto 0;
-  height: 24px;
-  color: var(--searchColor);
-
-}
-
-#search {
-  font-size: 1.2rem;
-  height: 2.2rem;
-  color: var(--searchColor);
-  width: 250px;
-  border: 2px solid var(--searchColor);
-  border-radius: 8px;
-  /* display: block; */
-  padding: 3px 5px 3px 40px;
-  background-color: var(--searchBackgroundColor);
-  margin: 4px 2px;
-  /* background: var(--searchBackgroundColor) url("./assets/search.svg") no-repeat 10px center; */
-}
-
-#search::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: var(--searchColor);
-  opacity: 1; /* Firefox */
-}
-
-#search:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: var(--searchColor);
-}
-
-#search::-ms-input-placeholder { /* Microsoft Edge */
-  color: var(--searchColor);
-}
 
 /* .countryChartWrapper {
   scroll-margin-top: 100px;

@@ -3,6 +3,8 @@ import data from '../../../data/processed/GTI_2012-2021.json';
 
 export const selectedContinent = writable('All');
 
+export const selectedValue = writable('All');
+
 // export const clickedContinentData = derived(
 //   [data, clickedContinent],
 //   ([data, $clickedContinent]) => {

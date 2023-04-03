@@ -6,7 +6,7 @@ export const width = writable(0);
 export const height = writable(0);
 
 export const smallMobileBreakpoint = readable(450);
-export const mobileBreakpoint = readable(620); // 600
+export const mobileBreakpoint = readable(650); // 600
 export const desktopBreakpoint = readable(1100);
 
 export const minDim = derived([width, height], ([$width, $height]) => {
