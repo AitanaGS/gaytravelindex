@@ -339,7 +339,7 @@
             {#each Array.from(activeData.keys()) as country, i (`${country}`)} 
             <g 
                 class="country"
-                in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}} 
+                in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}}
                 >  
                 <!-- {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d} -->
             {#each activeData.get(country).sort((a, b) => a.year - b.year) as d}

@@ -7,19 +7,7 @@
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';
 
-    export let tooltipData
-    export let country
-    export let colorScale
-    export let lastYearOnly
-    export let xPosition
-    export let yPosition
-    export let flyDirection
-    export let tooltipWidth
-    export let tooltipHeight
-    export let arrow
-    export let xArrowPosition
-
-    // let tooltipWidth = 200
+    let tooltipWidth = $isMobile ? 200 : 250
 
 
     const tooltipFontSizeScale = scaleLinear()
@@ -48,20 +36,21 @@
 
 <div
     bind:clientWidth={tooltipWidth} 
-    in:transitionToUse={{ y: 20 * flyDirection,
+    in:transitionToUse={{ y: 20 * -1,
         duration: 250, 
         delay: 100 }}
-    class="tooltip countryTooltip"
+    class="tooltip dataInfoTooltip"
     style="
-        top: {yPosition}px;
-        left: {xPosition}px;
+        top: 100%;
+        left: {$isMobile ? `calc(-${tooltipWidth}px + 100%)`: 0};
         --fontSize: {tooltipFontSize}rem;
         --width: {tooltipWidth}px;
         --backgroundColor: {COLORS.white};
-        --yArrowPosition: {flyDirection < 0 ? `100%` : 0};
-        --xArrowPosition: {xArrowPosition === "left" ? "calc(0% + 12px)" : xArrowPosition === "right" ? "calc(100% - 12px)" : "50%"};
-        --arrowColor: {arrow ? COLORS.white : "transparent"};
-        --arrowSize: { flyDirection < 0 ? "80%" : "20%"};
+        --yArrowPosition: 100%;
+        --xArrowPosition: {$isMobile ? `${tooltipWidth - 12}px`: `12px`};
+        --arrowColor: {COLORS.white};
+        --arrowSize: 50%;
+        --borderColor: {COLORS.primary["600"]};
     "
 >
 <!-- in:transitionToUse={{ y: 20 * flyDirection,
@@ -71,27 +60,34 @@
 <!-- --fontSize: {$tooltipFontSize}rem; -->
 <!-- bind:clientHeight={tooltipHeight} -->
 <!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
-    {#if $isDesktop}
-        <h3>{country} {lastYearOnly === true ? "2023" : tooltipData.year}</h3>
-    {/if}
-    {#if $isMobile || $isTablet}
-        <h3 class="tooltipHeading">
-            <span>{country}</span>
-            <span>{lastYearOnly === true ? "2023" : tooltipData.year}</span>
-        </h3>
-    {/if}
-    <div class="info">
-        <span 
-            class="total"
-            style="
-                background: {colorScale(tooltipData.total)};
-                color: {tooltipData.total < 8 && tooltipData.total > -15 ? COLORS.gray["900"] : COLORS.gray["50"]};
-            ">
-            GTI: {tooltipData.total}
-        </span>
-        <!-- color: {tooltipData.total < 8 && tooltipData.total > -15 ? "black" : "white"}; -->
-        <p class="ranking">global ranking: {tooltipData.ranking}</p>
-    </div>
+
+    <!-- <h3 class="tooltipHeading">
+        Data
+    </h3> -->
+    <p><strong>Data 2012 - 2021:</strong> <br>             
+        <a 
+        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+        target="_blank" rel="noreferrer">Spartacus International Gay guide
+        </a> 
+        via 
+        <a 
+        href="https://www.makeovermonday.co.uk/"
+        target="_blank" rel="noreferrer">Makeover Monday
+        </a> 
+    </p>
+    <p><strong>Data 2023:</strong><br>  
+        <a 
+        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+        target="_blank" rel="noreferrer">Spartacus International Gay guide
+        </a>,
+        scraped from the report.
+    </p>
+    <p><strong>Geographical Data:</strong><br>  
+        <a 
+        href="https://www.naturalearthdata.com/"
+        target="_blank" rel="noreferrer">Natural Earth
+        </a>
+    </p>
 
 </div>
 
@@ -104,52 +100,59 @@
         /* box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 8px 6px;
         /* border-radius: 4px; */
-        border-radius: 8px;
+        border-radius: 3px;
         pointer-events: none;
-        white-space: nowrap;
+        /* white-space: nowrap; */
         transition: top 300ms ease, left 300ms ease; 
-        text-align: center;
+        /* text-align: center; */
         /* margin: 0 auto; */
         width: var(--width);
+        border: 2px solid var(--borderColor);
     }
 
-    .tooltip:before {
+    .tooltip:after {
     content: '';
     position: absolute;
-    /* box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px; */
     bottom: var(--yArrowPosition);
     left: var(--xArrowPosition);
     width: 12px;
     height: 12px;
     background: var(--arrowColor);
-    /* border: 1px solid #ddd; */
-    /* border-top-color: transparent;
-    border-left-color: transparent; */
+    border: 2px solid var(--borderColor);
+    border-radius: 2px;
+    border-bottom-color: transparent;
+    border-right-color: transparent;
     transform: translate(-50%, var(--arrowSize)) rotate(45deg);
     transform-origin: center center;
     z-index: 10;
 }
 
-    .tooltipHeading {
+    /* .tooltipHeading {
         display: flex;
         flex-direction: column;
-    }
+    } */
 
-    h3 {
+    /* h3 {
         margin: 0px;
         font-size: calc(var(--fontSize) * 0.9);
         font-weight: 700;
         margin-bottom: 3px;
-    }
+    } */
 
-    .info {
-        font-size: calc(var(--fontSize) * 0.9);;
+    p {
+        font-size: calc(var(--fontSize) * 0.9);
+        overflow-wrap: word-wrap; /* IE */
+        overflow-wrap: break-word;
+        /* hyphens: auto; */
+    
+    /* Prefix for Safari */
+    /* -webkit-hyphens: auto; */
         /* margin: 0 auto; */
   /* text-align: center; */
     }
 
 
-    .total {
+    /* .total {
         padding: 4px 5px 4px 5px;
         border-radius: 5px;
         white-space: nowrap;
@@ -159,7 +162,7 @@
     .ranking {
         margin: 0;
         white-space: nowrap;
-    }
+    } */
 
 
 </style>

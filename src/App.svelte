@@ -4,6 +4,7 @@
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
+  import DataInfoTooltip from "./lib/components/DataInfoTooltip.svelte"
   import { selectedCountry } from "./lib/stores/selectedCountry"
   import { selectedContinent } from "./lib/stores/selectedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
@@ -23,7 +24,7 @@
   import { COLORS } from "./lib/utils/colors.js"
   import { searchResult, activeSearch, cleanData } from "./lib/stores/search"
   import { createEventDispatcher } from "svelte"
-  import { SearchIcon, MousePointerIcon } from "svelte-feather-icons"
+  import { SearchIcon, MousePointerIcon, InfoIcon } from "svelte-feather-icons"
 
   // import "@fontsource/plus-jakarta-sans"
   // import "@fontsource/plus-jakarta-sans/600.css"
@@ -454,6 +455,21 @@ function clearCountry() {
   // }
 }
 
+$: showDataInfo = false
+
+// function handleDataInfoHover(e) {
+//   if (e.type === "mouseover" || e.type === "focus") {
+
+//   } else {
+
+//   }
+//   console.log(e)
+// }
+
+// const toggleShowDataInfo = () => showDataInfo = !showDataInfo
+
+// $: console.log(showDataInfo)
+
 
 </script>
 
@@ -463,8 +479,8 @@ bind:clientWidth={$width}
 bind:clientHeight={$height}
 style="
   --bodyColor: {COLORS.gray["700"]};
-  --linkColor: {COLORS.secondary["500"]};
-  --linkHoverColor: {COLORS.secondary["900"]};
+  --linkColor: {COLORS.primary["500"]};
+  --linkHoverColor: {COLORS.primary["900"]};
   
   "
 >
@@ -493,14 +509,29 @@ style="
             Data: 
             <a 
               href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
-              target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>
+              target="_blank" rel="noreferrer">Spartacus International Gay Guide
+            </a>
+              <!-- <span 
+                class="infoIconWrapper" 
+                style="--infoColor: {COLORS.primary["600"]};"
+                on:mouseover={() => showDataInfo = true}
+                on:focus={() => showDataInfo = true}
+                on:mouseleave={() => showDataInfo = false}
+                on:blur={() => showDataInfo = false}
+                on:keydown={(e) => {e.key === "Escape" ? showDataInfo = false : null}}
+              >
+                <InfoIcon size="22"/>
+                {#if showDataInfo}
+                <DataInfoTooltip />
+                {/if}
+              </span> -->
           </p>
         </div>
 
       </section>
 
       <section>
-    <div class="chartWrapper" >
+    <div class="chartWrapper">
       <!-- style="--gap: {$chartGap}px;" -->
         
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
@@ -514,6 +545,7 @@ style="
             <!-- </div> -->
              <!-- <div class="selectContinentWrapper"> -->
 
+  
               <p>
               <label for="continent-select">Select a continent</label>
               <select 
@@ -521,8 +553,8 @@ style="
               id="continent-select" 
               bind:value={selectedValue}
               style="
-              --selectBackgroundColor: {COLORS.secondary["100"]};
-              --selectColor: {COLORS.secondary["600"]};
+              --selectBackgroundColor: {COLORS.primary["100"]};
+              --selectColor: {COLORS.primary["600"]};
               "
               on:change={() => handleSelect()}
               >
@@ -531,13 +563,15 @@ style="
                 {#each continents as continent}
                   <option value={continent}>{continent}</option>
                 {/each}
-            </select> or search for a country
+            </select> 
+
+            or search for a country
             <label
               role="search"
               class="searchWrapper"
               style="
-              --searchBackgroundColor: {COLORS.secondary["100"]};
-              --searchColor: {COLORS.secondary["600"]};
+              --searchBackgroundColor: {COLORS.primary["100"]};
+              --searchColor: {COLORS.primary["600"]};
               ">
               <div class="searchIconWrapper"><SearchIcon size="24"/></div>
               <input 
@@ -553,10 +587,10 @@ style="
                 on:click={() => handleSearch()}
                 on:keypress={() => handleSearch()}
                 ><SearchIcon size="24"/></button> -->
-            </label>
+            </label>.
           </p>
-          <p>
-            <span class="mousePointerIconWrapper" style="--mousePointerColor: {COLORS.secondary["600"]};"><MousePointerIcon size="24"/></span> 
+
+          <p> 
             Click on a country’s name for information about its ratings in the different categories.
           </p>
           <p class="note">Note: There is no data for 2022.</p>
@@ -579,7 +613,8 @@ style="
             Positive developments count as plus points, and negative ones as minus points. 
             A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
           </p>
-          <p>Pass your mouse over the circles or access them with the tab key for the ratings from other years.
+          <p><span class="mousePointerIconWrapper" style="--mousePointerColor: {COLORS.primary["600"]};"><MousePointerIcon size="24"/></span>
+            Hover over the circles or access them with the tab key for the ratings from other years.
           </p>
   
           {#if $selectedCountry === "United States of America"}
@@ -588,8 +623,8 @@ style="
           <button
           class="countryButton"
           style="
-          --buttonBackgroundColor: {COLORS.secondary["200"]};
-          --buttonColor: {COLORS.secondary["700"]};
+          --buttonBackgroundColor: {COLORS.primary["200"]};
+          --buttonColor: {COLORS.primary["700"]};
             
             "
           on:click={() => clearCountry()}
@@ -601,14 +636,41 @@ style="
           // // scrollToTop() // here scrolling -->
           <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
           {/if}
-          <!-- --buttonBackgroundColor: {COLORS.secondary["100"]};
-          --buttonColor: {COLORS.secondary["600"]};
-          --buttonHoverBackgroundColor: {COLORS.secondary["50"]};
-          --buttonHoverColor: {COLORS.secondary["500"]};
+          <!-- --buttonBackgroundColor: {COLORS.primary["100"]};
+          --buttonColor: {COLORS.primary["600"]};
+          --buttonHoverBackgroundColor: {COLORS.primary["50"]};
+          --buttonHoverColor: {COLORS.primary["500"]};
            -->
         </div>
           <IndicatorsChart {years} width={$width} />
       <!-- {selectedCountry} width={$countryWidth} --> 
+    </div>
+
+    <div class="dataSources">
+      <h5>Data Sources</h5>
+      <p><strong>Data 2012 - 2021:</strong> <br>             
+        <a 
+        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+        target="_blank" rel="noreferrer">Spartacus International Gay Guide
+        </a> 
+        via 
+        <a 
+        href="https://www.makeovermonday.co.uk/"
+        target="_blank" rel="noreferrer">Makeover Monday.
+        </a> 
+    </p>
+    <p><strong>Data 2023:</strong><br>  
+        <a 
+        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+        target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>,
+        scraped from the report.
+    </p>
+    <p><strong>Geographical Data:</strong><br>  
+        <a 
+        href="https://www.naturalearthdata.com/"
+        target="_blank" rel="noreferrer">Natural Earth
+        </a>
+    </p>
     </div>
 
 
@@ -710,6 +772,9 @@ a:hover {
 
 .dataInfo {
   font-size: 1rem;
+  /* display: flex;
+  align-items: center;
+  gap: 5px; */
 }
 
 .note {
@@ -723,6 +788,23 @@ a:hover {
       margin-left: auto;
 } */
 
+/* .pointerWrapper {
+  position: relative;
+} */
+
+/* .infoIconWrapper {
+  color: var(--infoColor);
+  display: inline-block;
+  margin-left: 3px;
+  padding: 3px;
+  cursor: pointer;
+  position: relative;
+} */
+
+/* .countrySelectSearch {
+  display: flex;
+} */
+
 .mousePointerIconWrapper {
   /* position: absolute;
   top: 0;
@@ -730,8 +812,11 @@ a:hover {
   left: 10px;
   margin: auto 0; */
   /* height: 24px; */
+  top: 5px;
+  position: relative;
   color: var(--mousePointerColor);
   display: inline-block;
+  margin-right: 2px;
 }
 
 select {
@@ -876,6 +961,20 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
   outline-color: var(--buttonColor);
+}
+
+.dataSources {
+  margin-top: 30px;
+  font-size: 1rem;
+  overflow-wrap: word-wrap; /* IE */
+  overflow-wrap: break-word;
+  hyphens: auto; 
+   -webkit-hyphens: auto; /* Prefix for Safari */
+}
+
+.dataSources h5 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
 }
 
 
