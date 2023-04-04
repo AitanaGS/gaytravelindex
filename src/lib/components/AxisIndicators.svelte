@@ -1,7 +1,7 @@
 <script>
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { isSmall } from "../stores/dimensions";
-    import { COLORS } from "../utils/colors";
+    import { COLORS } from "../utils/constants";
 
     export let indicatorScale;
     export let indicatorVariables

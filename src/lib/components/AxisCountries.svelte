@@ -8,7 +8,7 @@
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { selectedContinentData } from "../stores/data";
     import { isSmall } from "../stores/dimensions";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
     import { activeSearch } from "../stores/search";
 
     export let countryScale;

@@ -5,7 +5,7 @@
     // import { isTablet, isSmall } from "../stores/devices";
     import { isSmall, width } from "../stores/dimensions";
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
 
     export let colorScale
     export let hoveredMapCountryData

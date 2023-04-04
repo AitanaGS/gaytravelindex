@@ -13,7 +13,7 @@
     import { isSmall, isMobile } from '../stores/dimensions'
     import { data } from "../stores/data"
     import { prefersReducedMotion } from '../stores/preferesReducedMotion'
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
 
 
     // export let data

@@ -1,6 +1,6 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
-    import { COLORS } from "../utils/colors"  
+    import { COLORS } from "../utils/constants"  
     import { isSmall } from "../stores/dimensions";
     
     export let tooltipYearScale

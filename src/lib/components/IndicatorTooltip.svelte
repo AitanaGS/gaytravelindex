@@ -6,7 +6,7 @@
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
     import { fly, fade } from "svelte/transition"
-  import { COLORS } from "../utils/colors";
+  import { COLORS } from "../utils/constants";
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2023Data

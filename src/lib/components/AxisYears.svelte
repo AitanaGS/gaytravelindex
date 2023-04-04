@@ -2,7 +2,7 @@
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { isSmall, isMobile } from "../stores/dimensions";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
 
     export let yearScale
     export let margin

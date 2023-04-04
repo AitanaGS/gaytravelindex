@@ -1,6 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
     import { selectedContinent } from "../stores/selectedContinent";
 
     export let continents

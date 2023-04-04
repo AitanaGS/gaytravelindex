@@ -6,7 +6,7 @@
     import { selectedCountry } from "../stores/selectedCountry";
     import { selectedContinent } from "../stores/selectedContinent";
     import { data2023, data2023Map } from "../stores/data"
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
     import { width } from "../stores/dimensions"
 
     import * as topojson from "topojson-client"

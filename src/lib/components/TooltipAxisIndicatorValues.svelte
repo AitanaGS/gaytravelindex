@@ -1,5 +1,5 @@
 <script>
-  import { COLORS } from "../utils/colors";
+  import { COLORS } from "../utils/constants";
 
 
     // import { tooltipFontSize } from "../stores/responsiveFontSize";

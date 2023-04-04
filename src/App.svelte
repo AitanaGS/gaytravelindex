@@ -23,7 +23,7 @@
   import { interpolateRdYlBu, schemeRdYlBu, interpolateGreys } from "d3-scale-chromatic"
   import { interpolateHsl } from "d3-interpolate"
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
-  import { COLORS } from "./lib/utils/colors.js"
+  import { COLORS } from "./lib/utils/constants.js"
   import { searchResult, activeSearch, cleanData } from "./lib/stores/search"
   import { createEventDispatcher } from "svelte"
   import { SearchIcon, MousePointerIcon, InfoIcon } from "svelte-feather-icons"

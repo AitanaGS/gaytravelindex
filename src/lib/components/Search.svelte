@@ -1,7 +1,7 @@
 <script>
     import { SearchIcon, MousePointerIcon, InfoIcon } from "svelte-feather-icons"
     import { createEventDispatcher } from "svelte";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
     import { selectedContinent } from "../stores/selectedContinent";
     import { searchResult } from "../stores/search";
 

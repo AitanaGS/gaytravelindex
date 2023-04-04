@@ -2,7 +2,7 @@
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     // import { isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
-    import { COLORS } from "../utils/colors.js"
+    import { COLORS } from "../utils/constants.js"
 
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';

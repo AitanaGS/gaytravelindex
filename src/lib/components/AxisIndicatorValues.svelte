@@ -1,7 +1,7 @@
 <script>
     import { isMobile } from "../stores/dimensions";
     import { chartFontSize } from "../stores/responsiveFontSize";
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
 
     export let indicatorValueScale
     export let margin

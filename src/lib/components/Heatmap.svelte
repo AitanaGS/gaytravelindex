@@ -10,7 +10,7 @@
     import { data, data2023, data2023Map} from "../stores/data"
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
-    import { COLORS } from "../utils/colors"
+    import { COLORS } from "../utils/constants"
     import { activeSearch, searchResult, cleanData } from "../stores/search"
 
     import { slide, fade, fly } from "svelte/transition"
