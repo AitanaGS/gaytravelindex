@@ -11,7 +11,7 @@
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
     import { COLORS } from "../utils/constants"
-    import { activeSearch, searchResult, cleanData } from "../stores/search"
+    import { activeSearch, query } from "../stores/search"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
@@ -176,7 +176,7 @@
     //     $data
     //   // .filter(d => d.continent == selectedContinent)
     //   .filter(d => {
-    //     return d.country.toLowerCase().includes($searchResult.toLowerCase())
+    //     return d.country.toLowerCase().includes($query.toLowerCase())
     //   })
     //   .filter(d => d.year === 2023)
     //   .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
@@ -184,12 +184,12 @@
     //   )]
 
     //     // searchedCountry = selectedContinentCountries.filter(country => {
-    //     //   return country.toLowerCase().includes($searchResult.toLowerCase())
+    //     //   return country.toLowerCase().includes($query.toLowerCase())
     //     // })
 
     //     searchedCountryData = group(
     //         $data.filter(d => {
-    //         return d.country.toLowerCase().includes($searchResult.toLowerCase())
+    //         return d.country.toLowerCase().includes($query.toLowerCase())
     //   // if ($selectedContinent === "All") return true
     //   // else return d.continent === $selectedContinent
     //       })
@@ -292,6 +292,7 @@
 
     // $:console.log(selectedContinentData, selectedContinentData.keys().next().value, selectedContinentData.get(selectedContinentData.keys().next().value).shift().total)
 
+// $: console.log(activeData.size)
 </script>
 
 <div class="continentHeatmap wrapper">
@@ -418,11 +419,32 @@
             {/each}
         </g>
                 {/each}
+            
             </g>
+            {#if $activeSearch === true && activeData.size === 0}
+
+            <text
+              fill={COLORS.gray["800"]}
+              x={innerWidth / 2}
+              y={innerHeight / 2 + 10}
+              text-anchor="middle"
+              dominant-baseline="middle"
+              font-weight="normal"
+                font-size={`${0.9 * $chartFontSize}rem`}
+            
+            >No data found.</text>
+  
+            {/if}
         
+
           </g>
         
     
+          <!-- {#if $activeSearch === true && activeData.size === 0}
+
+          <text>Test</text>
+
+          {/if} -->
     
     </svg>
 

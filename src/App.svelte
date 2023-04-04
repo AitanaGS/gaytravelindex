@@ -24,7 +24,7 @@
   import { interpolateHsl } from "d3-interpolate"
   import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
   import { COLORS } from "./lib/utils/constants.js"
-  import { searchResult, activeSearch, cleanData } from "./lib/stores/search"
+  import { query, activeSearch } from "./lib/stores/search"
   import { createEventDispatcher } from "svelte"
   import { SearchIcon, MousePointerIcon, InfoIcon } from "svelte-feather-icons"
 
@@ -301,13 +301,13 @@
 
 
     // let searchValue
-  // $: console.log(search, $searchResult)
+  // $: console.log(search, $query)
 
     // let selectedValue
 
 
   function handleSearch() {
-    // $searchResult = searchValue
+    // $query = searchValue
     $activeSearch = true
     $selectedContinent = "All"
     $selectedCountry = ""
@@ -353,7 +353,7 @@
     setTimeout(() => {
       $activeSearch = false
     // searchValue = ""
-    $searchResult = "" //neu
+    $query = "" //neu
     $selectedCountry = ""
 
     // $selectedContinent = selectedValue//event.detail.selectedValue
@@ -371,7 +371,7 @@
         $data
       // .filter(d => d.continent == selectedContinent)
       .filter(d => {
-        return d.country.toLowerCase().includes($searchResult.toLowerCase())
+        return d.country.toLowerCase().includes($query.toLowerCase())
       })
       .filter(d => d.year === 2023)
       .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
@@ -379,12 +379,12 @@
       )]
 
         // searchedCountry = selectedContinentCountries.filter(country => {
-        //   return country.toLowerCase().includes($searchResult.toLowerCase())
+        //   return country.toLowerCase().includes($query.toLowerCase())
         // })
 
         searchedCountryData = group(
             $data.filter(d => {
-            return d.country.toLowerCase().includes($searchResult.toLowerCase())
+            return d.country.toLowerCase().includes($query.toLowerCase())
       // if ($selectedContinent === "All") return true
       // else return d.continent === $selectedContinent
           })

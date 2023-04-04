@@ -3,7 +3,7 @@
     import { createEventDispatcher } from "svelte";
     import { COLORS } from "../utils/constants"
     import { selectedContinent } from "../stores/selectedContinent";
-    import { searchResult } from "../stores/search";
+    import { query } from "../stores/search";
 
 
 
@@ -33,7 +33,7 @@
       type="search" 
       placeholder="Country"
       id="search"
-      bind:value={$searchResult} 
+      bind:value={$query} 
       on:keyup={() => handleSearch()}
       on:search={() => handleSearch()} 
       >
