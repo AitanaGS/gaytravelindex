@@ -432,7 +432,7 @@
               font-weight="normal"
                 font-size={`${0.9 * $chartFontSize}rem`}
             
-            >No data found.</text>
+            >No results found.</text>
   
             {/if}
         
