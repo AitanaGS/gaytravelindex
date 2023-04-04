@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import data from '../../../data/processed/GTI_2012-2021.json';
+// import data from '../../../data/processed/GTI_2012-2021.json';
 
 export const selectedContinent = writable('All');
 

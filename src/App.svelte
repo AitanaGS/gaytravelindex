@@ -860,9 +860,6 @@ a:hover {
     /* transition: visibility 0s linear 0s, opacity 300ms; */
     /* transition: all 2000ms ease; */
 
-      /* visibility cannot be transitioned, because its 0/1
-      https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
-    */
 
  /* }  */
 
@@ -877,10 +874,6 @@ a:hover {
     /* transition: visibility 0s linear 300ms, opacity 300ms; */
     /* transition: all 2000ms ease; */
 
-    /* 
-      visibility cannot be transitioned, because its 0/1
-      https://stackoverflow.com/questions/27900053/css-transition-with-visibility-not-working
-    */
  /* }  */
 
  .countryButton {
@@ -966,5 +959,4 @@ button:focus-visible {
   /* } */
 
 
-  /* https://stackoverflow.com/questions/30855985/pure-css-animation-visibility-with-delay */
 </style>
