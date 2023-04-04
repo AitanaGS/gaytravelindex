@@ -81,11 +81,11 @@
 
     let parentMap
 
-    let parentBoundingRect
+    // let parentBoundingRect 
 
-    $:if (parentMap) {
-        parentBoundingRect = parentMap.getBoundingClientRect()
-    }
+    // $:if (parentMap) {
+    //     parentBoundingRect = parentMap.getBoundingClientRect()
+    // }
 
     function handleMapHover (event, mapCountry, centroid) {
 
@@ -94,7 +94,7 @@
             data: mapCountry,
             centroid,
             event,
-            parentBoundingRect,
+            parentBoundingRect: parentMap.getBoundingClientRect(),
             parentMap
             // svg,
             }
@@ -137,6 +137,10 @@
 //   selectedCountry = country
 // })
 
+// let height
+
+// $: console.log(height)
+
 
 
 
@@ -144,7 +148,7 @@
 
 </script>
 
-<div bind:this={parentMap} class="map">
+<div bind:this={parentMap} class="map" >
     <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} role="img" aria-labelledby="mapTitle" tabindex="0">
@@ -187,7 +191,7 @@
             {/if}
         {/each}
         <path class="borders" d={pathGenerator(geoBorders)} fill="none" stroke="white"/>
-        <MapLegend colorScale={totalScale} {hoveredMapCountryData} {mapWidth} height={mapHeight} width={$width}/>
+        <MapLegend colorScale={totalScale} {hoveredMapCountryData} height={mapHeight}/>
     </g>
     </svg>
 
@@ -195,7 +199,6 @@
     <MapTooltip 
         tooltipData={hoveredMapCountryData} 
         {totalScale}
-         width={$width}
         />
     {/if}
 </div>

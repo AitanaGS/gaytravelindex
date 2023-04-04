@@ -4,7 +4,7 @@
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
-    import { isDesktop, isTablet, isSmallMobile, isMobile } from "../stores/dimensions"
+    import { isMobile, isSmall } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { clickedContinentData } from "../stores/clickedContinent"
     import { data, data2023, data2023Map} from "../stores/data"
@@ -126,12 +126,12 @@
 
     $: margin = {
         top: 60, // 60
-        right: $isMobile ? 5 : 10,
+        right: $isSmall ? 5 : 10,
         bottom: 5,
-        left: $isMobile ? 130 : 200 // $isMobile ? 130 : 200 
+        left: $isSmall ? 130 : 200 // $isSmall ? 130 : 200 
   }
 
-  // $: console.log("ismobile", $isMobile)
+  // $: console.log("isSmall", $isSmall)
 
   $: innerWidth = chartWidth - margin.left - margin.right
   $: innerHeight = height - margin.top - margin.bottom
@@ -393,7 +393,7 @@
                 : "normal"
                 }
                 font-size={
-                    $isSmallMobile 
+                    $isMobile 
                       ? `${0.75 * $chartFontSize}rem`
                       : d.year === 2023 && d === hoveredCountryYear
                         ? `${1 * $chartFontSize}rem`

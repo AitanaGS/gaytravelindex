@@ -1,17 +1,17 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
-    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { isSmall, width } from "../stores/dimensions"
     
     export let tooltipData
     export let totalScale
-    export let width
+    // export let width
 
     let tooltipWidth
     let tooltipHeight = 100
 
     // $: console.log(tooltipData)
 
-    $: chartWidth = width * 0.8
+    $: chartWidth = $width * 0.8
 
 
     // $: xValue = tooltipData.event.type === "focus" ? tooltipData.centroid[0]  : tooltipData.event.clientX - tooltipData.parentBoundingRect.left//+ tooltipData.parentBoundingRect.left 
@@ -29,7 +29,9 @@
 
     // $: console.log(xValue)
 
-    $: arrow = $isMobile ? false : true
+    $: arrow = $isSmall ? false : true
+
+    // $: console.log($width, tooltipData.event.clientX, tooltipData.parentBoundingRect.left)
 
 
     // last
@@ -40,7 +42,7 @@
 
     let xPosition
 
-    $: if ($isMobile) {
+    $: if ($isSmall) {
         // xPosition = 10
         xPosition = xValue - tooltipWidth / 2 < 0
             ? xValue
@@ -83,7 +85,7 @@
     // $: yValue = tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset // window.scrollY
 
     // last
-    $: yValue = tooltipData.event.clientY - tooltipData.parentBoundingRect.top + window.pageYOffset
+    $: yValue = tooltipData.event.clientY - tooltipData.parentBoundingRect.top // + window.pageYOffset
     // last
 
     // $: yValue = tooltipData.centroid[1]
@@ -92,7 +94,7 @@
 
     let yPosition
 
-    $: if ($isMobile) {
+    $: if ($isSmall) {
 
         yPosition = 10
         // yPosition = yValue - tooltipHeight < 0
@@ -102,35 +104,63 @@
         //     ? yValue //+ yNudge
         //     : yValue - tooltipHeight //- yNudge
 
-    } else if ($isTablet) {
+    } else  {
         yPosition = yValue - tooltipHeight < 0
             ? yValue + yNudge
             : yValue - tooltipHeight - yNudge// - yMobileNudge
 
 
-        //     yPosition = tooltipData.event.type === "focus"
-        // ? yValue - tooltipHeight < 0
-        //     ? yValue
-        //     : yValue - tooltipHeight - yMobileNudge
-        // : yValue - tooltipHeight - yNudge < 0
-        //     ? yValue + yNudge
-        //     : yValue - tooltipHeight - yMobileNudge
+//     yPosition = tooltipData.event.type === "focus"
+// ? yValue - tooltipHeight < 0
+//     ? yValue
+//     : yValue - tooltipHeight - yMobileNudge
+// : yValue - tooltipHeight - yNudge < 0
+//     ? yValue + yNudge
+//     : yValue - tooltipHeight - yMobileNudge
 
-    } else if ($isDesktop) {
-        yPosition = yValue - tooltipHeight < 0
-            ? yValue + yNudge
-            : yValue - tooltipHeight
+    } 
+    // $: if ($isSmall) {
 
-        //     yPosition = tooltipData.event.type === "focus"
-        // ? yValue - tooltipHeight < 0
-        //     ? yValue
-        //     : yValue - tooltipHeight 
-        // : yValue - tooltipHeight - yNudge < 0
-        //     ? yValue + yNudge
-        //     : yValue - tooltipHeight
-    }
+    //     yPosition = 10
+    //     // yPosition = yValue - tooltipHeight < 0
+    //     //     ? yValue + yNudge
+    //     //     : yValue - tooltipHeight- yNudge
+    //     // yPosition = yValue - tooltipHeight < 0
+    //     //     ? yValue //+ yNudge
+    //     //     : yValue - tooltipHeight //- yNudge
+
+    // } else if ($isTablet) {
+    //     yPosition = yValue - tooltipHeight < 0
+    //         ? yValue + yNudge
+    //         : yValue - tooltipHeight - yNudge// - yMobileNudge
+
+
+    //     //     yPosition = tooltipData.event.type === "focus"
+    //     // ? yValue - tooltipHeight < 0
+    //     //     ? yValue
+    //     //     : yValue - tooltipHeight - yMobileNudge
+    //     // : yValue - tooltipHeight - yNudge < 0
+    //     //     ? yValue + yNudge
+    //     //     : yValue - tooltipHeight - yMobileNudge
+
+    // } else if ($isDesktop) {
+    //     yPosition = yValue - tooltipHeight < 0
+    //         ? yValue + yNudge
+    //         : yValue - tooltipHeight
+
+    //     //     yPosition = tooltipData.event.type === "focus"
+    //     // ? yValue - tooltipHeight < 0
+    //     //     ? yValue
+    //     //     : yValue - tooltipHeight 
+    //     // : yValue - tooltipHeight - yNudge < 0
+    //     //     ? yValue + yNudge
+    //     //     : yValue - tooltipHeight
+    // }
+
+
+        
     
-    // $: if ($isMobile || $isDesktop) {
+    // $: if ($isSmall || $isDesktop) {
     //     yPosition = tooltipData.event.type === "focus"
     //     ? yValue - tooltipHeight < 0
     //         ? yValue

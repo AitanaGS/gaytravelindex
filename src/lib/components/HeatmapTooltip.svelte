@@ -1,6 +1,6 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
-    import { isMobile, isTablet, isDesktop, width } from "../stores/dimensions"
+    // import { isMobile } from "../stores/dimensions"
     // import { countryScale } from "../stores/data";
 
     export let tooltipData
@@ -22,16 +22,16 @@
 
     const xNudge = 1
 
-    $: xPosition = xValue + margin.left + tooltipWidth  > innerWidth + margin.left
+    $: xPosition = xValue + margin.left + tooltipWidth * 0.7   > innerWidth + margin.left
         ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
-        : xValue + margin.left - tooltipWidth/2 < margin.left
+        : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
         ? xValue + margin.left //+ tooltipWidth/2
         : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
 
 
-    $: xArrowPosition = xValue + margin.left + tooltipWidth > innerWidth + margin.left
+    $: xArrowPosition = xValue + margin.left + tooltipWidth  * 0.7  > innerWidth + margin.left
         ? "right"
-        : xValue + margin.left - tooltipWidth/2 < margin.left
+        : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
             ? "left"
             : "center"
 
@@ -119,17 +119,19 @@
     //     ? yValue + tooltipHeight - countryScale.bandwidth() / 2
     //     : yValue + margin.top - tooltipHeight + countryScale.bandwidth() / 2
 
-    let yPosition
-
-    $: if ($isMobile || $isTablet) {
-        yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
+    $: yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
         ? yValue + tooltipHeight - yHalfBandwidth
         : yValue + margin.top - tooltipHeight - yBandwidth + yHalfBandwidth / 2
-    } else {
-        yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
-        ? yValue + tooltipHeight - yHalfBandwidth
-        : yValue + margin.top - tooltipHeight + yHalfBandwidth / 2
-    }
+
+    // $: if ($isMobile || $isTablet) {
+    //     yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
+    //     ? yValue + tooltipHeight - yHalfBandwidth
+    //     : yValue + margin.top - tooltipHeight - yBandwidth + yHalfBandwidth / 2
+    // } else {
+    //     yPosition = yValue - tooltipHeight / 2 + 9 < margin.top
+    //     ? yValue + tooltipHeight - yHalfBandwidth
+    //     : yValue + margin.top - tooltipHeight + yHalfBandwidth / 2
+    // }
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 

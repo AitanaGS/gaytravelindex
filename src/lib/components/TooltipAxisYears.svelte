@@ -1,7 +1,7 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     import { COLORS } from "../utils/colors"  
-    import { isMobile, isSmallMobile } from "../stores/dimensions";
+    import { isSmall } from "../stores/dimensions";
     
     export let tooltipYearScale
     export let svgMargin
@@ -27,7 +27,7 @@
         text-anchor=middle
         dominant-baseline="hanging"
         fill={COLORS.gray["700"]}
-        font-size={ $isMobile
+        font-size={ $isSmall
             ? year === 2012 || year === 2023
                 ? `${0.55 * tooltipFontSize}rem`
                 : `${0 * tooltipFontSize}rem`

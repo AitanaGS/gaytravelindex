@@ -10,7 +10,7 @@
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
-    import { isDesktop, isMobile, isTablet, isSmallMobile } from '../stores/dimensions'
+    import { isSmall, isMobile } from '../stores/dimensions'
     import { data } from "../stores/data"
     import { prefersReducedMotion } from '../stores/preferesReducedMotion'
     import { COLORS } from "../utils/colors"
@@ -82,7 +82,7 @@
     top: 60, // 80
     right: 5,
     bottom: 5,
-    left: $isMobile ? 180 : 230//230
+    left: $isSmall ? 180 : 230//230
   }
 
   const dataLonger = tidy($data, pivotLonger({
@@ -185,9 +185,9 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
         {#if $selectedCountry}
         <text
             class="countryName"
-            x={$isMobile ? 5 : innerWidth / 2 + margin.left}
+            x={$isSmall ? 5 : innerWidth / 2 + margin.left}
             y=30
-            text-anchor={$isMobile ? "start" : "middle"}
+            text-anchor={$isSmall ? "start" : "middle"}
             dominant-baseline="middle"
             fill={COLORS.gray["800"]}
             font-weight="bold"
@@ -196,7 +196,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
             aria-hidden="true"
             >
             <!-- y=10 
-            {$isMobile ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}-->
+            {$isSmall ? `${0.9 * $chartFontSize}rem`: `${$chartFontSize}rem`}-->
                 {$selectedCountry} 2023
         </text>
         {/if}
@@ -274,11 +274,11 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
                     <circle
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
-                        r={$isSmallMobile
+                        r={$isMobile
                             ? hoveredIndicator === d 
                                 ? 6 
                                 : 4
-                            : $isMobile
+                            : $isSmall
                                 ? hoveredIndicator === d 
                                     ? 8 
                                     : 6
@@ -308,7 +308,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
     </svg>
 
     {#if hoveredIndicator}
-    <IndicatorTooltip indicator2023Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin} {innerWidth}/>
+    <IndicatorTooltip indicator2023Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin}/>
     {/if}
     <!-- data={selectedCountryData} 
     {indicatorData} -->

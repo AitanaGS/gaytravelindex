@@ -1,13 +1,13 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
-    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    import { isSmall } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
     import { COLORS } from "../utils/colors.js"
 
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';
 
-    let tooltipWidth = $isMobile ? 200 : 250
+    let tooltipWidth = $isSmall ? 200 : 250
 
 
     const tooltipFontSizeScale = scaleLinear()
@@ -42,12 +42,12 @@
     class="tooltip dataInfoTooltip"
     style="
         top: 100%;
-        left: {$isMobile ? `calc(-${tooltipWidth}px + 100%)`: 0};
+        left: {$isSmall ? `calc(-${tooltipWidth}px + 100%)`: 0};
         --fontSize: {tooltipFontSize}rem;
         --width: {tooltipWidth}px;
         --backgroundColor: {COLORS.white};
         --yArrowPosition: 100%;
-        --xArrowPosition: {$isMobile ? `${tooltipWidth - 12}px`: `12px`};
+        --xArrowPosition: {$isSmall ? `${tooltipWidth - 12}px`: `12px`};
         --arrowColor: {COLORS.white};
         --arrowSize: 50%;
         --borderColor: {COLORS.primary["600"]};

@@ -1,7 +1,7 @@
 <script>
     import TooltipAxisYears from "./TooltipAxisYears.svelte";
     import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
-    import { isMobile, isTablet, isDesktop, isSmallMobile } from "../stores/dimensions"
+    import { isSmall, isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
@@ -16,7 +16,7 @@
     export let indicatorValueScale
     export let indicatorLabelsLookup
     export let margin
-    export let innerWidth
+    // export let innerWidth
     export let years
     export let indicatorValueColorScale
     export let hoveredIndicatorData
@@ -25,7 +25,7 @@
     // $: indicatorData = tooltipData.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
     
     
-    let tooltipWidth = $isMobile ? 200 : 280 //270
+    let tooltipWidth = $isSmall ? 200 : 280 //270
 
     let tooltipHeight = 160//150
     
@@ -38,11 +38,13 @@
 $: if ($isMobile) {
 
     xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue //- xBandwidth * 2 //5
+        ? margin.left + xValue - xBandwidth * 4 //5
         : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth //* 6 //7
-        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
-        ? margin.left + xValue - tooltipWidth / 2 // + xBandwidth * 3 /// 2
+        ? margin.left + xValue - xBandwidth * 5 //* 6 //7
+        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+        ? margin.left + xValue - tooltipWidth + xBandwidth * 3
+        : (indicator2023Data.value == 0)
+        ? margin.left + xValue - tooltipWidth + xBandwidth * 2 //- tooltipWidth / 2 // + xBandwidth * 3 /// 2
         : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
@@ -57,28 +59,45 @@ $: if ($isMobile) {
     //     ? margin.left + xValue - tooltipWidth + xBandwidth
     //     : margin.left + xValue - tooltipWidth
 
+} else if ($isSmall) {
+
+    xPosition = indicator2023Data.value === -5
+        ? margin.left + xValue - xBandwidth * 3 //5
+        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
+        ? margin.left + xValue - xBandwidth * 5 //* 6 //7
+        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+        ? margin.left + xValue - tooltipWidth + xBandwidth * 3 
+        : (indicator2023Data.value == 0)
+        ? margin.left + xValue - tooltipWidth + xBandwidth * 2 //- tooltipWidth / 2 // + xBandwidth * 3 /// 2
+        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
+        ? margin.left + xValue - tooltipWidth + xBandwidth
+        : margin.left + xValue - tooltipWidth
+
 } else {
 
-    // xPosition = xValue + margin.left - tooltipWidth / 2 < margin.left
+        // xPosition = xValue + margin.left - tooltipWidth / 2 < margin.left
     //     ? xValue + margin.left
     //     : xValue + margin.left + tooltipWidth / 2 > innerWidth
     //         ? xValue + margin.left
     //         : xValue + margin.left - tooltipWidth / 2
 
     xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 2//* 2
+        ? margin.left + xValue //- xBandwidth//* 2
         : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 4
-        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
+        ? margin.left + xValue - xBandwidth * 2
+        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+        ? margin.left + xValue  - tooltipWidth / 2 //- xBandwidth 
+        : (indicator2023Data.value == 0)
         ? margin.left + xValue - xBandwidth - tooltipWidth / 2
         : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
         ? margin.left + xValue - tooltipWidth + xBandwidth
         : margin.left + xValue - tooltipWidth
+
 }
 
     // let xPosition
 
-    // $: if ($isMobile || $isTablet) {
+    // $: if ($isSmall || $isTablet) {
 
     //     xPosition = indicator2021Data.value === -5
     //         ? margin.left + xValue - xBandwidth * 4 //5
@@ -143,9 +162,9 @@ $: if ($isMobile) {
 
 
     const svgMargin = {
-        top: 5, //10,
-        right: 15, //10,
-        bottom: 20, //20,
+        top: 8, //10,
+        right:  20, //15, //10,
+        bottom: 20,//20, //20,
         left: 20
     }
 
@@ -195,10 +214,11 @@ $: if ($isMobile) {
         --height: {tooltipHeight}px;
         --width: {tooltipWidth}px;
         --fontSize: {`${tooltipFontSize}rem`};
+        --borderColor: {COLORS.gray["400"]};
     "
-    bind:clientWidth={tooltipWidth}
+    bind:offsetWidth={tooltipWidth}
     >
-    <h3 class={$isMobile ? "mobileHeading" : "heading"}>{indicatorLabelsLookup.get(indicator2023Data.indicator)}</h3>
+    <h3 class={$isSmall ? "mobileHeading" : "heading"}>{indicatorLabelsLookup.get(indicator2023Data.indicator)}</h3>
     <div>
         {#if tooltipWidth}
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
@@ -238,13 +258,14 @@ $: if ($isMobile) {
         height: var(--height);
         width: var(--width);
         background: white;
-        box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px;
+        box-shadow: rgba(0, 0, 0, 0.15) 4px 6px 12px; /* rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 6px 6px;
         border-radius: 4px;
         pointer-events: none;
         white-space: nowrap;
         transition: top 300ms ease, left 300ms ease;
         text-align: center;
+        border: 2px solid var(--borderColor);
     }
 
     h3 {
@@ -263,6 +284,7 @@ $: if ($isMobile) {
 
     p {
         margin: 0;
+        /* margin-bottom: 10px; */
         font-size: calc(var(--fontSize) * 0.6);
         float: left;
     }

@@ -1,5 +1,5 @@
 <script>
-    import { isSmallMobile } from "../stores/dimensions";
+    import { isMobile } from "../stores/dimensions";
     import { chartFontSize } from "../stores/responsiveFontSize";
     import { COLORS } from "../utils/colors"
 
@@ -17,7 +17,7 @@
     {#each indicatorValues as value}
         <g class="tick" >
             <!-- transform="translate(20, 0)" -->
-            {#if $isSmallMobile && (value === -5 || value === 0 || value === 3)}
+            {#if $isMobile && (value === -5 || value === 0 || value === 3)}
             <text
                 class="indicatorValueList"
                 x={indicatorValueScale(value)}
@@ -28,7 +28,7 @@
                 role="presentation"
                 aria-hidden="true"
             > {value}</text>
-            {:else if !$isSmallMobile}
+            {:else if !$isMobile}
             <text
                 class="indicatorValueList"
                 x={indicatorValueScale(value)}

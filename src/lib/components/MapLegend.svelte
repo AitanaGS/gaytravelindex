@@ -2,18 +2,18 @@
     import { scaleLinear } from "d3-scale"
     import { fade } from "svelte/transition"
     import { chartFontSize } from "../stores/responsiveFontSize";
-    // import { isTablet, isMobile } from "../stores/devices";
-    import { isTablet, isMobile, isDesktop } from "../stores/dimensions";
+    // import { isTablet, isSmall } from "../stores/devices";
+    import { isSmall, width } from "../stores/dimensions";
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
     import { COLORS } from "../utils/colors"
 
     export let colorScale
     export let hoveredMapCountryData
-    export let mapWidth
+    // export let mapWidth
     export let height
-    export let width
+    // export let width
 
-    $: chartWidth = width * 0.8
+    $: chartWidth = $width * 0.8
 
 
     // $: yPosition = mapWidth <= 800 ? height - 60 : height * 0.5
@@ -26,19 +26,23 @@
         .clamp(true);
 
     $: mapFontSize = mapFontSizeScale(chartWidth)
+    
 
+    // $: yPosition = $isSmall
+    //     ? height * 0.8
+    //     : $isTablet
+    //         ? height * 0.8
+    //         : height * 0.7
 
-    $: yPosition = $isMobile
-        ? height * 0.8
-        : $isTablet
-            ? height * 0.8
-            : height * 0.7
+    $: yPosition = height * 0.8
 
-    $: xPosition = $isMobile
-        ? 0.1 * mapWidth
-        : $isTablet 
-            ? 0.1 * mapWidth 
-            : 0.1 * mapWidth
+    $: xPosition = 0.1 * chartWidth
+
+    // $: xPosition = $isSmall
+    //     ? 0.1 * chartWidth
+    //     : $isTablet 
+    //         ? 0.1 * chartWidth
+    //         : 0.1 * chartWidth
 
     let totalScorePercentScale = scaleLinear()
         .domain([colorScale.domain()[0], colorScale.domain()[2]])
@@ -53,7 +57,9 @@
     const legendHeight = 20
     const legendWidth = 100
 
-    $: yNudge = $isDesktop ? 14 : 20
+    // $: yNudge = $isDesktop ? 14 : 20
+
+    $: yNudge = 20
 
     $: transitionToUse = $prefersReducedMotion ? () => {} : fade
 

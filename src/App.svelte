@@ -11,7 +11,7 @@
   import { selectedContinent } from "./lib/stores/selectedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
-  import { width, height, desktopBreakpoint, isDesktop, isTablet, isMobile, isSmallMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
+  import { width, height, isSmall, isMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
   // import { isDesktop, isMobile, isTablet } from "./lib/stores/devices";
   // import { bodyFontSizeScale } from "./lib/utils/fontSizeScales";
   // import { windowWidth } from "./lib/stores/windowWidth";
@@ -477,6 +477,11 @@ $: showDataInfo = false
 
 // $: console.log(showDataInfo)
 
+// $: console.log("small Mobile", $isSmallMobile)
+// $: console.log("Mobile", $isMobile)
+// $: console.log("tablet", $isTablet)
+// $: console.log("desktop", $isDesktop)
+
 
 </script>
 
@@ -617,11 +622,25 @@ style="
             A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
           </p>
           <p>
+            <span class="circleSvgWrapper">
+              <svg width=20 height=20>
+              <circle
+              cx=10
+              cy=10
+              r=8
+              fill="hsla(58, 85%, 87%, 1)"
+              stroke={COLORS.gray["700"]}
+              />
+              </svg>
+            </span>
             <span 
               class="mousePointerIconWrapper" 
               style="--mousePointerColor: {COLORS.primary["600"]};">
-              <MousePointerIcon size="24"/></span>
-            Hover over the circles or access them with the tab key for the ratings from other years.
+              <MousePointerIcon size="24"/>
+            </span>
+            <span class="hoverInfo">
+              Hover over the circles for the ratings from other years.
+            </span>
           </p>
   
           {#if $selectedCountry === "United States of America"}
@@ -655,7 +674,7 @@ style="
 
     <div class="dataSources">
       <h5>Data Sources</h5>
-      <p><strong>Data 2012 - 2021:</strong> <br>             
+      <p><strong>2012 - 2021 data:</strong> <br>             
         <a 
         href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
         target="_blank" rel="noreferrer">Spartacus International Gay Guide
@@ -666,7 +685,7 @@ style="
         target="_blank" rel="noreferrer">Makeover Monday.
         </a> 
     </p>
-    <p><strong>Data 2023:</strong><br>  
+    <p><strong>2023 data:</strong><br>  
         <a 
         href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
         target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>,
@@ -707,6 +726,9 @@ style="
     font-size: 1.2rem;
     line-height: 1.8;
     color: var(--bodyColor);
+    width: 100%;
+    max-width: 900px;
+    /* max-width: 996px; */
     /* font-family: "Plus Jakarta Sans", sans-serif; */
   }
 
@@ -733,11 +755,11 @@ a:hover {
   } */
 
   p {
-      max-width: 800px;
-      /* width: var(--pWidth); */
+      /* max-width: 800px; */
       /* margin: 0 auto; */
       margin-right: auto;
       margin-left: auto;
+            /* width: var(--pWidth); */
       /* max-width: 1000px; */
       /* max-width: 65ch; */
     }
@@ -812,6 +834,12 @@ a:hover {
   display: flex;
 } */
 
+.circleSvgWrapper {
+  /* position: absolute; */
+  display: inline-block;
+
+}
+
 .mousePointerIconWrapper {
   /* position: absolute;
   top: 0;
@@ -819,11 +847,19 @@ a:hover {
   left: 10px;
   margin: auto 0; */
   /* height: 24px; */
-  top: 5px;
+  top: 10px;
+  left: 0px;
+  margin-left: -15px;
   position: relative;
   color: var(--mousePointerColor);
   display: inline-block;
   margin-right: 2px;
+}
+
+.hoverInfo {
+  /* position: absolute; */
+  left: 15px;
+  /* top: 8px; */
 }
 
 /* select {
@@ -904,13 +940,15 @@ a:hover {
   /* border: 1px solid var(--buttonColor); */
   color: var(--buttonColor);
   /* padding: 0.6em 1.2em; */
-  padding: 8px 15px;
-  font-size: 1rem;
+  /* padding: 8px 15px; */
+  padding: 6px 12px;
+  font-size: 0.9rem;
   font-weight: 600;
   font-family: inherit;
   background-color: var(--buttonBackgroundColor);
   cursor: pointer;
-  margin-top: 10px;
+  margin-top: 30px;
+  margin-bottom: 0px;
   transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, font-weight 200ms ease;
   /* transition: border-color 0.25s; */
   /* font-size: var(--bodyFontSize); */

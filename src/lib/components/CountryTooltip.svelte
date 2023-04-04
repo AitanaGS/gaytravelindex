@@ -1,6 +1,6 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
-    import { isMobile, isTablet, isDesktop } from "../stores/dimensions"
+    // import { isMobile } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
     import { COLORS } from "../utils/colors.js"
 
@@ -38,6 +38,8 @@
     $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
     // $: console.log(flyDirection, tooltipHeight)
+
+
     
 </script>
 
@@ -71,15 +73,16 @@
 <!-- --fontSize: {$tooltipFontSize}rem; -->
 <!-- bind:clientHeight={tooltipHeight} -->
 <!-- in:fly={{ y: 10, duration: 200, delay: 100 }} -->
-    {#if $isDesktop}
+
+    <!-- {#if $isDesktop}
         <h3>{country} {lastYearOnly === true ? "2023" : tooltipData.year}</h3>
-    {/if}
-    {#if $isMobile || $isTablet}
+    {/if} -->
+    <!-- {#if $isMobile || $isTablet} -->
         <h3 class="tooltipHeading">
             <span>{country}</span>
             <span>{lastYearOnly === true ? "2023" : tooltipData.year}</span>
         </h3>
-    {/if}
+    <!-- {/if} -->
     <div class="info">
         <span 
             class="total"
@@ -141,6 +144,7 @@
         font-weight: 700;
         margin-bottom: 3px;
     }
+
 
     .info {
         font-size: calc(var(--fontSize) * 0.9);;

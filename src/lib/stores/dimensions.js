@@ -5,20 +5,13 @@ import { writable, readable, derived } from 'svelte/store';
 export const width = writable(0);
 export const height = writable(0);
 
-export const smallMobileBreakpoint = readable(450);
-export const mobileBreakpoint = readable(650); // 600
-export const desktopBreakpoint = readable(1100);
+export const mobileBreakpoint = readable(500); // 450
+export const smallBreakpoint = readable(700); // 650
+// export const desktopBreakpoint = readable(1100);
 
 export const minDim = derived([width, height], ([$width, $height]) => {
   return Math.min($width, $height);
 });
-
-export const isSmallMobile = derived(
-  [width, smallMobileBreakpoint],
-  ([$width, $smallMobileBreakpoint]) => {
-    return $width <= $smallMobileBreakpoint; // < 520
-  }
-);
 
 export const isMobile = derived(
   [width, mobileBreakpoint],
@@ -27,19 +20,26 @@ export const isMobile = derived(
   }
 );
 
-export const isTablet = derived(
-  [width, mobileBreakpoint, desktopBreakpoint],
-  ([$width, $mobileBreakpoint, $desktopBreakpoint]) => {
-    return $width > $mobileBreakpoint && $width <= $desktopBreakpoint;
+export const isSmall = derived(
+  [width, smallBreakpoint],
+  ([$width, $smallBreakpoint]) => {
+    return $width <= $smallBreakpoint; // < 520
   }
 );
 
-export const isDesktop = derived(
-  [width, desktopBreakpoint],
-  ([$width, $desktopBreakpoint]) => {
-    return $width > $desktopBreakpoint; // > 1024
-  }
-);
+// export const isTablet = derived(
+//   [width, mobileBreakpoint, desktopBreakpoint],
+//   ([$width, $mobileBreakpoint, $desktopBreakpoint]) => {
+//     return $width > $mobileBreakpoint && $width <= $desktopBreakpoint;
+//   }
+// );
+
+// export const isDesktop = derived(
+//   [width, desktopBreakpoint],
+//   ([$width, $desktopBreakpoint]) => {
+//     return $width > $desktopBreakpoint; // > 1024
+//   }
+// );
 
 // export const chartGap = writable(0);
 

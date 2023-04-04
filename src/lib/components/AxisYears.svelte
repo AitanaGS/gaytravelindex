@@ -1,7 +1,7 @@
 <script>
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize";
-    import { isDesktop, isTablet, isMobile, isSmallMobile } from "../stores/dimensions";
+    import { isSmall, isMobile } from "../stores/dimensions";
     import { COLORS } from "../utils/colors"
 
     export let yearScale
@@ -11,7 +11,7 @@
     $: years = yearScale.domain()
 
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
-    // $: console.log("Mobile", $isMobile)
+    // $: console.log("Mobile", $isSmall)
     // $: console.log("Tablet", $isTablet)
     // $: console.log("Desktop", $isDesktop)
 
@@ -28,7 +28,7 @@
                 dominant-baseline="middle"
                 fill={COLORS.gray["800"]}
                 font-weight={year === 2023 ? "bold" : "normal"}
-                font-size={ $isSmallMobile || $isMobile
+                font-size={ $isMobile || $isSmall
                     ? year === 2012 || year === 2023
                         ? year === 2023
                             ? `${0.8 * $chartFontSize}rem`
@@ -45,7 +45,7 @@
                     {year}
                 </text>
 
-                <!-- font-size={ $isSmallMobile || $isMobile
+                <!-- font-size={ $isMobile || $isSmall
                     ? year === 2012 || year === 2023
                         ? year === 2023
                             ? `${0.8 * $chartFontSize}rem`
@@ -65,13 +65,13 @@
                 <!-- font-size={year === 2021 ? `${0.8 * $chartFontSize}rem` : `${0.7 * $chartFontSize}rem`} -->
                 <!-- font-size={year === 2021 ? "0.9rem" : "0.8rem"} -->
 <!-- 
-                font-size={ $isSmallMobile
+                font-size={ $isMobile
                     ? year === 2012 || year === 2023
                         ? year === 2023
                             ? `${0.8 * $chartFontSize}rem`
                             : `${0.7 * $chartFontSize}rem`
                         : `${0 * $chartFontSize}rem`
-                    : $isMobile
+                    : $isSmall
                         ? (year % 2 === 0 && year !== 2020) || year === 2021
                             ? year === 2021 
                                 ? `${0.8 * $chartFontSize}rem`
