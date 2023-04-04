@@ -229,58 +229,7 @@
     continentView.focus()
   }
 
-  // TODO: bandwidth of different continents
 
-  // TODO: tabindex in continentheatmap, indicatorchart, indicatortooltip, etc.
-
-  // TODO: transition button visibility, check https://github.com/sveltejs/svelte/issues/6336
-
-  // TODO motion sensitivity check
-
-  // TODO accessibility check
-
-  // TODO check if click on continentheatmap only on axis or also 2021 or all heatmap (confusing, because might expect profile from respective year)
-
-  // TODO check data
-
-  // TODO Axis component
-
-  // TODO check if first values for width and innerHeight necessary
-
-  // TODO data2021 u.ä. vorher in r oder in js
-
-  // TODO siehe button onclick
-
-  // TODO smooth scroll
-
-  // TODO map tooltip exit transition
-
-  // TODO map multiple clicks (also on heatmap?)
-
-  // TODO check if multiple fontSizes necessary
-
-  // TODO check if initial width 0 error ok and mapwidth if condition
-
-  // TODO maptooltip after scrolling and reload
-
-  // TODO check body font size, at least 16, maybe more, doesnt have to be responsive, devices handle this, but check for buttons (select already defined, see below)
-
-  // TODO check tooltip position after resizing window
-
-  // TODO check wo h1 in App.svelte
-
-  // TODO disabled button
-  // https://uxplanet.org/disabled-buttons-in-user-interface-4dafda3e6fe7
-
-  // TODO font color as scale dependent from background color
-
-  // TODO flavicon
-
-  // TODO h1 fontsize scale
-
-  // TODO Transition countryView
-
-  // TODO scroll design
 
   // let chartSelection
 
@@ -658,7 +607,7 @@ style="
           <!-- // // selectedCountry = ""
           // selectedCountry.set("")
           // scrollToContinentView()
-          // // hoveredCountryYear = null // TODO: check if necessary (after refactor handleHeatmapHover to ContinentHeatmap)
+          // // hoveredCountryYear = null
           // // scrollToTop() // here scrolling -->
           <!-- class="countryButton {selectedCountry ? "visibleButton" : "hiddenButton"}" -->
           {/if}

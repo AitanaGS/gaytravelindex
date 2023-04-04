@@ -31,10 +31,6 @@
 
     // $: console.log(tooltipWidth)
 
-
-    // TODO css variables for background and color
-    // TODO: check hsla code in style
-
     $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
     // $: console.log(flyDirection, tooltipHeight)
@@ -103,7 +99,8 @@
         position: absolute;
         /* background: white; */
         background: var(--backgroundColor);
-        box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px;
+        box-shadow: hsla(0, 0%, 0%, 0.10) 2px 3px 8px;
+        /* box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px; */
         /* box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 8px 6px;
         /* border-radius: 4px; */

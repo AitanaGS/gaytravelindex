@@ -182,8 +182,6 @@
 
     $: flyDirection = yPosition < yValue ? 1 : -1
 
-    // TODO css variables for background and color
-    // TODO accessibility tooltip
 
     // $: console.log(window.scrollY)
 

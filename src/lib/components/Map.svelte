@@ -143,9 +143,6 @@
 
 
 
-
-    // TODO wann onmount? z.b. zum ergänzen von geocountries properties (s.o.)
-
 </script>
 
 <div bind:this={parentMap} class="map" >

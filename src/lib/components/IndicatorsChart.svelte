@@ -172,8 +172,6 @@ const handleIndicatorHover = (e, d) => {
 
 $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
-
-// TODO: check grid
 // $: console.log(selectedCountryData2021)
 
 </script>

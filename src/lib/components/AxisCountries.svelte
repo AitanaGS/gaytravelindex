@@ -53,7 +53,6 @@
     $: transitionToUse = $prefersReducedMotion || $activeSearch ? () => {} : slide
 
     // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
-    // TODO: check screen reader list (number of items)
     // $: console.log(selectedContinentData)
 
     // $: console.log("axis countries", selectedContinentData, $selectedCountry)

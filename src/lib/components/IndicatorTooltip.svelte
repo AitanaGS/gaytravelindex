@@ -195,10 +195,6 @@ $: if ($isMobile) {
 
     $: tooltipFontSize = tooltipFontSizeScale(tooltipWidth)
 
-// TODO: check hsla code in style
-// TODO: check responsiveness tooltip width
-// TODO: Accessibility of tooltip data (focus)
-// TODO: check xposition calculation
 
 
 </script>
@@ -258,7 +254,7 @@ $: if ($isMobile) {
         height: var(--height);
         width: var(--width);
         background: white;
-        box-shadow: rgba(0, 0, 0, 0.15) 4px 6px 12px; /* rgba(0, 0, 0, 0.15) 2px 3px 8px; */
+        box-shadow: hsla(0, 0%, 0%, 0.15) 4px 6px 12px; /* rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 6px 6px;
         border-radius: 4px;
         pointer-events: none;

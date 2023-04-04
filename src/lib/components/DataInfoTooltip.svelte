@@ -2,7 +2,7 @@
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     import { isSmall } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion";
-    import { COLORS } from "../utils/colors.js"
+    import { COLORS } from "../utils/constants.js"
 
     import { fly, fade, slide } from "svelte/transition"
     import { scaleLinear } from 'd3-scale';
@@ -20,8 +20,6 @@
     // $: console.log(tooltipWidth)
 
 
-    // TODO css variables for background and color
-    // TODO: check hsla code in style
 
     $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
@@ -96,7 +94,7 @@
         position: absolute;
         /* background: white; */
         background: var(--backgroundColor);
-        box-shadow: rgba(0, 0, 0, 0.10) 2px 3px 8px;
+        box-shadow: hsla(0, 0%, 0%, 0.10) 2px 3px 8px;
         /* box-shadow: rgba(0, 0, 0, 0.15) 2px 3px 8px; */
         padding: 8px 6px;
         /* border-radius: 4px; */

@@ -179,8 +179,6 @@
     // $: console.log("desktop", $isDesktop, $width)
 
 
-    // TODO check tooltips (desktop)
-
 </script>
 
     <CountryTooltip 
