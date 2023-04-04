@@ -1,6 +1,6 @@
 <script>
     import CountryTooltip from "./CountryTooltip.svelte";
-    // import { isMobile } from "../stores/dimensions"
+    import { isMobile, isSmall } from "../stores/dimensions"
     // import { countryScale } from "../stores/data";
 
     export let tooltipData
@@ -22,18 +22,58 @@
 
     const xNudge = 1
 
-    $: xPosition = xValue + margin.left + tooltipWidth * 0.7   > innerWidth + margin.left
-        ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
-        : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
-        ? xValue + margin.left //+ tooltipWidth/2
-        : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+    // $: xPosition = xValue + margin.left + tooltipWidth * 0.7   > innerWidth + margin.left
+    //     ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
+    //     : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
+    //     ? xValue + margin.left //+ tooltipWidth/2
+    //     : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+
+    let xPosition
+
+    $: if ($isSmall) {
+
+        xPosition = xValue + margin.left - tooltipWidth * 0.33  < margin.left
+            ? xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+            : xValue + margin.left - tooltipWidth + xBandwidth + xNudge
+
+        // xPosition = (xValue + margin.left + tooltipWidth   > innerWidth + margin.left) && (xValue + margin.left - tooltipWidth * 0.25  < margin.left)
+        //     ? xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+        //     : xValue + margin.left + tooltipWidth   > innerWidth + margin.left
+        //     ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
+        //     : xValue + margin.left - tooltipWidth  < margin.left
+        //     ? xValue + margin.left //+ tooltipWidth/2
+        //     : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
 
 
-    $: xArrowPosition = xValue + margin.left + tooltipWidth  * 0.7  > innerWidth + margin.left
+    } else {
+        xPosition = xValue + margin.left + tooltipWidth * 0.7   > innerWidth + margin.left
+            ? xValue + margin.left - tooltipWidth + xBandwidth + xNudge
+            : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
+            ? xValue + margin.left //+ tooltipWidth/2
+            : xValue + margin.left - tooltipWidth / 2 + xBandwidth / 2
+    }
+
+    let xArrowPosition
+
+    $: if ($isSmall) {
+        xArrowPosition = xValue + margin.left - tooltipWidth * 0.33  < margin.left
+        ? "center"
+        : "right"
+
+    } else {
+        xArrowPosition = xValue + margin.left + tooltipWidth  * 0.7  > innerWidth + margin.left
         ? "right"
         : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
             ? "left"
             : "center"
+    }
+
+
+    // $: xArrowPosition = xValue + margin.left + tooltipWidth  * 0.7  > innerWidth + margin.left
+    //     ? "right"
+    //     : xValue + margin.left - tooltipWidth  * 0.7  < margin.left
+    //         ? "left"
+    //         : "center"
 
     $: arrow = true
 

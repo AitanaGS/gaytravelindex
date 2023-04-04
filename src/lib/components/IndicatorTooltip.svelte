@@ -38,9 +38,9 @@
 $: if ($isMobile) {
 
     xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 4 //5
+        ? margin.left + xValue - xBandwidth * 8 //5
         : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 5 //* 6 //7
+        ? margin.left + xValue - xBandwidth * 10 //* 6 //7
         : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
         ? margin.left + xValue - tooltipWidth + xBandwidth * 3
         : (indicator2023Data.value == 0)

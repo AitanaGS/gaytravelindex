@@ -16,14 +16,14 @@ export const minDim = derived([width, height], ([$width, $height]) => {
 export const isMobile = derived(
   [width, mobileBreakpoint],
   ([$width, $mobileBreakpoint]) => {
-    return $width <= $mobileBreakpoint; // < 520
+    return $width < $mobileBreakpoint; // < 520
   }
 );
 
 export const isSmall = derived(
   [width, smallBreakpoint],
   ([$width, $smallBreakpoint]) => {
-    return $width <= $smallBreakpoint; // < 520
+    return $width < $smallBreakpoint; // < 520
   }
 );
 

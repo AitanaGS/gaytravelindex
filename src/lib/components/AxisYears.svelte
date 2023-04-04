@@ -28,7 +28,31 @@
                 dominant-baseline="middle"
                 fill={COLORS.gray["800"]}
                 font-weight={year === 2023 ? "bold" : "normal"}
-                font-size={ $isMobile || $isSmall
+                font-size={ 
+                    $isMobile
+                    ? year === 2012 || year === 2023
+                        ? year === 2023
+                            ? `${0.8 * $chartFontSize}rem`
+                            : `${0.7 * $chartFontSize}rem`
+                        : `${0 * $chartFontSize}rem`
+                    : $isSmall
+                        ? year % 2 === 0 || year === 2023
+                            ? year === 2023
+                            ? `${0.8 * $chartFontSize}rem`
+                            : `${0.7 * $chartFontSize}rem`
+                            : `${0 * $chartFontSize}rem`
+                        : year === 2023 
+                                    ? `${0.8 * $chartFontSize}rem`
+                                    : `${0.7 * $chartFontSize}rem`
+
+                }
+                role="presentation"
+                aria-hidden="true"
+                >
+                    {year}
+                </text>
+
+                <!-- font-size={ $isMobile || $isSmall
                     ? year === 2012 || year === 2023
                         ? year === 2023
                             ? `${0.8 * $chartFontSize}rem`
@@ -38,12 +62,7 @@
                                 ? `${0.8 * $chartFontSize}rem`
                                 : `${0.7 * $chartFontSize}rem`
 
-                }
-                role="presentation"
-                aria-hidden="true"
-                >
-                    {year}
-                </text>
+                } -->
 
                 <!-- font-size={ $isMobile || $isSmall
                     ? year === 2012 || year === 2023
