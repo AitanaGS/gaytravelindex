@@ -1,11 +1,12 @@
 <script>
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
     import { COLORS } from "../utils/constants"  
-    import { isSmall } from "../stores/dimensions";
+    import { isSmall } from "../stores/dimensions"
+    import { years } from "../stores/data"
     
     export let tooltipYearScale
     export let svgMargin
-    export let years
+    // export let years
     export let svgInnerHeight
     export let tooltipFontSize
 
@@ -16,7 +17,7 @@
     class="axis years tooltipAxis tooltipYears"
     transform="translate({svgMargin.left}, {svgInnerHeight + svgMargin.top})"
     >
-    {#each years as year}
+    {#each $years as year}
     <g
     class="tick tooltipTick"
     transform="translate({tooltipYearScale(year)}, 0)"

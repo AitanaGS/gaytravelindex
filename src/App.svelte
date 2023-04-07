@@ -1,6 +1,10 @@
 <script>
   // import data from "../data/processed/GTI_2012-2021.json";
-  import { data } from "./lib/stores/data.js"
+  import { 
+    data, 
+    continents, 
+    years
+} from "./lib/stores/data.js"
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
@@ -22,7 +26,7 @@
   import { max, min, group } from "d3-array"
   import { interpolateRdYlBu, schemeRdYlBu, interpolateGreys } from "d3-scale-chromatic"
   import { interpolateHsl } from "d3-interpolate"
-  import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
+  // import { heatmapLoaded } from "./lib/stores/heatmapLoaded.js"
   import { COLORS } from "./lib/utils/constants.js"
   import { query, activeSearch } from "./lib/stores/search"
   import { createEventDispatcher } from "svelte"
@@ -171,10 +175,6 @@
   // $: console.log("mobile", $isMobile)
 
 
-  const continents = [... new Set($data.map(d => d.continent))].sort()
-
-  const years = [... new Set($data.map(d => d.year))].sort()
-
   // console.log(years)
 
   // let selectedContinent = ""
@@ -273,7 +273,17 @@
   //   ? 700
   //   : 0.8 * $width
 
+  // const cachedContinentData = new Map();
 
+  // $: console.log(cachedContinentData)
+
+
+  // here!
+  // const continents = [... new Set($data.map(d => d.continent))].sort()
+  // const years = [... new Set($data.map(d => d.year))].sort()
+
+
+  // here!
   $: selectedContinentCountries = [... new Set(
         $data
       // .filter(d => d.continent == selectedContinent)
@@ -287,6 +297,7 @@
       .map(d => d.country)
       )]
 
+      // here!
       $: selectedContinentData = group(
     $data.filter(d => {
       if ($selectedContinent === "All") return true
@@ -306,6 +317,7 @@
     // let selectedValue
 
 
+
   function handleSearch() {
     // $query = searchValue
     $activeSearch = true
@@ -314,6 +326,7 @@
     // selectedValue = "All"
   }
 
+  // here!
   function deleteSearchData() {
     searchedCountryData = group(
       $data.filter(d => {
@@ -322,6 +335,26 @@
 
     searchedCountries = []
   }
+
+
+  // here!
+  // function deleteSearchData() {
+  //   $searchedCountryData = group(
+  //     $data.filter(d => {
+  //     return d.country === ""
+  //   }), d => d.country)
+
+  //   $searchedCountries = []
+  // }
+
+  // function deleteSearchData() {
+  //   $searchedCountryData = group(
+  //     $data.filter(d => {
+  //     return d.country === ""
+  //   }), d => d.country)
+
+  //    $searchedCountries = []
+  // }
 
   // function clearSearch() {
     
@@ -339,6 +372,8 @@
 
   // let selectedValue
 
+
+  // here!
   function handleSelect(event) {
     // searchedCountryData = group(
     //   $data.filter(d => {
@@ -355,6 +390,7 @@
     // searchValue = ""
     $query = "" //neu
     $selectedCountry = ""
+    // cachedContinentData.has($selectedContinent) ? null : cachedContinentData.set($selectedContinent, selectedContinentData)
 
     // $selectedContinent = selectedValue//event.detail.selectedValue
     }, 0.1)
@@ -362,6 +398,22 @@
   }
 
 
+  // function handleSelect(event) {
+
+  //   // deleteSearchData()
+
+  //   setTimeout(() => {
+  //     $activeSearch = false
+  //   $query = "" //neu
+  //   $selectedCountry = ""
+
+  //   }, 1)
+
+  // }
+
+
+
+  // here!
       let searchedCountries
       let searchedCountryData
 
@@ -396,22 +448,26 @@
 
       }
 
-
-      $: activeData = $activeSearch ? searchedCountryData : selectedContinentData
+// here!
+$: activeData = $activeSearch ? searchedCountryData : selectedContinentData
 
 $: activeCountries = $activeSearch ? searchedCountries: selectedContinentCountries
+
+// $: activeData = $activeSearch ? $searchedCountryData : $selectedContinentData
+
+// $: activeCountries = $activeSearch ? $searchedCountries: $selectedContinentCountries
 
 // $: console.log($activeSearch, activeData, activeCountries)
 
 function clearCountry() {
-  selectedCountry.set("")
+  $selectedCountry = ""
   scrollToContinentView()
   // if ($activeSearch) {
   //   clearSearch()
   // }
 }
 
-$: showDataInfo = false
+// $: showDataInfo = false
 
 // function handleDataInfoHover(e) {
 //   if (e.type === "mouseover" || e.type === "focus") {
@@ -508,7 +564,7 @@ style="
 
   
               <p>
-                <Select {continents} on:selectContinent={handleSelect} />
+                <Select continents={$continents} on:selectContinent={handleSelect} />
               <!-- <label for="continent-select">Select a continent</label>
               <select 
               name="continents" 
@@ -552,7 +608,8 @@ style="
           </p>
           <p class="note">Note: There is no data for 2022.</p>
           <!-- </div> -->
-             <Heatmap on:countryClick={scrollToCountryView} {totalScale}  {years} width={$width} {activeData} {activeCountries}/>
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale} {activeData} {activeCountries} />
+             <!-- years={$years} width={$width} activeData={$activeData} activeCountries={$activeCountries} -->
 
 
       </div>
@@ -600,6 +657,8 @@ style="
           style="
           --buttonBackgroundColor: {COLORS.primary["100"]};
           --buttonColor: {COLORS.primary["600"]};
+          --buttonHoverBackgroundColor: {COLORS.primary["200"]};
+          --buttonHoverColor: {COLORS.primary["800"]};
             
             "
           on:click={() => clearCountry()}
@@ -617,7 +676,8 @@ style="
           --buttonHoverColor: {COLORS.primary["500"]};
            -->
         </div>
-          <IndicatorsChart {years} width={$width} />
+          <IndicatorsChart  />
+          <!-- years={$years} width={$width} -->
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
 
@@ -891,15 +951,17 @@ a:hover {
   cursor: pointer;
   margin-top: 30px;
   margin-bottom: 0px;
-  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, font-weight 200ms ease;
+  border: 2px solid var(--buttonColor);
+  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
   /* transition: border-color 0.25s; */
   /* font-size: var(--bodyFontSize); */
 }
 button:hover {
-  /* border-color: #646cff; */
-  /* background-color: var(--buttonHoverBackgroundColor); */
-  /* color: var(--buttonColor); */
-  border: 2px solid var(--buttonColor);
+  background-color: var(--buttonHoverBackgroundColor);
+  color: var(--buttonHoverColor);
+  border: 2px solid var(--buttonHoverColor);
+
+  /* border: 2px solid var(--buttonColor); */
 }
 button:focus,
 button:focus-visible {

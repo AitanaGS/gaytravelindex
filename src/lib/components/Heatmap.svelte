@@ -4,10 +4,14 @@
     import HeatmapTooltip from "./HeatmapTooltip.svelte"
     // import { chartFontSizeScale } from "../utils/fontSizeScales"
     import { chartFontSize } from "../stores/responsiveFontSize"
-    import { isMobile, isSmall } from "../stores/dimensions"
+    import { isMobile, isSmall, width } from "../stores/dimensions"
     import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     // import { clickedContinentData } from "../stores/clickedContinent"
-    import { data, data2023, data2023Map} from "../stores/data"
+    import { 
+      data, 
+      data2023, 
+      data2023Map,
+      years} from "../stores/data"
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
     import { COLORS } from "../utils/constants"
@@ -18,16 +22,16 @@
     import { scaleBand, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { onMount } from "svelte";
-    import { heatmapLoaded } from "../stores/heatmapLoaded"
+    // import { heatmapLoaded } from "../stores/heatmapLoaded"
     import { beforeUpdate, afterUpdate, onDestroy } from "svelte"
 
     // export let selectedContinent
     // export let data
     // export let selectedCountry
     // export let width
-    export let years
+    // export let years
     export let totalScale
-    export let width
+    // export let width
     export let activeData
     export let activeCountries
     // export let currentWindowWidth
@@ -56,7 +60,7 @@
 
     // $: console.log("chart", $chartFontSize)
 
-    $: chartWidth = width * 0.8
+    $: chartWidth = $width * 0.8
 
 
     // $: console.log($data2021, $data2021Map, topContinentCountry, $data2021Map.get(topContinentCountry).total)
@@ -137,7 +141,7 @@
   $: innerHeight = height - margin.top - margin.bottom
 
   $: yearScale = scaleBand()
-    .domain(years)
+    .domain($years)
     .range([0, innerWidth])
     .padding(0.05)
     .paddingOuter(0.1)

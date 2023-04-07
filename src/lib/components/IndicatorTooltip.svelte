@@ -6,7 +6,8 @@
 
     import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
     import { fly, fade } from "svelte/transition"
-  import { COLORS } from "../utils/constants";
+  import { COLORS } from "../utils/constants"
+    import { years } from "../stores/data"
     // import { tooltipFontSize } from "../stores/responsiveFontSize";
 
     export let indicator2023Data
@@ -17,7 +18,7 @@
     export let indicatorLabelsLookup
     export let margin
     // export let innerWidth
-    export let years
+    // export let years
     export let indicatorValueColorScale
     export let hoveredIndicatorData
 
@@ -179,7 +180,7 @@ $: if ($isMobile) {
     $: svgInnerHeight = svgHeight - svgMargin.top - svgMargin.bottom
 
     $: tooltipYearScale = scaleBand()
-        .domain(years)
+        .domain($years)
         .range([0, svgInnerWidth])
         // .padding(0.05)
         // .paddingOuter(0.1)
@@ -220,7 +221,7 @@ $: if ($isMobile) {
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
             <!-- <title id="indicatorTooltipTitle">Point Chart of ratings of {indicatorLabelsLookup.get(indicator2021Data.indicator)} in {indicator2021Data.country} over the past few years</title> -->
             <TooltipAxisIndicatorValues {tooltipIndicatorValueScale} {svgMargin} {svgInnerWidth} {tooltipFontSize}/>
-            <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {years} {tooltipFontSize}/>
+            <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {tooltipFontSize}/>
             <g
                 class="chart tooltipChart"
                 transform="translate({svgMargin.left}, {svgMargin.top})"

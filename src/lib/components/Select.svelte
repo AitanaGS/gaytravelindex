@@ -9,8 +9,13 @@
 
     const dispatch = createEventDispatcher()
 
+
     function handleSelect() {
-        dispatch("selectContinent")
+
+            dispatch("selectContinent")
+
+
+        // dispatch("selectContinent")
     }
 
 

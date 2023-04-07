@@ -10,8 +10,8 @@
     import { scaleBand, scaleLinear, scaleSequential, scaleDiverging } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
     import { chartFontSize } from '../stores/responsiveFontSize'
-    import { isSmall, isMobile } from '../stores/dimensions'
-    import { data } from "../stores/data"
+    import { isSmall, isMobile, width } from '../stores/dimensions'
+    import { data, years } from "../stores/data"
     import { prefersReducedMotion } from '../stores/preferesReducedMotion'
     import { COLORS } from "../utils/constants"
 
@@ -19,10 +19,10 @@
     // export let data
     // export let selectedCountry
     // export let width
-    export let years
-    export let width
+    // export let years
+    // export let width
 
-    $: chartWidth = width * 0.8
+    $: chartWidth = $width * 0.8
 
 
 //     let selectedCountry = ""
@@ -306,7 +306,7 @@ $: transitionToUse = $prefersReducedMotion ? () => {} : fly
     </svg>
 
     {#if hoveredIndicator}
-    <IndicatorTooltip indicator2023Data={hoveredIndicator} {hoveredIndicatorData } {years} {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin}/>
+    <IndicatorTooltip indicator2023Data={hoveredIndicator} {hoveredIndicatorData } {indicatorScale} {indicatorValueScale} {indicatorLabelsLookup} {indicatorValueColorScale} {margin}/>
     {/if}
     <!-- data={selectedCountryData} 
     {indicatorData} -->

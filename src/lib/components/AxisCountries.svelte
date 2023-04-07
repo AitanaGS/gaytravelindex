@@ -10,6 +10,7 @@
     import { isSmall } from "../stores/dimensions";
     import { COLORS } from "../utils/constants"
     import { activeSearch } from "../stores/search";
+    // import { activeData } from "../stores/data"
 
     export let countryScale;
     export let margin
