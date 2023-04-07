@@ -372,6 +372,9 @@
 
   // let selectedValue
 
+  const cachedContinentData = {}
+  const cachedContinentCountries = {}
+
 
   // here!
   function handleSelect(event) {
@@ -382,6 +385,14 @@
 
     // searchedCountries = []
     // selectedValue = event.detail
+
+    if (!cachedContinentData.hasOwnProperty($selectedContinent)) {
+      cachedContinentData[$selectedContinent] = selectedContinentData
+    }
+
+    if (!cachedContinentCountries.hasOwnProperty($selectedContinent)) {
+      cachedContinentCountries[$selectedContinent] = selectedContinentCountries
+    }
 
     deleteSearchData()
 
@@ -396,6 +407,9 @@
     }, 0.1)
 
   }
+
+
+  // $: console.log(cachedContinentData)
 
 
   // function handleSelect(event) {
@@ -449,9 +463,15 @@
       }
 
 // here!
-$: activeData = $activeSearch ? searchedCountryData : selectedContinentData
+$: activeData = $activeSearch 
+  ? searchedCountryData 
+  : cachedContinentData[$selectedContinent] ?? selectedContinentData
 
-$: activeCountries = $activeSearch ? searchedCountries: selectedContinentCountries
+$: activeCountries = $activeSearch 
+  ? searchedCountries
+  : cachedContinentCountries[$selectedContinent] ?? selectedContinentCountries
+
+  // $:console.log("here", cachedContinentCountries[$selectedContinent] ?? "bla")
 
 // $: activeData = $activeSearch ? $searchedCountryData : $selectedContinentData
 

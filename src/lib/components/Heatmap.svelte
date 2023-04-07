@@ -297,6 +297,7 @@
     // $:console.log(selectedContinentData, selectedContinentData.keys().next().value, selectedContinentData.get(selectedContinentData.keys().next().value).shift().total)
 
 // $: console.log(activeData.size)
+
 </script>
 
 <div class="continentHeatmap wrapper">
@@ -449,6 +450,7 @@
           <text>Test</text>
 
           {/if} -->
+
     
     </svg>
 
