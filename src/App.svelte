@@ -15,6 +15,7 @@
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
   import Select from "./lib/components/Select.svelte"
   import Search from "./lib/components/Search.svelte"
+  import Button from "./lib/components/Button.svelte"
   import DataInfoTooltip from "./lib/components/DataInfoTooltip.svelte"
   import { selectedCountry } from "./lib/stores/selectedCountry"
   import { selectedContinent } from "./lib/stores/selectedContinent";
@@ -709,7 +710,10 @@ style="
           {#if $selectedCountry === "United States of America"}
           <p>For a more detailed analysis of the different states, please check <a href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/" target="_blank" rel="noreferrer">the Gay Travel Index USA on the Spartacus Website</a>.</p>
           {/if}
-          <button
+          <Button on:buttonClick={clearCountry}>
+            Clear Country
+          </Button>
+          <!-- <button
           class="countryButton"
           style="
           --buttonBackgroundColor: {COLORS.primary["100"]};
@@ -719,7 +723,7 @@ style="
             
             "
           on:click={() => clearCountry()}
-          >Clear Country</button>
+          >Clear Country</button> -->
           <!-- // // selectedCountry = ""
           // selectedCountry.set("")
           // scrollToContinentView()
@@ -994,38 +998,7 @@ a:hover {
 
  /* }  */
 
- .countryButton {
-  border-radius: 8px;
-  border: 2px solid transparent;
-  /* border: 1px solid var(--buttonColor); */
-  color: var(--buttonColor);
-  /* padding: 0.6em 1.2em; */
-  /* padding: 8px 15px; */
-  padding: 6px 12px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  font-family: inherit;
-  background-color: var(--buttonBackgroundColor);
-  cursor: pointer;
-  margin-top: 30px;
-  margin-bottom: 0px;
-  border: 2px solid var(--buttonColor);
-  transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease;
-  /* transition: border-color 0.25s; */
-  /* font-size: var(--bodyFontSize); */
-}
-button:hover {
-  background-color: var(--buttonHoverBackgroundColor);
-  color: var(--buttonHoverColor);
-  border: 2px solid var(--buttonHoverColor);
 
-  /* border: 2px solid var(--buttonColor); */
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-  outline-color: var(--buttonColor);
-}
 
 .dataSources {
   margin-top: 30px;
