@@ -10,12 +10,12 @@
     import { isSmall } from "../stores/dimensions";
     import { COLORS } from "../utils/constants"
     import { activeSearch } from "../stores/search";
-    // import { activeData } from "../stores/data"
+    import { activeData } from "../stores/data"
 
     export let countryScale;
     export let margin
     // export let selectedContinentData
-    export let activeData
+    // export let activeData
 
     $: countries = countryScale.domain()
 
@@ -71,7 +71,7 @@
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <g 
             class="tick country"
-            in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}}
+            in:transitionToUse={{ duration: 300, delay: 100 + 50 * i}}
             tabindex="0"
             aria-describedby="countryInfo"
             role="listitem"
@@ -82,7 +82,7 @@
             <desc id="countryInfo">
                 {country}:
                 <!-- {#each activeData.get(country).sort((a, b) => a.year - b.year) as d} -->
-                {#each activeData.get(country) ? activeData.get(country).sort((a, b) => a.year - b.year) : [] as d}
+                {#each $activeData.get(country) ? $activeData.get(country).sort((a, b) => a.year - b.year) : [] as d}
                 year: {d.year}: total rating: {d.total}, global ranking: {d.ranking}
                 {/each}
             </desc>

@@ -3,7 +3,15 @@
   import { 
     data, 
     continents, 
-    years
+    years,
+    searchedCountries,
+    searchedCountryData,
+    selectedContinentCountries,
+    selectedContinentData,
+    activeCountries,
+    activeData,
+    cachedContinentCountries,
+    cachedContinentData
 } from "./lib/stores/data.js"
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
@@ -21,7 +29,7 @@
   // import { windowWidth } from "./lib/stores/windowWidth";
   import { prefersReducedMotion } from "./lib/stores/preferesReducedMotion.js"
 
-  import { onMount, afterUpdate } from "svelte"
+  import { onMount, afterUpdate, tick, beforeUpdate } from "svelte"
   import { scaleDiverging } from "d3-scale"
   import { max, min, group } from "d3-array"
   import { interpolateRdYlBu, schemeRdYlBu, interpolateGreys } from "d3-scale-chromatic"
@@ -67,7 +75,6 @@
 
   mediaQueryList.addEventListener("change", preferesReducedMotionListener)
   $prefersReducedMotion = getInitialState()
-  // $width = 
 
   return () => {
     mediaQueryList.removeEventListener("change", preferesReducedMotionListener)
@@ -284,31 +291,31 @@
 
 
   // here!
-  $: selectedContinentCountries = [... new Set(
-        $data
-      // .filter(d => d.continent == selectedContinent)
-      .filter(d => {
-        if ($selectedContinent === "All") return true
-        else if ($selectedContinent === "") return false
-        else return d.continent === $selectedContinent
-      })
-      .filter(d => d.year === 2023)
-      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
-      .map(d => d.country)
-      )]
+  // $: selectedContinentCountries = [... new Set(
+  //       $data
+  //     // .filter(d => d.continent == selectedContinent)
+  //     .filter(d => {
+  //       if ($selectedContinent === "All") return true
+  //       else if ($selectedContinent === "") return false
+  //       else return d.continent === $selectedContinent
+  //     })
+  //     .filter(d => d.year === 2023)
+  //     .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+  //     .map(d => d.country)
+  //     )]
 
-      // here!
-      $: selectedContinentData = group(
-    $data.filter(d => {
-      if ($selectedContinent === "All") return true
-      else if ($selectedContinent === "") return false
-      else return d.continent === $selectedContinent
-    })
-      .sort((a, b) => {
-        if(a.year !== 2023) return 1;
-        else if(b.year !== 2023) return -1;
-        else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
-      }), d => d.country)
+  //     // here!
+  //     $: selectedContinentData = group(
+  //   $data.filter(d => {
+  //     if ($selectedContinent === "All") return true
+  //     else if ($selectedContinent === "") return false
+  //     else return d.continent === $selectedContinent
+  //   })
+  //     .sort((a, b) => {
+  //       if(a.year !== 2023) return 1;
+  //       else if(b.year !== 2023) return -1;
+  //       else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+  //     }), d => d.country)
 
 
     // let searchValue
@@ -317,9 +324,11 @@
     // let selectedValue
 
 
+    // let activeSearch = false
 
   function handleSearch() {
     // $query = searchValue
+    // $activeSearch = true
     $activeSearch = true
     $selectedContinent = "All"
     $selectedCountry = ""
@@ -327,14 +336,14 @@
   }
 
   // here!
-  function deleteSearchData() {
-    searchedCountryData = group(
-      $data.filter(d => {
-      return d.country === ""
-    }), d => d.country)
+  // function deleteSearchData() {
+  //   searchedCountryData = group(
+  //     $data.filter(d => {
+  //     return d.country === ""
+  //   }), d => d.country)
 
-    searchedCountries = []
-  }
+  //   searchedCountries = []
+  // }
 
 
   // here!
@@ -372,104 +381,133 @@
 
   // let selectedValue
 
-  const cachedContinentData = {}
-  const cachedContinentCountries = {}
+  // const cachedContinentData = {}
+  // const cachedContinentCountries = {}
 
 
   // here!
-  function handleSelect(event) {
-    // searchedCountryData = group(
-    //   $data.filter(d => {
-    //   return d.country === ""
-    // }), d => d.country)
+  // function handleSelect(event) {
+  //   // searchedCountryData = group(
+  //   //   $data.filter(d => {
+  //   //   return d.country === ""
+  //   // }), d => d.country)
 
-    // searchedCountries = []
-    // selectedValue = event.detail
+  //   // searchedCountries = []
+  //   // selectedValue = event.detail
 
-    if (!cachedContinentData.hasOwnProperty($selectedContinent)) {
-      cachedContinentData[$selectedContinent] = selectedContinentData
-    }
+  //   if (!cachedContinentData.hasOwnProperty($selectedContinent)) {
+  //     cachedContinentData[$selectedContinent] = selectedContinentData
+  //   }
 
-    if (!cachedContinentCountries.hasOwnProperty($selectedContinent)) {
-      cachedContinentCountries[$selectedContinent] = selectedContinentCountries
-    }
+  //   if (!cachedContinentCountries.hasOwnProperty($selectedContinent)) {
+  //     cachedContinentCountries[$selectedContinent] = selectedContinentCountries
+  //   }
 
-    deleteSearchData()
+  //   deleteSearchData()
 
-    setTimeout(() => {
-      $activeSearch = false
-    // searchValue = ""
-    $query = "" //neu
-    $selectedCountry = ""
-    // cachedContinentData.has($selectedContinent) ? null : cachedContinentData.set($selectedContinent, selectedContinentData)
+  //   setTimeout(() => {
+  //     $activeSearch = false
+  //   // searchValue = ""
+  //   $query = "" //neu
+  //   $selectedCountry = ""
+  //   // cachedContinentData.has($selectedContinent) ? null : cachedContinentData.set($selectedContinent, selectedContinentData)
 
-    // $selectedContinent = selectedValue//event.detail.selectedValue
-    }, 0.1)
+  //   // $selectedContinent = selectedValue//event.detail.selectedValue
+  //   }, 0.1)
 
-  }
+  // }
 
 
   // $: console.log(cachedContinentData)
 
 
-  // function handleSelect(event) {
+function handleSelect() {
 
-  //   // deleteSearchData()
 
-  //   setTimeout(() => {
-  //     $activeSearch = false
-  //   $query = "" //neu
-  //   $selectedCountry = ""
+    // //deleteSearchData()
 
-  //   }, 1)
 
-  // }
+    // $activeSearch = false
+
+    // setTimeout(() => {
+      // await tick()
+      // $activeSearch = false
+      $activeSearch = false
+      $query = ""
+    // $query = "" //neu
+    $selectedCountry = ""
+
+    // if (!$cachedContinentData.hasOwnProperty($selectedContinent)) {
+    //   $cachedContinentData[$selectedContinent] = selectedContinentData
+    // }
+
+    // if (!$cachedContinentCountries.hasOwnProperty($selectedContinent)) {
+    //   $cachedContinentCountries[$selectedContinent] = selectedContinentCountries
+    // }
+
+    if (!$cachedContinentData.has($selectedContinent)) {
+      $cachedContinentData.set($selectedContinent, $selectedContinentData)
+    }
+
+    if (!$cachedContinentCountries.has($selectedContinent)) {
+      $cachedContinentCountries.set($selectedContinent, $selectedContinentCountries)
+    }
+
+
+
+    // }, 0.001)
+
+  }
+
+  // beforeUpdate(() => {
+  //   $query = ""
+  // })
 
 
 
   // here!
-      let searchedCountries
-      let searchedCountryData
+      // let searchedCountries
+      // let searchedCountryData
 
-      $: if ($activeSearch) {
+      // $: if ($activeSearch) {
 
-        searchedCountries = [... new Set(
-        $data
-      // .filter(d => d.continent == selectedContinent)
-      .filter(d => {
-        return d.country.toLowerCase().includes($query.toLowerCase())
-      })
-      .filter(d => d.year === 2023)
-      .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
-      .map(d => d.country)
-      )]
+      //   searchedCountries = [... new Set(
+      //   $data
+      // // .filter(d => d.continent == selectedContinent)
+      // .filter(d => {
+      //   return d.country.toLowerCase().includes($query.toLowerCase())
+      // })
+      // .filter(d => d.year === 2023)
+      // .sort((a, b) => a.ranking - b.ranking ||  a.country.localeCompare(b.country) )
+      // .map(d => d.country)
+      // )]
 
-        // searchedCountry = selectedContinentCountries.filter(country => {
-        //   return country.toLowerCase().includes($query.toLowerCase())
-        // })
+      //   // searchedCountry = selectedContinentCountries.filter(country => {
+      //   //   return country.toLowerCase().includes($query.toLowerCase())
+      //   // })
 
-        searchedCountryData = group(
-            $data.filter(d => {
-            return d.country.toLowerCase().includes($query.toLowerCase())
-      // if ($selectedContinent === "All") return true
-      // else return d.continent === $selectedContinent
-          })
-          .sort((a, b) => {
-            if(a.year !== 2023) return 1;
-            else if(b.year !== 2023) return -1;
-            else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
-          }), d => d.country)
+      //   searchedCountryData = group(
+      //       $data.filter(d => {
+      //       return d.country.toLowerCase().includes($query.toLowerCase())
+      // // if ($selectedContinent === "All") return true
+      // // else return d.continent === $selectedContinent
+      //     })
+      //     .sort((a, b) => {
+      //       if(a.year !== 2023) return 1;
+      //       else if(b.year !== 2023) return -1;
+      //       else return a.ranking - b.ranking ||  a.country.localeCompare(b.country)
+      //     }), d => d.country)
 
-      }
+      // }
 
 // here!
-$: activeData = $activeSearch 
-  ? searchedCountryData 
-  : cachedContinentData[$selectedContinent] ?? selectedContinentData
+// $: activeData = $activeSearch 
+//   ? searchedCountryData 
+//   : cachedContinentData[$selectedContinent] ?? selectedContinentData
 
-$: activeCountries = $activeSearch 
-  ? searchedCountries
-  : cachedContinentCountries[$selectedContinent] ?? selectedContinentCountries
+// $: activeCountries = $activeSearch 
+//   ? searchedCountries
+//   : cachedContinentCountries[$selectedContinent] ?? selectedContinentCountries
 
   // $:console.log("here", cachedContinentCountries[$selectedContinent] ?? "bla")
 
@@ -478,6 +516,8 @@ $: activeCountries = $activeSearch
 // $: activeCountries = $activeSearch ? $searchedCountries: $selectedContinentCountries
 
 // $: console.log($activeSearch, activeData, activeCountries)
+
+// $: console.log($cachedContinentCountries)
 
 function clearCountry() {
   $selectedCountry = ""
@@ -628,7 +668,7 @@ style="
           </p>
           <p class="note">Note: There is no data for 2022.</p>
           <!-- </div> -->
-             <Heatmap on:countryClick={scrollToCountryView} {totalScale} {activeData} {activeCountries} />
+             <Heatmap on:countryClick={scrollToCountryView} {totalScale} />
              <!-- years={$years} width={$width} activeData={$activeData} activeCountries={$activeCountries} -->
 
 
@@ -820,7 +860,8 @@ a:hover {
   h1 {
   /* font-size: 1.5rem; */
   line-height: 1.3;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  margin-top: 10px;
   /* margin-bottom: 20px; */
   /* font-size: clamp(2rem, 2vw + 2rem, 2.5rem); */
   /* min-height: 0vh; */

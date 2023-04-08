@@ -11,17 +11,19 @@
       data, 
       data2023, 
       data2023Map,
-      years} from "../stores/data"
+      years,
+    activeCountries,
+  activeData} from "../stores/data"
     import { selectedContinent } from "../stores/selectedContinent"
     import { selectedCountry } from "../stores/selectedCountry"
     import { COLORS } from "../utils/constants"
-    import { activeSearch, query } from "../stores/search"
+    import { query, activeSearch } from "../stores/search"
 
     import { slide, fade, fly } from "svelte/transition"
     import { extent, max, min, group } from "d3-array"
     import { scaleBand, scaleSequential } from "d3-scale"
     import { interpolateRdYlBu } from "d3-scale-chromatic"
-    import { onMount } from "svelte";
+    import { onMount, tick } from "svelte";
     // import { heatmapLoaded } from "../stores/heatmapLoaded"
     import { beforeUpdate, afterUpdate, onDestroy } from "svelte"
 
@@ -32,8 +34,9 @@
     // export let years
     export let totalScale
     // export let width
-    export let activeData
-    export let activeCountries
+    // export let activeData
+    // export let activeCountries
+    // export let activeSearch
     // export let currentWindowWidth
 
     // afterUpdate(() => {
@@ -52,6 +55,20 @@
     //   activeCountries = []
 
     // })
+
+    // beforeUpdate(() => {
+    //   $activeSearch = false
+    // $query = "" //neu
+    // $selectedCountry = ""
+    // })
+
+    // $: if ($activeSearch && )
+
+  //   let ready = false;
+  // onMount(() => ready = true);
+
+  // $: console.log(ready)
+
 
 
     // let chartFontSize
@@ -99,7 +116,7 @@
     // $: height = max([200,  activeCountries.length * 30])
 
     // $: console.log("hier", activeCountries)
-    $: height = activeCountries.length * 30 + 100
+    $: height = $activeCountries.length * 30 + 100
 
     // onMount(() => {
 
@@ -147,7 +164,7 @@
     .paddingOuter(0.1)
 
   $: countryScale = scaleBand()
-    .domain(activeCountries) // selectedContinentCountries
+    .domain($activeCountries) // selectedContinentCountries
     .range([0, innerHeight])
     .paddingInner(0.05)
     .paddingOuter(0.3)
@@ -266,8 +283,9 @@
 
 
       $: transitionToUse = $prefersReducedMotion || $activeSearch ? () => {} : slide
+      // $: transitionToUse = $prefersReducedMotion || $query != "" ? () => {} : slide
 
-      $: topContinentCountry = activeData.keys().next().value // check
+      $: topContinentCountry = $activeData.keys().next().value // check
 
 
 
@@ -298,8 +316,27 @@
 
 // $: console.log(activeData.size)
 
+    //   async function getReady() {
+    //     await tick()
+
+    // //     $activeSearch = false
+    // // $query = "" //neu
+    // // $selectedCountry = ""
+    //   }
+
+    //   onDestroy(()=>{
+    //     $activeSearch = false
+    // $query = "" //neu
+    // $selectedCountry = ""
+    //   })
+
+    // $: console.log($activeData)
+
+
 </script>
 
+<!-- {#if ready} -->
+{#key $activeSearch}
 <div class="continentHeatmap wrapper">
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg width={chartWidth} height={height} tabindex="0" role="figure" aria-describedby="heatmapDescription">
@@ -336,19 +373,19 @@
         <!-- use:scrollIntoView -->
         <!-- <text x=0 y=60 text-anchor="start" dominant-baseline="middle" font-size="0.9rem">Click on country for more information.</text> -->
         <AxisYears {yearScale} {margin}/>
-        <AxisCountries on:countryClick {margin} {countryScale} {activeData}/>
+        <AxisCountries on:countryClick {margin} {countryScale} />
         <!-- {selectedContinentData} -->
     
         <g class="chart continentHeatMap" transform="translate({margin.left}, {margin.top})">
             <g class="innerChart innerContinentHeatmap">
             <!-- {#each Array.from(selectedContinentData.keys()) as country, i (`${$selectedContinent}${country}`)}  -->
-            {#each Array.from(activeData.keys()) as country, i (`${country}`)} 
+            {#each Array.from($activeData.keys()) as country, i (`${country}`)} 
             <g 
                 class="country"
-                in:transitionToUse={{ duration: 300, delay: 50 + 50 * i}}
+                in:transitionToUse={{ duration: 300, delay: 100 + 50 * i}}
                 >  
                 <!-- {#each selectedContinentData.get(country).sort((a, b) => a.year - b.year) as d} -->
-            {#each activeData.get(country).sort((a, b) => a.year - b.year) as d}
+            {#each $activeData.get(country).sort((a, b) => a.year - b.year) as d}
               <g 
                 class="year"
                 id={`${country}.${d.year}`}
@@ -426,7 +463,7 @@
                 {/each}
             
             </g>
-            {#if $activeSearch === true && activeData.size === 0}
+            {#if $activeSearch === true && $activeData.size === 0}
 
             <text
               fill={COLORS.gray["800"]}
@@ -462,6 +499,9 @@
     <HeatmapTooltip tooltipData={hoveredCountryYear} {yearScale} {totalScale} {margin} {innerWidth} {countryScale}/>
     {/if}
 </div>
+{/key}
+<!-- {/if} -->
+
 
 
   <style>
