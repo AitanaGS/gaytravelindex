@@ -197,7 +197,6 @@
     {yPosition}
     {flyDirection}
     bind:tooltipWidth={tooltipWidth}
-    {tooltipHeight}
     {arrow}
     {xArrowPosition}
 />

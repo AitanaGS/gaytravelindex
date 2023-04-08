@@ -190,7 +190,6 @@
     {xPosition}
     {yPosition}
     {flyDirection}
-    {tooltipHeight}
     {arrow}
     {xArrowPosition}
 />

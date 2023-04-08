@@ -15,7 +15,7 @@
     export let yPosition
     export let flyDirection
     export let tooltipWidth
-    export let tooltipHeight
+    // export let tooltipHeight
     export let arrow
     export let xArrowPosition
 
