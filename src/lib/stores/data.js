@@ -64,10 +64,6 @@ export const selectedContinentCountries = derived(
   }
 );
 
-export const cachedContinentData = writable(new Map());
-
-export const cachedContinentCountries = writable(new Map());
-
 export const selectedContinentData = derived(
   [data, selectedContinent],
   ([$data, $selectedContinent]) => {
@@ -88,6 +84,10 @@ export const selectedContinentData = derived(
     );
   }
 );
+
+export const cachedContinentData = writable(new Map());
+
+export const cachedContinentCountries = writable(new Map());
 
 // function createSearchedCountries() {
 // 	// const { subscribe, set, update } = writable([]);
@@ -127,7 +127,7 @@ export const selectedContinentData = derived(
 
 // })
 
-export const searchedCountries = derived(
+const searchedCountries = derived(
   [data, query, activeSearch],
   ([$data, $query, $activeSearch]) => {
     const countries = $activeSearch
@@ -150,7 +150,7 @@ export const searchedCountries = derived(
   }
 );
 
-export const searchedCountryData = derived(
+const searchedCountryData = derived(
   [data, query, activeSearch],
   ([$data, $query, $activeSearch]) => {
     const data = $activeSearch
