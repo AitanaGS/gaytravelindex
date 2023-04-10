@@ -5,7 +5,12 @@
 
 </script>
 
-<footer>
+<footer
+  style="
+    --linkColor: {COLORS.primary["500"]};
+    --linkHoverColor: {COLORS.primary["900"]};
+    "
+>
     <div class="dataSources">
       <h5>Data</h5>
       <p><strong>2012 - 2021 data:</strong> <br>             
@@ -16,8 +21,8 @@
         via 
         <a 
         href="https://www.makeovermonday.co.uk/"
-        target="_blank" rel="noreferrer">Makeover Monday.
-        </a> <br>
+        target="_blank" rel="noreferrer">Makeover Monday
+        </a>. <br>
         The Makeover Monday data contained some missing values, which were filled in manually using information from the original reports.
     </p>
     <p><strong>2023 data:</strong><br>  
@@ -67,6 +72,16 @@
   footer h5 {
     font-size: 1.2rem;
     margin-bottom: 5px;
+  }
+
+  a {
+    font-weight: 500;
+    color: var(--linkColor);
+    text-decoration: inherit;
+  }
+
+  a:hover {
+    color: var(--linkHoverColor);
   }
 
   .codeInfo {

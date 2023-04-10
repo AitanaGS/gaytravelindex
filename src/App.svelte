@@ -90,27 +90,32 @@
     $selectedCountry = ""
   }
 
-
-function handleSelect() {
-
+  function clearSearch() {
     $activeSearch = false
     $query = ""
     $selectedCountry = ""
-
-    if (!$cachedContinentData.has($selectedContinent)) {
-      $cachedContinentData.set($selectedContinent, $selectedContinentData)
-    }
-
-    if (!$cachedContinentCountries.has($selectedContinent)) {
-      $cachedContinentCountries.set($selectedContinent, $selectedContinentCountries)
-    }
-
   }
 
-function clearCountry() {
-  $selectedCountry = ""
-  scrollToContinentView()
-}
+  function handleSelect() {
+
+      $activeSearch = false
+      $query = ""
+      $selectedCountry = ""
+
+      if (!$cachedContinentData.has($selectedContinent)) {
+        $cachedContinentData.set($selectedContinent, $selectedContinentData)
+      }
+
+      if (!$cachedContinentCountries.has($selectedContinent)) {
+        $cachedContinentCountries.set($selectedContinent, $selectedContinentCountries)
+      }
+
+    }
+
+  function clearCountry() {
+    $selectedCountry = ""
+    scrollToContinentView()
+  }
 
 </script>
 
@@ -123,7 +128,6 @@ style="
   --bodyColor: {COLORS.gray["700"]};
   --linkColor: {COLORS.primary["500"]};
   --linkHoverColor: {COLORS.primary["900"]};
-  
   "
 >
   <Header />
@@ -163,7 +167,7 @@ style="
                 <Select continents={$continents} on:selectContinent={handleSelect} />
 
             or search for a country
-            <Search on:searchCountry={handleSearch}/>.
+            <Search on:searchCountry={handleSearch} on:clearSearch={clearSearch}/>.
           </p>
 
           <p> 

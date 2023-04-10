@@ -12,6 +12,10 @@
         dispatch("searchCountry")
     }
 
+    function clearSearch() {
+        dispatch("clearSearch")
+    }
+
 </script>
 
 <span>
@@ -29,7 +33,7 @@
       id="search"
       bind:value={$query} 
       on:keyup={() => handleSearch()}
-      on:search={() => handleSearch()} 
+      on:search={() => clearSearch()}
       >
   </label>
 </span>

@@ -61,7 +61,9 @@
 
     $: transitionToUse = $prefersReducedMotion || $activeSearch ? () => {} : slide
 
-    $: topContinentCountry = $activeData.keys().next().value
+    $: topContinentCountry = !$activeSearch && $activeData.keys().next().value
+
+    $: console.log(topContinentCountry)
 
 </script>
 
@@ -73,16 +75,15 @@
       <desc id="heatmapDescription">
         {
         $activeSearch
-        ?
-        `Heatmap of the Gay Travel Index for countries that meet the search criteria, from 2012 to 2023.`
-        :
-        `
+        ? ""
+        : `
           Heatmap of the Gay Travel Index for different countries ${$selectedContinent === "All" ? "" : `in ${$selectedContinent}`}, from 2012 to 2023.
           ${$selectedContinent === "All" 
           ? `Among all countries, Canada has the best policies for LGBTQ+ people, with a total rating of 13.
           At the bottom of the list is Chechnya, with a rating of -19.`
           : `Considering only countries in ${$selectedContinent}, the country with the highest ranking is ${topContinentCountry}, with a rating of ${$data2023Map.get(topContinentCountry).total}.
-          `}`}
+          `}`
+          }
       </desc>
         <text 
           class="continentName" 
