@@ -1,7 +1,8 @@
 <script>
-    import { chartFontSize } from "../stores/responsiveFontSize";
-    import { isSmall } from "../stores/dimensions";
-    import { COLORS } from "../utils/constants";
+    import { chartFontSize } from "../stores/responsiveFontSize"
+    import { isSmall } from "../stores/dimensions"
+
+    import { COLORS } from "../utils/constants"
 
     export let indicatorScale;
     export let indicatorVariables
@@ -26,7 +27,6 @@
                 role="presentation"
                 aria-hidden="true"
             > {indicatorLabelsLookup.get(indicator)}</text>
-            <!-- dy={indicatorScale.bandwidth()/2} -->
             <line
             x1={0}
             x2={innerWidth}

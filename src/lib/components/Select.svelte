@@ -1,33 +1,16 @@
 <script>
-    import { createEventDispatcher, tick } from "svelte";
+    import { selectedContinent } from "../stores/selectedContinent"
+
     import { COLORS } from "../utils/constants"
-    import { selectedContinent } from "../stores/selectedContinent";
-    import { query, activeSearch } from "../stores/search";
+
+    import { createEventDispatcher } from "svelte"
 
     export let continents
-    // export let selectedValue
     
-
     const dispatch = createEventDispatcher()
 
-
-
-     function handleSelect() {
-
-        // $query = ""
-
-        // await tick()
-
-        // $activeSearch = false
-
-        // await tick()
-        // $activeSearch = false
-
-            dispatch("selectContinent")
-
-
-
-        // dispatch("selectContinent")
+    function handleSelect() {
+        dispatch("selectContinent")
     }
 
 
@@ -45,7 +28,6 @@
     "
     on:change={handleSelect}
     >
-    <!-- on:change={() => selectedContinent.set("")} -->
       <option value="All">All</option>
       {#each continents as continent}
         <option value={continent}>{continent}</option>
@@ -53,10 +35,9 @@
   </select> 
 </span>
 
-
-
 <style>
-    select {
+    
+select {
     font-size: 1.2rem;
     background-color: var(--selectBackgroundColor);
     color: var(--selectColor);

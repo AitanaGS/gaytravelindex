@@ -1,34 +1,27 @@
 <script>
-    import TooltipAxisYears from "./TooltipAxisYears.svelte";
-    import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte";
-    import { isSmall, isMobile } from "../stores/dimensions"
-    import { prefersReducedMotion } from "../stores/preferesReducedMotion";
+    import TooltipAxisYears from "./TooltipAxisYears.svelte"
+    import TooltipAxisIndicatorValues from "./TooltipAxisIndicatorValues.svelte"
 
-    import { scaleBand, scaleSequential, scaleLinear } from "d3-scale"
-    import { fly, fade } from "svelte/transition"
-  import { COLORS } from "../utils/constants"
+    import { isSmall, isMobile } from "../stores/dimensions"
+    import { prefersReducedMotion } from "../stores/preferesReducedMotion"
     import { years } from "../stores/data"
-    // import { tooltipFontSize } from "../stores/responsiveFontSize";
+
+    import { COLORS } from "../utils/constants"
+
+    import { scaleBand, scaleLinear } from "d3-scale"
+    import { fly } from "svelte/transition"
 
     export let indicator2023Data
-    // export let tooltipData
-    // export let indicatorData
     export let indicatorScale
     export let indicatorValueScale
     export let indicatorLabelsLookup
     export let margin
-    // export let innerWidth
-    // export let years
     export let indicatorValueColorScale
     export let hoveredIndicatorData
-
-
-    // $: indicatorData = tooltipData.filter(d => d.indicator === indicator2021Data.indicator).sort((a, b) => a.year - b.year)
     
-    
-    let tooltipWidth = $isSmall ? 200 : 280 //270
+    let tooltipWidth = $isSmall ? 200 : 280
 
-    let tooltipHeight = 160//150
+    let tooltipHeight = 160
     
     $: xValue = indicatorValueScale(indicator2023Data.value)
     $: xBandwidth = indicatorValueScale(1) - indicatorValueScale(0)
@@ -36,94 +29,49 @@
 
     let xPosition
 
-$: if ($isMobile) {
+    $: if ($isMobile) {
 
-    xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 8 //5
-        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 10 //* 6 //7
-        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
-        ? margin.left + xValue - tooltipWidth + xBandwidth * 3
-        : (indicator2023Data.value == 0)
-        ? margin.left + xValue - tooltipWidth + xBandwidth * 2 //- tooltipWidth / 2 // + xBandwidth * 3 /// 2
-        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
-        ? margin.left + xValue - tooltipWidth + xBandwidth
-        : margin.left + xValue - tooltipWidth
+        xPosition = indicator2023Data.value === -5
+            ? margin.left + xValue - xBandwidth * 8
+            : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
+            ? margin.left + xValue - xBandwidth * 10
+            : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+            ? margin.left + xValue - tooltipWidth + xBandwidth * 3
+            : (indicator2023Data.value == 0)
+            ? margin.left + xValue - tooltipWidth + xBandwidth * 2
+            : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
+            ? margin.left + xValue - tooltipWidth + xBandwidth
+            : margin.left + xValue - tooltipWidth
 
-    // xPosition = indicator2023Data.value === -5
-    //     ? margin.left + xValue - xBandwidth * 4 //5
-    //     : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-    //     ? margin.left + xValue - xBandwidth * 6 //7
-    //     : (indicator2023Data.value >= -2) && (indicator2023Data.value <= 0)
-    //     ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
-    //     : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
-    //     ? margin.left + xValue - tooltipWidth + xBandwidth
-    //     : margin.left + xValue - tooltipWidth
+    } else if ($isSmall) {
 
-} else if ($isSmall) {
+        xPosition = indicator2023Data.value === -5
+            ? margin.left + xValue - xBandwidth * 3
+            : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
+            ? margin.left + xValue - xBandwidth * 5
+            : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+            ? margin.left + xValue - tooltipWidth + xBandwidth * 3 
+            : (indicator2023Data.value == 0)
+            ? margin.left + xValue - tooltipWidth + xBandwidth * 2
+            : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
+            ? margin.left + xValue - tooltipWidth + xBandwidth
+            : margin.left + xValue - tooltipWidth
 
-    xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue - xBandwidth * 3 //5
-        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 5 //* 6 //7
-        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
-        ? margin.left + xValue - tooltipWidth + xBandwidth * 3 
-        : (indicator2023Data.value == 0)
-        ? margin.left + xValue - tooltipWidth + xBandwidth * 2 //- tooltipWidth / 2 // + xBandwidth * 3 /// 2
-        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
-        ? margin.left + xValue - tooltipWidth + xBandwidth
-        : margin.left + xValue - tooltipWidth
+    } else {
 
-} else {
+        xPosition = indicator2023Data.value === -5
+            ? margin.left + xValue
+            : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
+            ? margin.left + xValue - xBandwidth * 2
+            : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
+            ? margin.left + xValue  - tooltipWidth / 2
+            : (indicator2023Data.value == 0)
+            ? margin.left + xValue - xBandwidth - tooltipWidth / 2
+            : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
+            ? margin.left + xValue - tooltipWidth + xBandwidth
+            : margin.left + xValue - tooltipWidth
 
-        // xPosition = xValue + margin.left - tooltipWidth / 2 < margin.left
-    //     ? xValue + margin.left
-    //     : xValue + margin.left + tooltipWidth / 2 > innerWidth
-    //         ? xValue + margin.left
-    //         : xValue + margin.left - tooltipWidth / 2
-
-    xPosition = indicator2023Data.value === -5
-        ? margin.left + xValue //- xBandwidth//* 2
-        : (indicator2023Data.value >= -4) && (indicator2023Data.value <= -3)
-        ? margin.left + xValue - xBandwidth * 2
-        : (indicator2023Data.value >= -2) && (indicator2023Data.value <= -1)
-        ? margin.left + xValue  - tooltipWidth / 2 //- xBandwidth 
-        : (indicator2023Data.value == 0)
-        ? margin.left + xValue - xBandwidth - tooltipWidth / 2
-        : (indicator2023Data.value >= 1) && (indicator2023Data.value <= 2)
-        ? margin.left + xValue - tooltipWidth + xBandwidth
-        : margin.left + xValue - tooltipWidth
-
-}
-
-    // let xPosition
-
-    // $: if ($isSmall || $isTablet) {
-
-    //     xPosition = indicator2021Data.value === -5
-    //         ? margin.left + xValue - xBandwidth * 4 //5
-    //         : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-    //         ? margin.left + xValue - xBandwidth * 6 //7
-    //         : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-    //         ? margin.left + xValue - tooltipWidth + xBandwidth * 3 /// 2
-    //         : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-    //         ? margin.left + xValue - tooltipWidth + xBandwidth
-    //         : margin.left + xValue - tooltipWidth
-
-    // } else {
-
-    //     xPosition = indicator2021Data.value === -5
-    //         ? margin.left + xValue
-    //         : (indicator2021Data.value >= -4) && (indicator2021Data.value <= -3)
-    //         ? margin.left + xValue - xBandwidth
-    //         : (indicator2021Data.value >= -2) && (indicator2021Data.value <= 0)
-    //         ? margin.left + xValue - tooltipWidth / 2
-    //         : (indicator2021Data.value >= 1) && (indicator2021Data.value <= 2)
-    //         ? margin.left + xValue - tooltipWidth + xBandwidth
-    //         : margin.left + xValue - tooltipWidth
-    // }
-
-
+    }
     
     $: yValue = indicatorScale(indicator2023Data.indicator)
 
@@ -135,37 +83,10 @@ $: if ($isMobile) {
 
     $: transitionToUse = $prefersReducedMotion ? () => {} : fly
 
-    
-    // let tooltipWidth = 300
-
-    // let tooltipHeight = 200
-
-    // $: halfBandwidth = indicatorValueScale(1) - indicatorValueScale(0.5)
-
-    // $: xValue = indicatorValueScale(indicator2021Data.value)
-
-    // $: xPosition = xValue + margin.left + tooltipWidth /2 - halfBandwidth > innerWidth + margin.left
-    //     ? xValue + margin.left - tooltipWidth
-    //     : xValue + margin.left - tooltipWidth / 2 < margin.left + tooltipWidth / 2
-    //         ? xValue + margin.left
-    //         : xValue + margin.left - tooltipWidth / 2
-
-    // $: yValue = indicatorScale(indicator2021Data.indicator)
-
-    // $: yPosition = yValue - tooltipHeight < 0
-    //     ? yValue + tooltipHeight / 2 
-    //     : yValue + margin.top - tooltipHeight
-
-    // $: flyDirection = yPosition < yValue ? 1 : -1
-
-    // $: console.log(indicator2021Data, indicatorData)
-
-
-
     const svgMargin = {
-        top: 8, //10,
-        right:  20, //15, //10,
-        bottom: 20,//20, //20,
+        top: 8,
+        right:  20,
+        bottom: 20,
         left: 20
     }
 
@@ -182,8 +103,6 @@ $: if ($isMobile) {
     $: tooltipYearScale = scaleBand()
         .domain($years)
         .range([0, svgInnerWidth])
-        // .padding(0.05)
-        // .paddingOuter(0.1)
 
     $: tooltipIndicatorValueScale = scaleLinear()
         .domain(indicatorValueScale.domain())
@@ -191,7 +110,7 @@ $: if ($isMobile) {
 
     const tooltipFontSizeScale = scaleLinear()
         .domain([100, 300])
-        .range([1.1, 0.95]) //.range([26, 16])
+        .range([1.1, 0.95])
         .clamp(true);
 
     $: tooltipFontSize = tooltipFontSizeScale(tooltipWidth)
@@ -201,9 +120,11 @@ $: if ($isMobile) {
 </script>
 
 <div
-    in:transitionToUse={{ y: flyDirection * 20,
-            duration: 250, 
-            delay: 100 }}
+    in:transitionToUse={{ 
+        y: flyDirection * 20,
+        duration: 250, 
+        delay: 100
+        }}
     class="tooltip"
     style="
         top: {yPosition}px;
@@ -219,7 +140,6 @@ $: if ($isMobile) {
     <div>
         {#if tooltipWidth}
         <svg width={svgWidth} height={svgHeight} transform="translate(0, 0)">
-            <!-- <title id="indicatorTooltipTitle">Point Chart of ratings of {indicatorLabelsLookup.get(indicator2021Data.indicator)} in {indicator2021Data.country} over the past few years</title> -->
             <TooltipAxisIndicatorValues {tooltipIndicatorValueScale} {svgMargin} {svgInnerWidth} {tooltipFontSize}/>
             <TooltipAxisYears {tooltipYearScale} {svgMargin} {svgInnerHeight} {tooltipFontSize}/>
             <g
@@ -281,7 +201,6 @@ $: if ($isMobile) {
 
     p {
         margin: 0;
-        /* margin-bottom: 10px; */
         font-size: calc(var(--fontSize) * 0.6);
         float: left;
     }

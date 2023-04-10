@@ -1,41 +1,24 @@
 <script>
-    // import data2021 from "../../../data/processed/GTI_2012-2021_data2021.json";
     import geoWorld from "../../../data/processed/ne_110m_admin_0_countries_topo.json"
-    import MapTooltip from "./MapTooltip.svelte";
-    import MapLegend from "./MapLegend.svelte";
-    import { selectedCountry } from "../stores/selectedCountry";
-    import { selectedContinent } from "../stores/selectedContinent";
-    import { data2023, data2023Map } from "../stores/data"
+
+    import MapTooltip from "./MapTooltip.svelte"
+    import MapLegend from "./MapLegend.svelte"
+
+    import { data2023Map } from "../stores/data"
+
     import { COLORS } from "../utils/constants"
-    import { width } from "../stores/dimensions"
 
     import * as topojson from "topojson-client"
     import {
-        geoOrthographic,
         geoPath,
         geoEqualEarth
     } from "d3-geo"
     import { zoom } from "d3-zoom"
     import { select } from "d3-selection"
-    import { createEventDispatcher } from "svelte"
-
 
     export let mapWidth
     export let mapHeight
     export let totalScale
-
-    // test.set("test")
-
-    // const data2021Map = new Map()
-
-    // data2021.forEach((d) => {
-    //     data2021Map.set(d.longName, {
-    //         shortName: d.country,
-    //         continent: d.continent,
-    //         ranking: d.ranking,
-    //         total: d.total
-    //     })
-    // })
 
 
     let geoCountries = topojson.feature(geoWorld, geoWorld.objects.ne_110m_admin_0_countries) //.features
@@ -49,17 +32,14 @@
         }
     })
 
-
     $: projection = geoEqualEarth()
         .fitSize([mapWidth, mapHeight], geoCountries)
         .rotate([-10, 0])
 
     $: pathGenerator = geoPath().projection(projection)
 
-    // const geoSphere = ({type: "Sphere"})
-
-
     let selectHandleZoom
+
     let selectInitZoom
 
     $: zoomX = zoom()
@@ -81,12 +61,6 @@
 
     let parentMap
 
-    // let parentBoundingRect 
-
-    // $:if (parentMap) {
-    //     parentBoundingRect = parentMap.getBoundingClientRect()
-    // }
-
     function handleMapHover (event, mapCountry, centroid) {
 
         if (mapCountry) {
@@ -96,66 +70,20 @@
             event,
             parentBoundingRect: parentMap.getBoundingClientRect(),
             parentMap
-            // svg,
             }
         } else {
             hoveredMapCountryData = null
         }
     }
 
-    // const dispatch = createEventDispatcher()
-
-    // function dispatchCountryClick(e, country, continent) {
-    //     // handleMapHover(e, null, null)
-    //     // dispatch("countryClick", {
-    //     //     country,
-    //     //     continent
-    //     // })
-    //     // dispatch("countryClick", {
-    //     // })
-    //     dispatch("countryClick")
-    // }
-
-    // function handleCountryClick(e, country, continent) {
-    //     // console.log(country)
-    //     // hoveredMapCountryData = null
-    //     // console.log(country, $selectedCountry)
-    //     // console.log(continent, $selectedContinent)
-    //     handleMapHover(e, null, null)
-    //     selectedCountry.set(country)
-    //     selectedContinent.set(continent)
-    //     // console.log(country, $selectedCountry)
-    //     // console.log(continent, $selectedContinent)
-    //     dispatch("countryClick")
-    // }
-    // $:console.log($clickedCountry, $clickedContinent)
-
-
-// let selectedCountry = ""
-
-// clickedCountry.subscribe(country => {
-//   selectedCountry = country
-// })
-
-// let height
-
-// $: console.log(height)
-
-
 
 </script>
 
 <div bind:this={parentMap} class="map" >
-    <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
     <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
     <svg viewBox={`0 0 ${mapWidth} ${mapHeight}`} bind:this={selectInitZoom} role="img" aria-labelledby="mapTitle" tabindex="0">
         <desc id="mapTitle">Thematic world map showing the Gay Travel Index in 2023</desc>
-        <!-- <svg  width={mapWidth} height={mapHeight} bind:this={selectInitZoom} > -->
-        <!-- bind:this={selectInitZoom} 
-        width={mapWidth} height={mapHeight} -->
         <g bind:this={selectHandleZoom} >
-         <!-- bind:this={selectHandleZoom} -->
-        <!-- <path class="earth" d={pathGenerator(geoSphere)} fill="#FCFFFD" stroke="none"/> -->
         {#each geoCountries.features as country}
             {#if country.properties.NAME_EN !== "Antarctica"}
             <path
@@ -167,24 +95,12 @@
                 style="
                     cursor: {country.properties.data ? "pointer" : "auto"};
                 "
-                on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
+                on:mouseenter={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:mouseleave={(e) => handleMapHover(e, null, null)}
                 on:blur={(e) => handleMapHover(e, null, null)}
                 on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
                 on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
             />
-            <!-- on:mouseover={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
-            on:mouseleave={(e) => handleMapHover(e, null, null)}
-            on:click={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
-            on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)}
-            on:blur={(e) => handleMapHover(e, null, null)}
-            on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
-            on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}} -->
-
-            <!-- on:blur={(e) => handleMapHover(e, null, null)}
-            on:focus={(e) => handleMapHover(e, country.properties.data, pathGenerator.centroid(country.geometry))}
-            on:keydown={(e) => {e.key === "Escape" ? handleMapHover(e, null, null) : null}}
-            on:keypress={(e) => handleCountryClick(e, country.properties.data.shortName, country.properties.data.continent)} -->
             {/if}
         {/each}
         <path class="borders" d={pathGenerator(geoBorders)} fill="none" stroke="white"/>

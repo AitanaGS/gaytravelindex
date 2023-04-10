@@ -1,25 +1,18 @@
 <script>
-    // import { chartFontSizeScale } from "../utils/fontSizeScales"
-    import { chartFontSize } from "../stores/responsiveFontSize";
-    import { isSmall, isMobile } from "../stores/dimensions";
+    import { chartFontSize } from "../stores/responsiveFontSize"
+    import { isSmall, isMobile } from "../stores/dimensions"
+
     import { COLORS } from "../utils/constants"
 
     export let yearScale
     export let margin
-    // export let currentWindowWidth
 
     $: years = yearScale.domain()
-
-    // $: chartFontSize = chartFontSizeScale(currentWindowWidth)
-    // $: console.log("Mobile", $isSmall)
-    // $: console.log("Tablet", $isTablet)
-    // $: console.log("Desktop", $isDesktop)
 
 </script>
 
 <g class="axis years" transform="translate({margin.left}, {margin.top})">
     {#each years as year}
-        <!-- <g class="tick" transform="translate({yearScale(year)}, 0)"> -->
             <g class="tick" transform="translate({yearScale(year)}, 0)" tabindex="-1">
             <text 
                 x={yearScale.bandwidth() / 2} 
@@ -51,55 +44,6 @@
                 >
                     {year}
                 </text>
-
-                <!-- font-size={ $isMobile || $isSmall
-                    ? year === 2012 || year === 2023
-                        ? year === 2023
-                            ? `${0.8 * $chartFontSize}rem`
-                            : `${0.7 * $chartFontSize}rem`
-                        : `${0 * $chartFontSize}rem`
-                    : year === 2023 
-                                ? `${0.8 * $chartFontSize}rem`
-                                : `${0.7 * $chartFontSize}rem`
-
-                } -->
-
-                <!-- font-size={ $isMobile || $isSmall
-                    ? year === 2012 || year === 2023
-                        ? year === 2023
-                            ? `${0.8 * $chartFontSize}rem`
-                            : `${0.7 * $chartFontSize}rem`
-                        : `${0 * $chartFontSize}rem`
-                    : $isTablet || $isDesktop
-                        ? (year % 2 === 0) || year === 2021 || year === 2023
-                            ? year === 2023 
-                                ? `${0.8 * $chartFontSize}rem`
-                                : `${0.7 * $chartFontSize}rem`
-                            : `${0 * $chartFontSize}rem`
-                        : year === 2023
-                                ? `${0.8 * $chartFontSize}rem`
-                                : `${0.7 * $chartFontSize}rem`
-                } -->
-                
-                <!-- font-size={year === 2021 ? `${0.8 * $chartFontSize}rem` : `${0.7 * $chartFontSize}rem`} -->
-                <!-- font-size={year === 2021 ? "0.9rem" : "0.8rem"} -->
-<!-- 
-                font-size={ $isMobile
-                    ? year === 2012 || year === 2023
-                        ? year === 2023
-                            ? `${0.8 * $chartFontSize}rem`
-                            : `${0.7 * $chartFontSize}rem`
-                        : `${0 * $chartFontSize}rem`
-                    : $isSmall
-                        ? (year % 2 === 0 && year !== 2020) || year === 2021
-                            ? year === 2021 
-                                ? `${0.8 * $chartFontSize}rem`
-                                : `${0.7 * $chartFontSize}rem`
-                            : `${0 * $chartFontSize}rem`
-                        : year === 2021 
-                                ? `${0.8 * $chartFontSize}rem`
-                                : `${0.7 * $chartFontSize}rem`
-                } -->
         </g>
 
     {/each}

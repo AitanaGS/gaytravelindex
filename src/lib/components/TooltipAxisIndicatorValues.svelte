@@ -1,8 +1,5 @@
 <script>
-  import { COLORS } from "../utils/constants";
-
-
-    // import { tooltipFontSize } from "../stores/responsiveFontSize";
+    import { COLORS } from "../utils/constants";
 
     export let tooltipIndicatorValueScale
     export let svgMargin
@@ -10,6 +7,7 @@
     export let tooltipFontSize
 
     let indicatorValues = tooltipIndicatorValueScale.ticks()
+
 </script>
 
 <g
@@ -26,7 +24,6 @@
                 fill={COLORS.gray["700"]}
                 font-size={`${0.55 * tooltipFontSize}rem`}
             >
-            <!-- font-size="0.55rem" -->
             {value}
 
             </text>
@@ -44,12 +41,3 @@
     {/each}
 
 </g>
-
-         <!-- <line
-                x1={indicatorValueScale(value)}
-                x2={indicatorValueScale((value))}
-                y1=10
-                y2={innerHeight}
-                stroke="lightgray"
-                stroke-width=1
-            /> -->

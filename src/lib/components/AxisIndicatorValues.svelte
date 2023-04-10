@@ -1,6 +1,7 @@
 <script>
-    import { isMobile } from "../stores/dimensions";
-    import { chartFontSize } from "../stores/responsiveFontSize";
+    import { isMobile } from "../stores/dimensions"
+    import { chartFontSize } from "../stores/responsiveFontSize"
+
     import { COLORS } from "../utils/constants"
 
     export let indicatorValueScale
@@ -16,7 +17,6 @@
 <g class="axis indicatorvalues" transform="translate({margin.left}, {margin.top})">
     {#each indicatorValues as value}
         <g class="tick" >
-            <!-- transform="translate(20, 0)" -->
             {#if $isMobile && (value === -5 || value === 0 || value === 3)}
             <text
                 class="indicatorValueList"
@@ -49,8 +49,6 @@
                 stroke={COLORS.gray["200"]}
                 stroke-width=1
             />
-            <!-- dy={indicatorScale.bandwidth()/2} -->
-            <!-- y2={innerHeight} -->
         </g>
 
     {/each}
