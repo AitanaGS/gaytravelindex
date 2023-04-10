@@ -1,4 +1,5 @@
 <script>
+  import Header from "./lib/components/Header.svelte"
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
@@ -125,20 +126,7 @@ style="
   
   "
 >
-    
-  <header>
-      <h1>Gay Travel Index 2023</h1>
-      <div class="intro">
-          <p>
-            In many countries, lesbian, gay, bisexual, transgender, and intersex people still have to fear 
-            for their safety and happiness. Every year, the Spartacus International Gay Guide publishes 
-            the Gay Travel Index (GTI). It monitors the status and rights of the local LGBTQ+ community 
-            in each country and serves as a first guide to help tourists travel safely.
-          </p>
-
-        </div>
-    </header>
-  
+  <Header />
     <main>
 
       <section>
@@ -256,6 +244,7 @@ style="
     color: var(--linkColor);
     text-decoration: inherit;
   }
+
   a:hover {
     color: var(--linkHoverColor);
   }
@@ -272,13 +261,6 @@ style="
   .continentChartWrapper {
     margin-bottom: 20px;
   }
-
-  h1 {
-    line-height: 1.3;
-    margin-bottom: 30px;
-    margin-top: 10px;
-  }
-
 
   .dataInfo {
     font-size: 1rem;
