@@ -1,0 +1,32 @@
+country;continent;ranking;year;total;antidiscriminationLegislation;marriageCivilPartnership;adoptionAllowed;lgbtMarketing;equalAgeOfConsent;religiousInfluence;hivTravelRestrictions;antiGayLaws;homosexualityIllegal;prideBanned;localsHostile;prosecution;murders;deathSentence;transgenderRights;intersex3RdOption;conversionTherapy;longName
+Bermuda;Americas;;2015;0;1;0;0;0;0;0;;0;0;0;-1;0;0;0;NA;NA;NA;Bermuda
+Curaçao;Americas;;2015;1;0;0;0;1;1;0;;0;0;0;-1;0;0;0;NA;NA;NA;Curaçao
+Lesotho;Africa;;2015;-4;0;0;0;0;;-2;0;0;0;0;-2;0;0;0;NA;NA;NA;Lesotho
+Lesotho;Africa;;2016;-4;0;0;0;0;;-2;0;0;0;0;-2;0;0;0;NA;NA;NA;Lesotho
+Lesotho;Africa;;2017;-4;0;0;0;0;;-2;0;0;0;0;-2;0;0;0;NA;NA;NA;Lesotho
+Mali;Africa;;2015;-7;0;0;0;0;;-2;0;-1;0;0;-2;0;-2;0;NA;NA;NA;Mali
+Mali;Africa;;2016;-7;0;0;0;0;;-2;0;-1;0;0;-2;0;-2;0;NA;NA;NA;Mali
+Mali;Africa;;2017;-7;0;0;0;0;;-2;0;-1;0;0;-2;0;-2;0;NA;NA;NA;Mali
+Niger;Africa;;2015;-6;0;0;0;0;;-2;0;-1;0;0;-2;-1;0;0;NA;NA;NA;Niger
+Niger;Africa;;2016;-6;0;0;0;0;;-2;0;-1;0;0;-2;-1;0;0;NA;NA;NA;Niger
+Niger;Africa;;2017;-6;0;0;0;0;;-2;0;-1;0;0;-2;-1;0;0;NA;NA;NA;Niger
+Burkina Faso;Africa;;2015;-4;0;0;0;0;;-2;0;0;0;0;-2;0;0;0;NA;NA;NA;Burkina Faso
+Cook Islands;Oceania;;2015;-6;0;0;0;0;0;-2;;-1;-1;0;-2;0;0;0;NA;NA;NA;Cook Islands
+North Korea;Asia;;2016;-2;0;0;0;0;;0;0;0;0;0;-2;0;0;0;NA;NA;NA;North Korea
+North Korea;Asia;;2017;-2;0;0;0;0;;0;0;0;0;0;-2;0;0;0;NA;NA;NA;North Korea
+Chad;Africa;;2016;-4;0;0;0;0;0;-2;0;;0;0;-2;;0;0;NA;NA;NA;Chad
+Indonesia;Asia;;2015;-5;0;0;0;0;1;-1;0;-1;-1;0;-1;-1;0;-1;NA;NA;NA;Indonesia
+Indonesia;Asia;;2016;-7;0;0;0;0;1;-2;0;-1;-1;0;-2;-1;0;-1;NA;NA;NA;Indonesia
+Indonesia;Asia;;2017;-7;0;0;0;0;1;-2;0;-1;-1;0;-2;-1;0;-1;NA;NA;NA;Indonesia
+Ivory Coast;Africa;;2015;-5;0;0;0;0;;-2;0;-1;0;0;-2;0;0;0;NA;NA;NA;Ivory Coast
+Jordan;Asia;174;2018;-9;0;0;0;NA;1;-2;-1;-1;0;0;-2;-1;-2;0;-1;NA;NA;Jordan
+Papua New Guinea;Oceania;174;2018;-9;0;0;0;NA;0;-2;-1;-1;-1;0;-2;-1;0;0;-1;NA;NA;Papua New Guinea
+Eswatini;Africa;174;2018;-9;0;0;0;NA;0;-2;0;-1;-1;0;-2;0;-2;0;-1;NA;NA;Eswatini
+Sudan;Africa;174;2018;-9;0;0;0;NA;0;-2;-1;-1;-1;0;-2;0;0;-1;-1;NA;NA;Sudan
+Turkmenistan;Asia;174;2018;-9;0;0;0;NA;0;-2;-1;-1;-1;0;-2;-1;0;0;-1;NA;NA;Turkmenistan
+Tanzania;Africa;174;2018;-9;0;0;0;NA;0;-2;0;-1;-1;0;-2;-2;0;0;-1;NA;NA;Tanzania
+Malaysia;Asia;174;2018;-9;0;0;0;NA;0;-2;0;-1;-1;-1;-1;-1;-1;0;-1;NA;NA;Malaysia
+Kuwait;Asia;174;2018;-9;0;0;0;NA;0;-2;0;-1;-1;0;-2;-2;0;0;-1;NA;NA;Kuwait
+Somalia;Africa;196;2018;-15;0;0;0;NA;0;-2;0;-1;-1;0;-2;-1;-2;-5;-1;NA;NA;Somalia
+Chechnya;Europe;197;2018;-16;0;0;0;NA;0;-2;0;-1;-1;-1;-2;-2;-2;-5;0;NA;NA;Chechnya
+Saudi Arabia;Asia;194;2018;-14;0;0;0;NA;0;-2;0;-1;-1;0;-2;-1;-1;-5;-1;NA;NA;Saudi Arabia

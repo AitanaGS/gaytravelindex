@@ -7,6 +7,13 @@ import { scaleBand, scaleSequential } from 'd3-scale';
 import gtiData from '../../../data/processed/GTI_2012-2023.json';
 import gti2023Data from '../../../data/processed/GTI_2012-2023_data2023.json';
 import { query, activeSearch } from './search';
+// import {
+//   selectedContinent,
+//   selectedContinentData,
+//   selectedContinentCountries,
+//   cachedContinentCountries,
+//   cachedContinentData,
+// } from './selectedContinent';
 
 // const dataPath = '../../../data/processed/GTI_2012-2021.json';
 
@@ -88,44 +95,6 @@ export const selectedContinentData = derived(
 export const cachedContinentData = writable(new Map());
 
 export const cachedContinentCountries = writable(new Map());
-
-// function createSearchedCountries() {
-// 	// const { subscribe, set, update } = writable([]);
-//   const _countries = writable([])
-
-//   const
-
-// 	return {
-// 		subscribe,
-// 		reset: () => set([])
-// 	};
-// }
-
-// export const searchedCountries = (() => {
-//   const _countries = writable([])
-
-//   const _searched = derived([data, query, _countries], ([$data, $query, $_countries]) => {
-//     return [
-//       ...new Set(
-//         $data
-//           .filter((d) => {
-//             return d.country.toLowerCase().includes($query.toLowerCase());
-//           })
-//           .filter((d) => d.year === 2023)
-//           .sort(
-//             (a, b) => a.ranking - b.ranking || a.country.localeCompare(b.country)
-//           )
-//           .map((d) => d.country)
-//       ),
-//     ];
-//   });
-
-//   return {
-//     reset: _countries.set([]),
-//     ..._searched
-//   }
-
-// })
 
 const searchedCountries = derived(
   [data, query, activeSearch],

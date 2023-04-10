@@ -69,7 +69,7 @@
 
 
 
-  indicatorLabelsLookup.set("antidiscrimination Legislation", "Antidiscrimination Legislation")
+//   indicatorLabelsLookup.set("antidiscrimination Legislation", "Antidiscrimination Legislation")
 
 
   $: height = indicatorVariables.length * 40 // 50

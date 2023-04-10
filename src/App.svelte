@@ -1,15 +1,23 @@
 <script>
   // import data from "../data/processed/GTI_2012-2021.json";
-  import { 
+//   import { 
+//     data, 
+//     continents,
+//     activeCountries,
+//     activeData
+// } from "./lib/stores/data.js"
+import { 
     data, 
     continents,
-    selectedContinentCountries,
-    selectedContinentData,
     activeCountries,
     activeData,
+    selectedContinentCountries, 
+    selectedContinentData, 
     cachedContinentCountries,
-    cachedContinentData
+    cachedContinentData 
 } from "./lib/stores/data.js"
+import { 
+    selectedContinent} from "./lib/stores/selectedContinent";
   import Map from "./lib/components/Map.svelte"
   import Heatmap from "./lib/components/Heatmap.svelte"
   import IndicatorsChart from "./lib/components/IndicatorsChart.svelte"
@@ -18,7 +26,12 @@
   import Button from "./lib/components/Button.svelte"
   import DataInfoTooltip from "./lib/components/DataInfoTooltip.svelte"
   import { selectedCountry } from "./lib/stores/selectedCountry"
-  import { selectedContinent } from "./lib/stores/selectedContinent";
+  // import { 
+  //   selectedContinent, 
+  //   selectedContinentCountries, 
+  //   selectedContinentData, 
+  //   cachedContinentCountries,
+  //   cachedContinentData } from "./lib/stores/selectedContinent";
   // import { bodyFontSize } from "./lib/stores/responsiveFontSize";
   // import { windowWidth } from "./lib/stores/responsiveFontSize";
   import { width, height, isSmall, isMobile } from "./lib/stores/dimensions"; // , mapWidth, continentWidth, countryWidth 
@@ -36,11 +49,13 @@
   import { COLORS } from "./lib/utils/constants.js"
   import { query, activeSearch } from "./lib/stores/search"
   import { createEventDispatcher } from "svelte"
-  import { SearchIcon, MousePointerIcon, InfoIcon } from "svelte-feather-icons"
+  import { SearchIcon, MousePointerIcon, InfoIcon, GithubIcon } from "svelte-feather-icons"
 
   // import "@fontsource/plus-jakarta-sans"
   // import "@fontsource/plus-jakarta-sans/600.css"
   // import "@fontsource/plus-jakarta-sans/700.css"
+
+  // $: console.log(totalScale())
 
   // $: console.log(COLORS.gray["100"])
 
@@ -742,33 +757,52 @@ style="
       <!-- {selectedCountry} width={$countryWidth} --> 
     </div>
 
-    <div class="dataSources">
-      <h5>Data Sources</h5>
-      <p><strong>2012 - 2021 data:</strong> <br>             
-        <a 
-        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
-        target="_blank" rel="noreferrer">Spartacus International Gay Guide
-        </a> 
-        via 
-        <a 
-        href="https://www.makeovermonday.co.uk/"
-        target="_blank" rel="noreferrer">Makeover Monday.
-        </a> 
-    </p>
-    <p><strong>2023 data:</strong><br>  
-        <a 
-        href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
-        target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>,
-        scraped from the report.
-    </p>
-    <p><strong>Geographical Data:</strong><br>  
-        <a 
-        href="https://www.naturalearthdata.com/"
-        target="_blank" rel="noreferrer">Natural Earth
-        </a>
-    </p>
-    </div>
+    <footer>
+      <div class="dataSources">
+        <h5>Data</h5>
+        <p><strong>2012 - 2021 data:</strong> <br>             
+          <a 
+          href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+          target="_blank" rel="noreferrer">Spartacus International Gay Guide
+          </a> 
+          via 
+          <a 
+          href="https://www.makeovermonday.co.uk/"
+          target="_blank" rel="noreferrer">Makeover Monday.
+          </a> <br>
+          The Makeover Monday data contained some missing values, which were filled in manually using information from the original reports.
+      </p>
+      <p><strong>2023 data:</strong><br>  
+          <a 
+          href="https://spartacus.gayguide.travel/blog/spartacus-gay-travel-index/"
+          target="_blank" rel="noreferrer">Spartacus International Gay Guide</a>,
+          scraped from the report.
+      </p>
+      <p><strong>Geographical Data:</strong><br>  
+          <a 
+          href="https://www.naturalearthdata.com/"
+          target="_blank" rel="noreferrer">Natural Earth
+          </a>
+      </p>
+      </div>
+      <div class="codeInfo">
+        <h5>Code</h5>
+        <p> 
+          <span 
+          class="githubIconWrapper" 
+          style="
+          --githubColor: {COLORS.primary["600"]};
+          --githubHoverColor: {COLORS.primary["800"]};
+          ">
+          <a href="https://github.com/AitanaGS/gaytravelindex" target="_blank" rel="noreferrer">
+            <GithubIcon size="24"/>
+          </a>
+        </span>
+        </p>
+      </div>
 
+    </footer>
+    
 
 
 
@@ -1000,18 +1034,60 @@ a:hover {
 
 
 
-.dataSources {
+footer {
   margin-top: 30px;
   font-size: 1rem;
   overflow-wrap: word-wrap; /* IE */
   overflow-wrap: break-word;
   hyphens: auto; 
    -webkit-hyphens: auto; /* Prefix for Safari */
+   max-width: 500px;
+   margin-bottom: 30px;
 }
 
-.dataSources h5 {
+footer h5 {
   font-size: 1.2rem;
   margin-bottom: 5px;
+}
+
+.codeInfo {
+  margin-top: 40px;
+
+}
+
+/* .codeInfo h5 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+} */
+
+.githubIconWrapper {
+  /* position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 10px;
+  margin: auto 0; */
+  /* height: 24px; */
+  /* top: 10px;
+  left: 0px;
+  margin-left: -15px;
+  position: relative; */
+  color: var(--githubColor);
+  display: inline-block;
+  /* margin-right: 2px; */
+  cursor: pointer;
+  margin-left: 2px;
+}
+.githubIconWrapper:hover {
+  /* background-color: var(--buttonHoverBackgroundColor); */
+  color: var(--githubHoverColor);
+  /* border: 2px solid var(--buttonHoverColor); */
+
+  /* border: 2px solid var(--buttonColor); */
+}
+.githubIconWrapper:focus,
+.githubIconWrapper:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+  outline-color: var(--githubHoverColor);
 }
 
 

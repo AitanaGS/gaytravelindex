@@ -1972,3 +1972,34 @@ Afghanistan,Asia,199,2023,-19,0,-1,0,0,0,-2,0,-1,-1,0,-2,-2,-2,-5,-1,-1,-1,Afgha
 Chechnya,Europe,199,2023,-19,0,-1,0,0,0,-2,0,-1,-1,-1,-2,-2,-2,-5,-1,-1,0,Chechnya
 Iran,Asia,199,2023,-19,0,-1,-1,0,0,-2,0,-1,-1,0,-2,-2,-2,-5,0,-1,-1,Iran
 Saudi Arabia,Asia,199,2023,-19,0,-1,-1,0,0,-2,-1,-1,-1,0,-2,-1,-1,-5,-1,-1,-1,Saudi Arabia
+Bermuda,Americas,NA,2015,0,1,0,0,0,0,0,NA,0,0,0,-1,0,0,0,NA,NA,NA,Bermuda
+Curaçao,Americas,NA,2015,1,0,0,0,1,1,0,NA,0,0,0,-1,0,0,0,NA,NA,NA,Curaçao
+Lesotho,Africa,NA,2015,-4,0,0,0,0,NA,-2,0,0,0,0,-2,0,0,0,NA,NA,NA,Lesotho
+Lesotho,Africa,NA,2016,-4,0,0,0,0,NA,-2,0,0,0,0,-2,0,0,0,NA,NA,NA,Lesotho
+Lesotho,Africa,NA,2017,-4,0,0,0,0,NA,-2,0,0,0,0,-2,0,0,0,NA,NA,NA,Lesotho
+Mali,Africa,NA,2015,-7,0,0,0,0,NA,-2,0,-1,0,0,-2,0,-2,0,NA,NA,NA,Mali
+Mali,Africa,NA,2016,-7,0,0,0,0,NA,-2,0,-1,0,0,-2,0,-2,0,NA,NA,NA,Mali
+Mali,Africa,NA,2017,-7,0,0,0,0,NA,-2,0,-1,0,0,-2,0,-2,0,NA,NA,NA,Mali
+Niger,Africa,NA,2015,-6,0,0,0,0,NA,-2,0,-1,0,0,-2,-1,0,0,NA,NA,NA,Niger
+Niger,Africa,NA,2016,-6,0,0,0,0,NA,-2,0,-1,0,0,-2,-1,0,0,NA,NA,NA,Niger
+Niger,Africa,NA,2017,-6,0,0,0,0,NA,-2,0,-1,0,0,-2,-1,0,0,NA,NA,NA,Niger
+Burkina Faso,Africa,NA,2015,-4,0,0,0,0,NA,-2,0,0,0,0,-2,0,0,0,NA,NA,NA,Burkina Faso
+Cook Islands,Oceania,NA,2015,-6,0,0,0,0,0,-2,NA,-1,-1,0,-2,0,0,0,NA,NA,NA,Cook Islands
+North Korea,Asia,NA,2016,-2,0,0,0,0,NA,0,0,0,0,0,-2,0,0,0,NA,NA,NA,North Korea
+North Korea,Asia,NA,2017,-2,0,0,0,0,NA,0,0,0,0,0,-2,0,0,0,NA,NA,NA,North Korea
+Chad,Africa,NA,2016,-4,0,0,0,0,0,-2,0,NA,0,0,-2,NA,0,0,NA,NA,NA,Chad
+Indonesia,Asia,NA,2015,-5,0,0,0,0,1,-1,0,-1,-1,0,-1,-1,0,-1,NA,NA,NA,Indonesia
+Indonesia,Asia,NA,2016,-7,0,0,0,0,1,-2,0,-1,-1,0,-2,-1,0,-1,NA,NA,NA,Indonesia
+Indonesia,Asia,NA,2017,-7,0,0,0,0,1,-2,0,-1,-1,0,-2,-1,0,-1,NA,NA,NA,Indonesia
+Ivory Coast,Africa,NA,2015,-5,0,0,0,0,NA,-2,0,-1,0,0,-2,0,0,0,NA,NA,NA,Ivory Coast
+Jordan,Asia,174,2018,-9,0,0,0,NA,1,-2,-1,-1,0,0,-2,-1,-2,0,-1,NA,NA,Jordan
+Papua New Guinea,Oceania,174,2018,-9,0,0,0,NA,0,-2,-1,-1,-1,0,-2,-1,0,0,-1,NA,NA,Papua New Guinea
+Eswatini,Africa,174,2018,-9,0,0,0,NA,0,-2,0,-1,-1,0,-2,0,-2,0,-1,NA,NA,Eswatini
+Sudan,Africa,174,2018,-9,0,0,0,NA,0,-2,-1,-1,-1,0,-2,0,0,-1,-1,NA,NA,Sudan
+Turkmenistan,Asia,174,2018,-9,0,0,0,NA,0,-2,-1,-1,-1,0,-2,-1,0,0,-1,NA,NA,Turkmenistan
+Tanzania,Africa,174,2018,-9,0,0,0,NA,0,-2,0,-1,-1,0,-2,-2,0,0,-1,NA,NA,Tanzania
+Malaysia,Asia,174,2018,-9,0,0,0,NA,0,-2,0,-1,-1,-1,-1,-1,-1,0,-1,NA,NA,Malaysia
+Kuwait,Asia,174,2018,-9,0,0,0,NA,0,-2,0,-1,-1,0,-2,-2,0,0,-1,NA,NA,Kuwait
+Somalia,Africa,196,2018,-15,0,0,0,NA,0,-2,0,-1,-1,0,-2,-1,-2,-5,-1,NA,NA,Somalia
+Chechnya,Europe,197,2018,-16,0,0,0,NA,0,-2,0,-1,-1,-1,-2,-2,-2,-5,0,NA,NA,Chechnya
+Saudi Arabia,Asia,194,2018,-14,0,0,0,NA,0,-2,0,-1,-1,0,-2,-1,-1,-5,-1,NA,NA,Saudi Arabia

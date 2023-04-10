@@ -89,7 +89,7 @@
             GTI: {tooltipData.total}
         </span>
         <!-- color: {tooltipData.total < 8 && tooltipData.total > -15 ? "black" : "white"}; -->
-        <p class="ranking">global ranking: {tooltipData.ranking}</p>
+        <p class="ranking">global ranking: {tooltipData.ranking ?? "-"}</p>
     </div>
 
 </div>

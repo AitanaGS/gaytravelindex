@@ -24,13 +24,13 @@ here::i_am("analysis.Rmd")
 
 
 ```{r}
-original_data_2012_2021 <- read_xlsx(here("original","GTI_2012-2021.xlsx"))
+original_gti_2012_2021 <- read_xlsx(here("original","GTI_2012-2021.xlsx"))
 
 ```
 
 
 ```{r}
-glimpse(original_data_2012_2021)
+glimpse(original_gti_2012_2021)
 ```
 
 
@@ -39,7 +39,7 @@ glimpse(original_data_2012_2021)
 
 
 ```{r}
-data_2012_2021 <- original_data_2012_2021 %>%
+gti_2012_2021 <- original_gti_2012_2021 %>%
     # pivot_longer(`Antidiscrimination Legislation`:`Conversion Therapy`, "indicator", "value") %>%
   clean_names(case = "lower_camel") %>%
   rename("transgenderRights" = "transGenderRights") 
@@ -52,14 +52,14 @@ data_2012_2021 <- original_data_2012_2021 %>%
 
 
 ```{r}
-data_2023 <- read_csv(here("processed","GTI_2023.csv"))
+gti_2023 <- read_csv(here("processed","GTI_2023.csv"))
 
 ```
 
 
 
 ```{r}
-data_2012_2023 <- bind_rows(data_2012_2021, data_2023)
+gti_2012_2023 <- bind_rows(gti_2012_2021, gti_2023)
 ```
 
 
@@ -69,7 +69,7 @@ data_2012_2023 <- bind_rows(data_2012_2021, data_2023)
 
 
 ```{r}
-data <- data_2012_2023 %>%
+data_2012_2023 <- gti_2012_2023 %>%
   # mutate(across(c(where(is.numeric)),
   #              factor)) %>%
   mutate(country = case_when(
@@ -131,6 +131,24 @@ data <- data_2012_2023 %>%
   
 # Bonaire and Saint Kitts & Nevis in 2012, 2013, 2014 only
 ```
+
+
+
+### Add missing data
+(missing in Makeover Monday data and added manually from the GTI reports)
+
+
+```{r}
+missing_data <- read_csv2(here("processed","GTI_missing_2012-2021.csv"))
+
+```
+
+
+
+```{r}
+data <- bind_rows(data_2012_2023, missing_data)
+```
+
 
 
 
