@@ -63,7 +63,6 @@
 
     $: topContinentCountry = !$activeSearch && $activeData.keys().next().value
 
-    $: console.log(topContinentCountry)
 
 </script>
 

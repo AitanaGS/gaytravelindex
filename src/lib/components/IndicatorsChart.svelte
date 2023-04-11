@@ -150,22 +150,9 @@
             <g
             class="innerChart innerIndicatorsChart">
                     {#each selectedCountryData2023 as d, i (`${d.country}${d.indicator}`)}
-                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <g 
                         transform="translate(0, {indicatorScale.bandwidth()/2})"
-                        tabindex="0"
-                        aria-describedby="indicatorInfo" 
                     >
-                                            <desc id="indicatorInfo">
-                                                {
-                                                indicatorDataLookup.get(d.indicator)
-                                                    .reduce((prev, curr) => {
-                                                        return `${prev} ${curr.year}: ${curr.value},`
-                                                    }, `${indicatorLabelsLookup.get(d.indicator)}: `)
-                                                + ". Note: There is no data for 2022."
-                                                }
-                                                
-                                            </desc>
                     {#if d.value !== 0}
                     <line 
                         x1={indicatorValueScale(0)}
@@ -196,7 +183,10 @@
                     on:mouseenter={(e) => handleIndicatorHover(e, d)}
                     on:mouseleave={(e) => handleIndicatorHover(e, null)}
                     />
+                    <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
                     <circle
+                        tabindex="0"
+                        aria-describedby="indicatorInfo" 
                         cx={indicatorValueScale(d.value)}
                         cy={indicatorScale(d.indicator)}
                         r={$isMobile
@@ -220,6 +210,15 @@
                         on:blur={(e) => handleIndicatorHover(e, null)}
                         on:keydown={(e) => {e.key === "Escape" ? handleIndicatorHover(e, null) : null}}
                         />
+                        <desc id="indicatorInfo">
+                            {
+                            indicatorDataLookup.get(d.indicator)
+                                .reduce((prev, curr) => {
+                                    return `${prev} ${curr.year}: ${curr.value},`
+                                }, `${indicatorLabelsLookup.get(d.indicator)}: `)
+                            + ". Note: There is no data for 2022."
+                            }
+                        </desc>
                 </g>
                 {/each}
         

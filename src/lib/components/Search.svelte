@@ -32,8 +32,10 @@
       placeholder="Country"
       id="search"
       bind:value={$query} 
-      on:keyup={() => handleSearch()}
-      on:search={() => clearSearch()}
+      on:input={(e) => {
+          e.key === "Escape" || $query === ""
+          ? clearSearch() 
+          : handleSearch()}}
       >
   </label>
 </span>
