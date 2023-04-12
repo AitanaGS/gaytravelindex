@@ -5,12 +5,7 @@
 
 </script>
 
-<footer
-  style="
-    --linkColor: {COLORS.primary["500"]};
-    --linkHoverColor: {COLORS.primary["900"]};
-    "
->
+<footer>
     <div class="dataSources">
       <h5>Data</h5>
       <p><strong>2012 - 2021 data:</strong> <br>             
@@ -72,16 +67,6 @@
   footer h5 {
     font-size: 1.2rem;
     margin-bottom: 5px;
-  }
-
-  a {
-    font-weight: 500;
-    color: var(--linkColor);
-    text-decoration: inherit;
-  }
-
-  a:hover {
-    color: var(--linkHoverColor);
   }
 
   .codeInfo {

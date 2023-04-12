@@ -121,14 +121,9 @@
 
 
 <div
-class="wrapper"
-bind:clientWidth={$width}
-bind:clientHeight={$height}
-style="
-  --bodyColor: {COLORS.gray["700"]};
-  --linkColor: {COLORS.primary["500"]};
-  --linkHoverColor: {COLORS.primary["900"]};
-  "
+  class="wrapper"
+  bind:clientWidth={$width}
+  bind:clientHeight={$height}
 >
   <Header />
     <main>
@@ -235,22 +230,8 @@ style="
   
   .wrapper {
     padding: 40px;
-    font-weight: 400;
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: var(--bodyColor);
     width: 100%;
     max-width: 900px;
-  }
-
-  a {
-    font-weight: 500;
-    color: var(--linkColor);
-    text-decoration: inherit;
-  }
-
-  a:hover {
-    color: var(--linkHoverColor);
   }
 
   p {
