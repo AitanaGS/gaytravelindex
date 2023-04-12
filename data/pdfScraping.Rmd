@@ -7,8 +7,8 @@ date: "2023-03-30"
 
 
 
-```{r}
-library(rJava)      # Needed for tabulizer
+```{r message=FALSE}
+library(rJava) # Needed for tabulizer
 library(tabulizer)
 library(tidyverse)
 library(janitor)
@@ -24,7 +24,7 @@ here::i_am("pdfScraping.Rmd")
 ```{r}
 extract2023 <- extract_tables(
     file   = here("original", "pdfs", "gaytravelindex_2023.pdf"),
-    method =  "decide", #stream", #"decide", # lattice
+    method =  "decide", #stream", #"decide", #lattice
     output = "data.frame")
 ```
 

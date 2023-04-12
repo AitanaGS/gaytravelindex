@@ -123,6 +123,7 @@ data_2012_2023 <- gti_2012_2023 %>%
 
 
 
+
 ### Add missing data
 (missing in Makeover Monday data and added manually from the GTI reports)
 
