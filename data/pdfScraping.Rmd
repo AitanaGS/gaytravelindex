@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "pdf Scraping: GTI Report 2023"
 output: html_document
 date: "2023-03-30"
 ---
@@ -16,12 +16,8 @@ library(here)
 library(glue)
 
 
-
 here::i_am("pdfScraping.Rmd")
 ```
-
-
-
 
 
 
@@ -31,8 +27,6 @@ extract2023 <- extract_tables(
     method =  "decide", #stream", #"decide", # lattice
     output = "data.frame")
 ```
-
-
 
 
 ```{r}
@@ -54,7 +48,6 @@ for (i in 1:4) {
     tbl2023 <- bind_rows(tbl2023, tbl)
   }
 ```
-
 
 
 
@@ -121,8 +114,6 @@ data2023 %>%
 ```{r}
 write_csv(data2023, here("processed/GTI_2023.csv"))
 ```
-
-
 
 
 

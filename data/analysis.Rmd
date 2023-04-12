@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Exploratory Data Analysis: GTI 2012-2021"
 output: html_document
 date: "2023-01-10"
 ---
@@ -96,7 +96,12 @@ create_report(data)
 data %>%
   filter(year == 2021) %>%
   ggplot( aes(x = ranking)) +
-    geom_histogram( alpha=0.6, position = 'identity', fill = "#7C85A6", color = "#474E68", binwidth = 5) +
+    geom_histogram(
+      alpha=0.6, 
+      position = 'identity', 
+      fill = "#7C85A6", 
+      color = "#474E68", 
+      binwidth = 5) +
     labs(y = "Frequency",
          x = "Ranking",
          title = "Rankings 2021") +
@@ -123,21 +128,12 @@ data %>%
   arrange(desc(ranking)) %>%
   ggplot(aes(x = country, y = total)) +
   geom_bar(position="dodge", stat="identity") + 
-  # geom_text(
-  #   aes(label = value),
-  #   size = 5,
-  #   vjust = 1.5, # position = position_dodge(.9),
-  #   color = "#fff7fb"
-  # ) +
-  #scale_fill_manual(values = c("#474E68", "#7C85A6")) +
   labs(x = "",
        y = "",
        title = "Maximale und mittlere Personenzahl/Tag") +
   coord_flip() +
   theme_minimal() +
   theme(
-    #axis.line.y=element_blank(),
-    #axis.text.y=element_blank(),
     axis.text.x = element_text(colour = "#3B4157", size = 14),
     panel.grid = element_blank(),
     plot.title = element_text(colour = "#3B4157",
@@ -156,16 +152,13 @@ data %>%
 data %>%
   filter(year == 2021,
          ranking <= 20) %>%
-  #arrange(country) %>%
   mutate(ranking = as.factor(ranking),
-        # country = fct_reorder(country, total), #) %>%
           country = reorder_within(country, total, ranking)) %>%
   ggplot(aes(x=country, y=total)) +
   geom_segment( aes(x=country, xend=country, y=0, yend=total)) +
   geom_point(size=4, alpha=0.6) +
   theme_minimal() +
   coord_flip() +
-  #scale_x_reordered() +
   theme(
     panel.grid.major.y = element_blank(),
     panel.border = element_blank(),

@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "Data Cleaning and Merging: GTI 2012-2023"
 output: html_document
 date: "2023-01-10"
 ---
@@ -40,7 +40,6 @@ glimpse(original_gti_2012_2021)
 
 ```{r}
 gti_2012_2021 <- original_gti_2012_2021 %>%
-    # pivot_longer(`Antidiscrimination Legislation`:`Conversion Therapy`, "indicator", "value") %>%
   clean_names(case = "lower_camel") %>%
   rename("transgenderRights" = "transGenderRights") 
 
@@ -70,47 +69,39 @@ gti_2012_2023 <- bind_rows(gti_2012_2021, gti_2023)
 
 ```{r}
 data_2012_2023 <- gti_2012_2023 %>%
-  # mutate(across(c(where(is.numeric)),
-  #              factor)) %>%
   mutate(country = case_when(
    country == "Central African Republic" ~ "Central African Rep.",
-    country == "China/Hong Kong" ~ "China incl. Hong Kong",
-    country == "Dem.Rep. of Congo" ~ "Dem. Rep. of Congo",
-    country == "Georgia (Europe)" ~ "Georgia",
-    country == "Macedonia" ~ "North Macedonia",
-    country == "USA*" ~ "United States of America",
-    # country == "Virgin Islands (USA)" ~ "Virgin Islands (USA)",
-    country == "Virgin Islands" ~ "Virgin Islands (USA)",
+   country == "China/Hong Kong" ~ "China incl. Hong Kong",
+   country == "Dem.Rep. of Congo" ~ "Dem. Rep. of Congo",
+   country == "Georgia (Europe)" ~ "Georgia",
+   country == "Macedonia" ~ "North Macedonia",
+   country == "USA*" ~ "United States of America",
+   country == "Virgin Islands" ~ "Virgin Islands (USA)",
    country == "United States Virgin Islands" ~ "Virgin Islands (USA)",
    country == "Rep. of the Congo" ~ "Republic of the Congo",
-    country == "Saint Maarten" ~ "Sint Maarten",
-    country == "Bosnia-Hercegovina" ~ "Bosnia and Herzegovina",
-    country == "Moldovia" ~ "Moldova",
-    country == "Maledives" ~ "Maldives",
-   # country == "Antigua & Barbuda" ~ "Antigua and Barbuda",
-    country == "Bosnia-Herzegovina" ~ "Bosnia and Herzegovina",
-    country == "Cabo Verde" ~ "Cape Verde",
-    #country == "China incl. Hong Kong" ~ "People's Republic of China",
-    country == "Comoros Islands" ~ "Comoros",
-   # country == "Dem. Rep. of Congo" ~ "Democratic Republic of the Congo",
-    country == "Gambia" ~ "The Gambia",
-    country == "Korea South" ~ "South Korea",
-    country == "Curacao" ~ "Curaçao",
-    country == "St. Maarten" ~ "Sint Maarten",
-    country == "USA" ~ "United States of America",
-    #country == "Trinidad & Tobago" ~ "Trinidad and Tobago",
-    country == "Korea North" ~ "North Korea",
-    country == "USA" ~ "United States of America",
-    country == "Bahamas" ~ "The Bahamas",
-    country == "Macao" ~ "Macau",
-    country == "Swaziland" ~ "Eswatini",
-    TRUE ~ country
+   country == "Saint Maarten" ~ "Sint Maarten",
+   country == "Bosnia-Hercegovina" ~ "Bosnia and Herzegovina",
+   country == "Moldovia" ~ "Moldova",
+   country == "Maledives" ~ "Maldives",
+   country == "Bosnia-Herzegovina" ~ "Bosnia and Herzegovina",
+   country == "Cabo Verde" ~ "Cape Verde",
+   country == "Comoros Islands" ~ "Comoros",
+   country == "Gambia" ~ "The Gambia",
+   country == "Korea South" ~ "South Korea",
+   country == "Curacao" ~ "Curaçao",
+   country == "St. Maarten" ~ "Sint Maarten",
+   country == "USA" ~ "United States of America",
+   country == "Korea North" ~ "North Korea",
+   country == "USA" ~ "United States of America",
+   country == "Bahamas" ~ "The Bahamas",
+   country == "Macao" ~ "Macau",
+   country == "Swaziland" ~ "Eswatini",
+   TRUE ~ country
   )) %>%
-    mutate(longName = case_when(
+  mutate(longName = case_when(
     country == "Central African Rep." ~ "Central African Republic",
     country == "China incl. Hong Kong" ~ "People's Republic of China",
     country =="Dem. Rep. of Congo" ~ "Democratic Republic of the Congo",
-    # country == "Virgin Islands (USA)" ~ "United States Virgin Islands",
     country == "Rep. of the Congo" ~ "Republic of the Congo",
     country == "Antigua & Barbuda" ~ "Antigua and Barbuda",
     country == "Trinidad & Tobago" ~ "Trinidad and Tobago",
@@ -120,10 +111,8 @@ data_2012_2023 <- gti_2012_2023 %>%
   mutate(continent = countrycode(country, "country.name.en", "continent")) %>%
   mutate(continent = case_when(
     country == "Kosovo" ~ "Europe",
-    #country == "United States Virgin Islands" ~ "Americas",
     country == "Virgin Islands (USA)" ~ "Americas",
     country == "Chechnya" ~ "Europe",
-   # country == "Bonaire" ~ "Americas",
     country == "Maledives" ~ "Asia",
     TRUE ~ continent
   )) %>%
@@ -152,7 +141,7 @@ data <- bind_rows(data_2012_2023, missing_data)
 
 
 
-
+### Countries in 2023
 
 ```{r}
 countries2023 <- data %>%
@@ -176,11 +165,12 @@ data %>%
 
 
 
-
 ```{r}
 summary(data)
 
 ```
+
+
 
 
 ### seperate dataset for 2023
@@ -217,9 +207,6 @@ write(dataJSON, here("processed/GTI_2012-2023.json"))
 ```{r}
 write(data2023, here("processed/GTI_2012-2023_data2023.json"))
 ```
-
-
-
 
 
 
