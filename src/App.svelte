@@ -150,10 +150,9 @@
         <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
         <div class="continentChartWrapper"> 
             <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Heatmap Intro">
-              The heatmap below shows the Gay Travel Index for all countries and years, sorted by the 2023 ranking.
-              The Gay Travel Index is based on ratings from various categories including anti-discrimination laws, 
-              transgender rights and violence against the LGBTQ+ community. In recent years the index has become 
-              more diverse with the addition of new categories.
+              The heatmap below displays the Gay Travel Index for all countries and years, sorted by the 2023 ranking. 
+              The Gay Travel Index is determined by ratings from various categories, including anti-discrimination laws, 
+              transgender rights, and violence against the LGBTQIA+ community. In recent years, the index has become more comprehensive with the inclusion of new categories.
              </p>
 
 
@@ -166,7 +165,7 @@
           </p>
 
           <p> 
-            Click on a country’s name for information about its ratings in the different categories.
+            Click on a country's name for information about its ratings in different categories.
           </p>
           <p class="note">Note: There is no data for 2022.</p>
              <Heatmap on:countryClick={scrollToCountryView} {totalScale} />
@@ -182,8 +181,9 @@
         <div  style="min-height: 1px;">
           {#if $selectedCountry}
           <p >
-            Positive developments count as plus points, and negative ones as minus points. 
-            A rating of zero is assigned if a country is lacking in a category. Countries in which people are still executed receive five negative points to ensure that they are at the bottom of the ranking.
+            Positive developments are credited as plus points, and negative ones are marked as minus points. 
+            A rating of zero is given if a country lacks in a category. 
+            Countries where executions still occur receive five negative points to ensure they rank lowest.
           </p>
           <p>
             <span class="circleSvgWrapper">
@@ -203,7 +203,7 @@
               <MousePointerIcon size="24"/>
             </span>
             <span class="hoverInfo">
-              Hover over the circles for the ratings from other years.
+              Hover over the circles for ratings from other years.
             </span>
           </p>
   

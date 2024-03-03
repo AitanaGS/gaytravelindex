@@ -18,7 +18,7 @@
         href="https://www.makeovermonday.co.uk/"
         target="_blank" rel="noreferrer">Makeover Monday
         </a>. <br>
-        The Makeover Monday data contained some missing values, which were filled in manually using information from the original reports.
+        The Makeover Monday data had some missing values, which were manually filled in using information from the original reports.
     </p>
     <p><strong>2023 data:</strong><br>  
         <a 
