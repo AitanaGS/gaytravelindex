@@ -63,6 +63,7 @@ body {
   font-size: 1.2rem;
   line-height: 1.8;
   color: hsl(0, 0%, 30%);
+  background-color: hsla(260, 30%, 98%, 1);
 }
 
 a {
