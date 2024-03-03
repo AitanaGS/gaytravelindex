@@ -44,6 +44,7 @@
         ">
         <a href="https://github.com/AitanaGS/gaytravelindex" target="_blank" rel="noreferrer">
           <GithubIcon size="24"/>
+          <span>github.com/AitanaGS/gaytravelindex</span>
         </a>
       </span>
       </p>
@@ -79,6 +80,14 @@
     cursor: pointer;
     margin-left: 2px;
     transition: color 200ms ease;
+  }
+
+  .githubIconWrapper a {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    word-break: break-all;
   }
 
   .githubIconWrapper:hover {
