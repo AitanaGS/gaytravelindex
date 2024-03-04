@@ -49,6 +49,13 @@
       </span>
       </p>
     </div>
+    <div class='infoName'>
+      <p><a 
+      href="https://www.github.com/AitanaGS"
+      target="_blank" rel="noreferrer">Aitana Gräbs Santiago
+      </a>
+      | 2023</p>
+    </div>
 
   </footer>
 
@@ -62,7 +69,7 @@
     hyphens: auto; 
     -webkit-hyphens: auto; /* Prefix for Safari */
     max-width: 500px;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
   }
 
   footer h5 {
@@ -98,6 +105,10 @@
   .githubIconWrapper:focus-visible {
     outline: 4px auto -webkit-focus-ring-color;
     outline-color: var(--githubHoverColor);
+  }
+
+  .infoName {
+    margin-top: 40px;
   }
 
 </style>
