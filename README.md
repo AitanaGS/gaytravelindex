@@ -1,6 +1,6 @@
 # Gay Travel Index 2023
 
-An interactive data visualization offering insights into LGBTQIA+ community safety worldwide. It is based on data from the Gay Travel Index released annually by the Spartacus International Gay Guide.
+An interactive data visualization providing an overview of LGBTQIA+ community safety worldwide. It is based on data from the Gay Travel Index released annually by the Spartacus International Gay Guide.
 
 ## Project Link
 
