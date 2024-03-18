@@ -152,7 +152,8 @@
             <p bind:this={continentView} tabindex="0" role="region" aria-describedby="Heatmap Intro">
               The heatmap below displays the Gay Travel Index for all countries and years, sorted by the 2023 ranking. 
               The Gay Travel Index is determined by ratings from various categories, including anti-discrimination laws, 
-              transgender rights, and violence against the LGBTQIA+ community. In recent years, the index has become more comprehensive with the inclusion of new categories.
+              transgender rights, and violence against the LGBTQIA+ community. 
+              A higher index indicates more rights and social acceptance.
              </p>
 
 
