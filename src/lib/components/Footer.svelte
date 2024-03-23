@@ -108,7 +108,7 @@
   }
 
   .infoName {
-    margin-top: 40px;
+    margin-top: 60px;
   }
 
 </style>
