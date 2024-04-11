@@ -4,6 +4,8 @@ An interactive data visualization providing an overview of LGBTQIA+ rights world
 
 ## Project Link
 
+[https://aitanags.github.io/gaytravelindex/](https://aitanags.github.io/gaytravelindex/)
+
 ## Technologies
 
 **Frontend:**
