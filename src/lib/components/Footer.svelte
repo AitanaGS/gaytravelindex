@@ -62,7 +62,7 @@
 <style>
     
   footer {
-    margin-top: 30px;
+    margin-top: 40px;
     font-size: 1rem;
     overflow-wrap: word-wrap; /* IE */
     overflow-wrap: break-word;
